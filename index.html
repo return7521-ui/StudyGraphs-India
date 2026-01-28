@@ -1022,6 +1022,242 @@
                 </div>
             );
         };
+        /* --- 16. ORBIT AI (GRAVITY SIMULATOR) --- */
+        const OrbitApp = () => {
+            const canvasRef = useRef(null);
+            const [bodies, setBodies] = useState([]);
+            const [paused, setPaused] = useState(false);
+
+            useEffect(() => {
+                const cvs = canvasRef.current;
+                const ctx = cvs.getContext('2d');
+                let w = cvs.parentElement.clientWidth;
+                let h = cvs.parentElement.clientHeight;
+                cvs.width = w; cvs.height = h;
+
+                // Initial Solar System
+                let planets = [
+                    { x: w/2, y: h/2, vx: 0, vy: 0, m: 1000, color: '#ffd700', fixed: true, r: 15 }, // Sun
+                    { x: w/2 + 100, y: h/2, vx: 0, vy: 2.5, m: 10, color: '#00f3ff', fixed: false, r: 5 }, // Earth
+                    { x: w/2 + 160, y: h/2, vx: 0, vy: 2, m: 15, color: '#ff0055', fixed: false, r: 7 }, // Mars
+                    { x: w/2 + 250, y: h/2, vx: 0, vy: 1.5, m: 40, color: '#bd00ff', fixed: false, r: 10 } // Jupiter
+                ];
+                
+                // Allow state to override initial
+                if(bodies.length > 0) planets = bodies; 
+
+                const loop = () => {
+                    if (paused) return;
+                    ctx.fillStyle = 'rgba(0, 0, 0, 0.1)'; // Trail effect
+                    ctx.fillRect(0, 0, w, h);
+
+                    // Physics Calc
+                    for (let i = 0; i < planets.length; i++) {
+                        for (let j = 0; j < planets.length; j++) {
+                            if (i === j) continue;
+                            const p1 = planets[i];
+                            const p2 = planets[j];
+                            if (p1.fixed) continue;
+
+                            const dx = p2.x - p1.x;
+                            const dy = p2.y - p1.y;
+                            const dist = Math.sqrt(dx*dx + dy*dy);
+                            if (dist < p1.r + p2.r) continue; // Collision ignore
+
+                            const force = (0.5 * p1.m * p2.m) / (dist * dist); // G = 0.5
+                            const fx = (force * dx) / dist;
+                            const fy = (force * dy) / dist;
+
+                            p1.vx += fx / p1.m;
+                            p1.vy += fy / p1.m;
+                        }
+                    }
+
+                    // Render
+                    planets.forEach(p => {
+                        if (!p.fixed) { p.x += p.vx; p.y += p.vy; }
+                        ctx.beginPath();
+                        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                        ctx.fillStyle = p.color;
+                        ctx.fill();
+                        ctx.shadowBlur = 20;
+                        ctx.shadowColor = p.color;
+                    });
+
+                    requestAnimationFrame(loop);
+                };
+                const anim = requestAnimationFrame(loop);
+
+                const handleClick = (e) => {
+                    const rect = cvs.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    // Add new random planet
+                    planets.push({
+                        x: x, y: y,
+                        vx: (Math.random() - 0.5) * 4,
+                        vy: (Math.random() - 0.5) * 4,
+                        m: Math.random() * 20 + 5,
+                        color: '#ffffff',
+                        r: Math.random() * 4 + 2,
+                        fixed: false
+                    });
+                };
+
+                cvs.addEventListener('mousedown', handleClick);
+                return () => { cancelAnimationFrame(anim); cvs.removeEventListener('mousedown', handleClick); };
+            }, [paused]);
+
+            return (
+                <div className="flex flex-col h-full bg-black relative">
+                    <canvas ref={canvasRef} className="absolute inset-0 z-0 cursor-crosshair" />
+                    <div className="absolute top-4 left-4 z-10 flex gap-4">
+                        <div className="px-4 py-2 bg-black/50 border border-white/10 rounded-lg text-xs font-mono text-neon-blue">
+                            ORBITAL MECHANICS SIM
+                        </div>
+                        <button onClick={() => setPaused(!paused)} className="px-4 py-2 bg-white/10 hover:bg-white/20 border border-white/10 rounded-lg text-xs font-bold text-white transition-all">
+                            {paused ? "RESUME" : "PAUSE PHYSICS"}
+                        </button>
+                    </div>
+                    <div className="absolute bottom-4 right-4 text-[10px] text-gray-500 font-mono">
+                        CLICK TO SPAWN PLANET
+                    </div>
+                </div>
+            );
+        };
+
+        /* --- 17. CODERUSH (TYPING GAME) --- */
+        const CodeRushApp = () => {
+            const words = ['function', 'const', 'return', 'async', 'await', 'import', 'export', 'default', 'class', 'extends', 'react', 'hook', 'state', 'effect', 'component', 'props', 'render', 'virtual', 'dom', 'node', 'module', 'package', 'json', 'script', 'style', 'div', 'span', 'interface', 'type', 'boolean', 'string', 'number', 'array', 'object', 'map', 'filter', 'reduce'];
+            const [target, setTarget] = useState('start');
+            const [input, setInput] = useState('');
+            const [score, setScore] = useState(0);
+            const [timer, setTimer] = useState(30);
+            const [playing, setPlaying] = useState(false);
+
+            useEffect(() => {
+                if (playing && timer > 0) {
+                    const t = setTimeout(() => setTimer(timer - 1), 1000);
+                    return () => clearTimeout(t);
+                } else if (timer === 0) {
+                    setPlaying(false);
+                }
+            }, [playing, timer]);
+
+            const handleChange = (e) => {
+                const val = e.target.value.trim();
+                setInput(val);
+                if (val === target) {
+                    setScore(score + 1);
+                    setInput('');
+                    setTarget(words[Math.floor(Math.random() * words.length)]);
+                    sysAudio.play('success');
+                }
+            };
+
+            const startGame = () => {
+                setScore(0);
+                setTimer(30);
+                setPlaying(true);
+                setTarget(words[Math.floor(Math.random() * words.length)]);
+                setInput('');
+            };
+
+            return (
+                <div className="flex h-full flex-col items-center justify-center bg-gray-900 p-8 font-mono">
+                    <div className="mb-8 text-center">
+                        <h2 className="text-4xl font-black text-white mb-2 tracking-tighter">CODE_RUSH</h2>
+                        <div className="text-neon-green text-sm uppercase tracking-widest">Developer WPM Test</div>
+                    </div>
+
+                    {!playing && timer === 30 ? (
+                        <button onClick={startGame} className="px-8 py-4 bg-neon-blue text-black font-bold text-xl rounded-xl hover:scale-105 transition-transform shadow-[0_0_30px_rgba(0,243,255,0.4)]">
+                            INITIATE TEST
+                        </button>
+                    ) : !playing && timer === 0 ? (
+                        <div className="text-center animate-window-spawn">
+                            <div className="text-6xl font-black text-neon-gold mb-2">{score}</div>
+                            <div className="text-gray-400 text-xs mb-6">WORDS PER 30 SECONDS</div>
+                            <button onClick={startGame} className="px-6 py-3 bg-white/10 hover:bg-white/20 border border-white/20 rounded-lg text-white">RETRY</button>
+                        </div>
+                    ) : (
+                        <div className="w-full max-w-md text-center">
+                            <div className="mb-8">
+                                <div className="text-6xl font-thin text-white mb-4 animate-pulse">{target}</div>
+                                <input 
+                                    autoFocus
+                                    value={input}
+                                    onChange={handleChange}
+                                    className="w-full bg-black/50 border-b-2 border-neon-blue text-center text-2xl p-2 text-neon-blue outline-none"
+                                />
+                            </div>
+                            <div className="flex justify-between text-xs font-bold text-gray-500 uppercase">
+                                <span>Score: {score}</span>
+                                <span>Time: {timer}s</span>
+                            </div>
+                            <div className="mt-2 h-1 w-full bg-gray-800 rounded-full overflow-hidden">
+                                <div className="h-full bg-neon-green transition-all duration-1000 ease-linear" style={{ width: `${(timer/30)*100}%` }}></div>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            );
+        };
+
+        /* --- 18. SONICVIEW (AUDIO VISUALIZER) --- */
+        const SonicApp = () => {
+            const canvasRef = useRef(null);
+            
+            useEffect(() => {
+                const cvs = canvasRef.current;
+                const ctx = cvs.getContext('2d');
+                let w = cvs.parentElement.clientWidth;
+                let h = cvs.parentElement.clientHeight;
+                cvs.width = w; cvs.height = h;
+
+                // Simulate Audio Data (Since actual mic permission is complex in iframe)
+                const bars = 64;
+                const data = new Array(bars).fill(0);
+
+                const loop = () => {
+                    ctx.clearRect(0, 0, w, h);
+                    const barW = w / bars;
+
+                    for(let i=0; i<bars; i++) {
+                        // Procedural noise to simulate music
+                        const noise = Math.sin(Date.now() * 0.005 + i * 0.2) * 0.5 + 0.5;
+                        data[i] = noise * h * 0.8;
+
+                        const x = i * barW;
+                        const height = data[i];
+                        const y = h - height;
+
+                        const hue = (i / bars) * 360 + (Date.now() * 0.1);
+                        ctx.fillStyle = `hsl(${hue}, 80%, 50%)`;
+                        ctx.fillRect(x, y, barW - 2, height);
+                    }
+                    requestAnimationFrame(loop);
+                };
+                loop();
+                
+                const resize = () => {
+                    w = cvs.parentElement.clientWidth;
+                    h = cvs.parentElement.clientHeight;
+                    cvs.width = w; cvs.height = h; 
+                };
+                window.addEventListener('resize', resize);
+                return () => window.removeEventListener('resize', resize);
+            }, []);
+
+            return (
+                <div className="h-full w-full bg-black flex flex-col relative">
+                    <div className="absolute top-4 left-4 z-10 text-xs font-mono text-neon-pink animate-pulse">
+                        AUDIO_CORE // VISUALIZATION_ACTIVE
+                    </div>
+                    <canvas ref={canvasRef} className="flex-1 w-full h-full" />
+                </div>
+            );
+        };
         /* --- 2. MATRIX LAB --- */
         const MatrixApp = () => {
             const [matrix, setMatrix] = useState([[1, 2, 3], [4, 5, 6], [7, 8, 9]]);
@@ -1764,22 +2000,24 @@
             
             // ... inside const Dock ...
 const apps = [
-    { id: 'nexus', icon: 'fa-book-journal-whills', color: '#00f3ff', title: 'Knowledge Nexus', type: 'NEXUS' },
-    { id: 'graph-engine', icon: 'fa-chart-area', color: '#bd00ff', title: 'Graph Engine Pro', type: 'GRAPH' },
-    { id: 'solver', icon: 'fa-brain', color: '#00ff00', title: 'Equation Solver', type: 'SOLVER' },
-    { id: 'sci-calc', icon: 'fa-calculator', color: '#00ff9d', title: 'QuantumCalc', type: 'CALC' },
-    { id: 'elementa', icon: 'fa-flask', color: '#ff0055', title: 'Elementa Table', type: 'ELEMENTS' },
-    { id: 'finance', icon: 'fa-coins', color: '#ffd700', title: 'WallStreet Pro', type: 'FINANCE' },
-    { id: 'matrix-lab', icon: 'fa-table-cells', color: '#ff9d00', title: 'Matrix Lab', type: 'MATRIX' },
-    { id: 'handbook', icon: 'fa-book-open', color: '#ff9d00', title: 'Omni-Handbook', type: 'HANDBOOK' },
-{ id: 'trig', icon: 'fa-circle-nodes', color: '#00ff00', title: 'TrigMaster', type: 'TRIG' },
-    { id: 'vector-physics', icon: 'fa-atom', color: '#00f3ff', title: 'Vector Lab', type: 'PHYSICS' },
-    { id: 'converter', icon: 'fa-right-left', color: '#ffffff', title: 'Unit Converter', type: 'CONVERT' },
-    { id: 'devtools', icon: 'fa-terminal', color: '#aaaaaa', title: 'DevTools', type: 'DEVTOOLS' },
-    { id: 'settings', icon: 'fa-cog', color: '#888888', title: 'System Config', type: 'SETTINGS' }, // NEW
-    { id: 'legal', icon: 'fa-scale-balanced', color: '#ffffff', title: 'Legal Docs', type: 'LEGAL' }, // NEW
-    { id: 'dev-info', icon: 'fa-user-astronaut', color: '#ffffff', title: 'System Architect', type: 'DEV' }
-];
+                { id: 'nexus', icon: 'fa-book-journal-whills', color: '#00f3ff', title: 'Knowledge Nexus', type: 'NEXUS' },
+                { id: 'graph-engine', icon: 'fa-chart-area', color: '#bd00ff', title: 'Graph Engine Pro', type: 'GRAPH' },
+                { id: 'sci-calc', icon: 'fa-calculator', color: '#00ff9d', title: 'QuantumCalc', type: 'CALC' },
+                { id: 'orbit', icon: 'fa-globe', color: '#ff9d00', title: 'OrbitAI Sim', type: 'ORBIT' }, // NEW
+                { id: 'code', icon: 'fa-code', color: '#ff0055', title: 'CodeRush', type: 'CODE' }, // NEW
+                { id: 'sonic', icon: 'fa-wave-square', color: '#00f3ff', title: 'SonicView', type: 'SONIC' }, // NEW
+                { id: 'elementa', icon: 'fa-flask', color: '#ff0055', title: 'Elementa Table', type: 'ELEMENTS' },
+                { id: 'finance', icon: 'fa-coins', color: '#ffd700', title: 'WallStreet Pro', type: 'FINANCE' },
+                { id: 'matrix-lab', icon: 'fa-table-cells', color: '#ff9d00', title: 'Matrix Lab', type: 'MATRIX' },
+                { id: 'solver', icon: 'fa-brain', color: '#00ff00', title: 'Equation Solver', type: 'SOLVER' },
+                { id: 'vector-physics', icon: 'fa-atom', color: '#00f3ff', title: 'Vector Lab', type: 'PHYSICS' },
+                { id: 'converter', icon: 'fa-right-left', color: '#ffffff', title: 'Unit Converter', type: 'CONVERT' },
+                { id: 'handbook', icon: 'fa-book-open', color: '#ff9d00', title: 'Omni-Handbook', type: 'HANDBOOK' },
+                { id: 'trig', icon: 'fa-circle-nodes', color: '#00ff00', title: 'TrigMaster', type: 'TRIG' },
+                { id: 'devtools', icon: 'fa-terminal', color: '#aaaaaa', title: 'DevTools', type: 'DEVTOOLS' },
+                { id: 'settings', icon: 'fa-cog', color: '#888888', title: 'System Config', type: 'SETTINGS' },
+                { id: 'dev-info', icon: 'fa-user-astronaut', color: '#ffffff', title: 'System Architect', type: 'DEV' }
+            ];
 // ...
 
             const launch = (app) => {
@@ -1840,6 +2078,9 @@ const apps = [
                             {win.type === 'MATRIX' && <MatrixApp />}
                             {win.type === 'HANDBOOK' && <HandbookApp />}
                             {win.type === 'TRIG' && <TrigCircleApp />}
+                            {win.type === 'ORBIT' && <OrbitApp />} {/* NEW */}
+                            {win.type === 'CODE' && <CodeRushApp />} {/* NEW */}
+                            {win.type === 'SONIC' && <SonicApp />} {/* NEW */}
                             {win.type === 'NEXUS' && <NexusApp />}
                             {win.type === 'ELEMENTS' && <PeriodicTableApp />}
                             {win.type === 'CALC' && <ScientificCalculatorApp />}
