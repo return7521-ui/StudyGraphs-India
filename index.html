@@ -1454,61 +1454,45 @@ const solveSystem = (eqs) => {
         // 10. APP MODULE: FORMULA LIBRARY (Reference Database)
         // ==================================================================================
 
-        const FormulaApp = () => {
+       const FormulaApp = () => {
             const [activeCat, setActiveCat] = React.useState('Algebra');
             const [search, setSearch] = React.useState('');
 
-            // --- MERGED DATABASE ---
             const library = {
                 'Algebra': [
                     { t: 'Quadratic Formula', f: 'x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}' },
                     { t: 'Logarithm Rules', f: '\\log_b(xy) = \\log_b(x) + \\log_b(y)' },
                     { t: 'Binomial Theorem', f: '(a+b)^n = \\sum_{k=0}^{n} \\binom{n}{k} a^{n-k}b^k' },
-                    { t: 'Complex Number Form', f: 'z = r(\\cos \\theta + i \\sin \\theta) = re^{i\\theta}' },
-                    { t: 'Arithmetic Progression', f: 'a_n = a + (n-1)d' },
-                    { t: 'Geometric Sum', f: 'S_n = \\frac{a(r^n - 1)}{r-1}' }
+                    { t: 'Complex Numbers', f: 'z = r(\\cos \\theta + i \\sin \\theta)' }
                 ],
                 'Trigonometry': [
                     { t: 'Pythagorean Identity', f: '\\sin^2\\theta + \\cos^2\\theta = 1' },
                     { t: 'Sine Rule', f: '\\frac{a}{\\sin A} = \\frac{b}{\\sin B} = \\frac{c}{\\sin C}' },
-                    { t: 'Cosine Rule', f: 'c^2 = a^2 + b^2 - 2ab \\cos C' },
-                    { t: 'Double Angle', f: '\\sin(2\\theta) = 2\\sin\\theta\\cos\\theta' }
+                    { t: 'Cosine Rule', f: 'c^2 = a^2 + b^2 - 2ab \\cos C' }
                 ],
                 'Calculus': [
                     { t: 'Power Rule', f: '\\frac{d}{dx}x^n = nx^{n-1}' },
-                    { t: 'Product Rule', f: '(uv)\' = u\'v + uv\'' },
                     { t: 'Chain Rule', f: '\\frac{dy}{dx} = \\frac{dy}{du} \\cdot \\frac{du}{dx}' },
-                    { t: 'Integration by Parts', f: '\\int u \\, dv = uv - \\int v \\, du' },
                     { t: 'Gaussian Integral', f: '\\int_{-\\infty}^{\\infty} e^{-x^2} \\, dx = \\sqrt{\\pi}' }
                 ],
                 'Physics': [
                     { t: 'Newton\'s Second Law', f: 'F = ma' },
                     { t: 'Kinematics', f: 's = ut + \\frac{1}{2}at^2' },
-                    { t: 'Kinetic Energy', f: 'E_k = \\frac{1}{2}mv^2' },
-                    { t: 'Gravitational Force', f: 'F = G\\frac{m_1m_2}{r^2}' },
+                    { t: 'Mass-Energy', f: 'E = mc^2' },
                     { t: 'Photoelectric Eq', f: 'h\\nu = \\phi + K_{max}' }
                 ],
                 'Thermodynamics': [
                     { t: 'First Law', f: '\\Delta Q = \\Delta U + \\Delta W' },
                     { t: 'Ideal Gas Law', f: 'PV = nRT' },
-                    { t: 'Entropy Change', f: '\\Delta S = \\int \\frac{dQ_{rev}}{T}' },
-                    { t: 'RMS Speed', f: 'v_{rms} = \\sqrt{\\frac{3RT}{M}}' }
-                ],
-                'Electromagnetism': [
-                    { t: 'Coulomb\'s Law', f: 'F = \\frac{1}{4\\pi\\epsilon_0} \\frac{q_1 q_2}{r^2}' },
-                    { t: 'Gauss\'s Law', f: '\\oint \\vec{E} \\cdot d\\vec{A} = \\frac{Q_{encl}}{\\epsilon_0}' },
-                    { t: 'Faraday\'s Law', f: '\\mathcal{E} = - \\frac{d\\Phi_B}{dt}' },
-                    { t: 'Capacitance', f: 'C = \\frac{\\epsilon_0 A}{d}' }
+                    { t: 'Entropy', f: '\\Delta S = \\int \\frac{dQ_{rev}}{T}' }
                 ],
                 'Chemistry': [
-                    { t: 'Molarity', f: 'M = \\frac{n_{solute}}{V_{solution} (L)}' },
-                    { t: 'Nernst Equation', f: 'E_{cell} = E^0_{cell} - \\frac{0.0591}{n} \\log Q' },
-                    { t: 'Arrhenius Equation', f: 'k = A e^{-E_a/RT}' },
-                    { t: 'Gibbs Free Energy', f: '\\Delta G = \\Delta H - T\\Delta S' }
+                    { t: 'Molarity', f: 'M = \\frac{n_{solute}}{V_{solution}}' },
+                    { t: 'Nernst Equation', f: 'E = E^0 - \\frac{RT}{nF} \\ln Q' },
+                    { t: 'Arrhenius Eq', f: 'k = A e^{-E_a/RT}' }
                 ]
             };
 
-            // Helper to render KaTeX safely
             const Tex = ({ tex }) => {
                 const r = React.useRef(null);
                 React.useEffect(() => {
@@ -1518,80 +1502,35 @@ const solveSystem = (eqs) => {
                 return <div ref={r} className="my-2" />;
             };
 
-            // Filter Logic
             const filtered = search 
                 ? Object.values(library).flat().filter(item => item.t.toLowerCase().includes(search.toLowerCase()))
                 : library[activeCat];
 
             return (
                 <div className="flex h-full bg-sg-bg text-white font-sans overflow-hidden">
-                    
-                    {/* --- SIDEBAR (Categories) --- */}
-                    <div className="w-16 sm:w-48 bg-sg-surface border-r border-sg-border flex flex-col pt-4 items-center sm:items-stretch overflow-y-auto no-scrollbar">
-                        <div className="px-4 mb-4 hidden sm:block">
-                            <h2 className="text-xs font-bold text-gray-500 uppercase tracking-wider">Chapters</h2>
-                        </div>
+                    <div className="w-16 sm:w-48 bg-sg-surface border-r border-sg-border flex flex-col pt-4 overflow-y-auto no-scrollbar">
                         {Object.keys(library).map(cat => (
                             <button
                                 key={cat}
                                 onClick={() => { setActiveCat(cat); setSearch(''); }}
-                                className={`
-                                    w-10 sm:w-full sm:px-4 py-3 flex items-center gap-3 transition-colors mb-1 mx-auto sm:mx-0 rounded-lg sm:rounded-none
-                                    ${activeCat === cat && !search ? 'bg-brand-primary/10 text-brand-primary border-l-2 border-brand-primary' : 'text-gray-400 hover:text-white hover:bg-white/5'}
-                                `}
-                                title={cat}
+                                className={`w-10 sm:w-full sm:px-4 py-3 flex items-center gap-3 mb-1 mx-auto sm:mx-0 rounded-lg ${activeCat === cat ? 'bg-brand-primary/10 text-brand-primary' : 'text-gray-400'}`}
                             >
-                                <div className="text-lg w-6 text-center">
-                                    <i className="fas fa-book"></i>
-                                </div>
+                                <div className="text-lg w-6 text-center"><i className="fas fa-book"></i></div>
                                 <span className="hidden sm:block text-sm font-medium truncate">{cat}</span>
                             </button>
                         ))}
                     </div>
-
-                    {/* --- MAIN CONTENT --- */}
                     <div className="flex-1 flex flex-col min-w-0">
-                        {/* Search Bar */}
-                        <div className="h-16 border-b border-sg-border flex items-center px-6 bg-sg-bg/50 backdrop-blur-sm sticky top-0 z-10">
-                            <div className="relative w-full max-w-md">
-                                <i className="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-500"></i>
-                                <input 
-                                    type="text" 
-                                    value={search}
-                                    onChange={e => setSearch(e.target.value)}
-                                    placeholder="Search formulas (e.g., 'Kinetic Energy')..."
-                                    className="w-full bg-sg-surface border border-sg-border rounded-full py-2 pl-10 pr-4 text-sm text-white focus:border-brand-primary focus:ring-1 focus:ring-brand-primary outline-none transition-all"
-                                />
-                            </div>
+                        <div className="h-16 border-b border-sg-border flex items-center px-6 bg-sg-bg/50">
+                            <input type="text" value={search} onChange={e => setSearch(e.target.value)} placeholder="Search formulas..." className="w-full bg-sg-surface border border-sg-border rounded-full py-2 px-4 text-sm text-white focus:border-brand-primary outline-none" />
                         </div>
-
-                        {/* Grid */}
-                        <div className="flex-1 overflow-y-auto p-6 custom-scroll">
-                            <h2 className="text-xl font-bold mb-6 text-white font-math">
-                                {search ? `Results for "${search}"` : activeCat}
-                            </h2>
-                            
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                                {filtered && filtered.map((item, idx) => (
-                                    <div key={idx} className="bg-sg-surface/50 border border-white/5 rounded-xl p-4 hover:border-brand-primary/50 transition-all hover:shadow-lg group">
-                                        <div className="flex justify-between items-start mb-2">
-                                            <h3 className="text-sm font-bold text-gray-300 group-hover:text-white transition-colors">
-                                                {item.t}
-                                            </h3>
-                                            <button 
-                                                className="text-gray-500 hover:text-brand-primary"
-                                                title="Copy LaTeX"
-                                                onClick={() => navigator.clipboard.writeText(item.f)}
-                                            >
-                                                <i className="fas fa-copy"></i>
-                                            </button>
-                                        </div>
-                                        <div className="bg-black/20 rounded p-2 overflow-x-auto">
-                                            <Tex tex={item.f} />
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
+                        <div className="flex-1 overflow-y-auto p-6 custom-scroll grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            {filtered && filtered.map((item, idx) => (
+                                <div key={idx} className="bg-sg-surface/50 border border-white/5 rounded-xl p-4">
+                                    <h3 className="text-sm font-bold text-gray-300">{item.t}</h3>
+                                    <div className="bg-black/20 rounded p-2 overflow-x-auto"><Tex tex={item.f} /></div>
+                                </div>
+                            ))}
                         </div>
                     </div>
                 </div>
@@ -1917,48 +1856,20 @@ const solveSystem = (eqs) => {
             // Map IDs to Component Functions
             // Inside DynamicWindowRenderer...
 const COMPONENT_MAP = {
-                'graph': GraphApp,
-                'solver': SolverApp,
-                'periodic': PeriodicApp,
-                'physics': PhysicsApp,
-                'formulas': FormulaApp,
-                'converter': ConverterApp,
-                'code': CodeApp,
-                'settings': SettingsApp,
-                'systems': SystemSolverApp,
-                'geo': GeometryApp,
-                'stats': StatsApp,
-                'bio': BioApp,
-                'nexus': NexusApp,
-                'export': ExportApp,
-                'exam': ExamApp,
-                'astro': AstroApp,
-                'chemi': ChemiApp,
-                'wave': WaveApp,
-                'circuit': CircuitApp,
-                'organic': OrganicApp,
-                'logic': LogicApp,
-                'vector': VectorApp,
-                'thermo': ThermoApp,
-                'matrix': MatrixApp,
-                'trig': TrigApp,
-                'proj': ProjectileApp,
-                'dict': DictApp,
-                'calc': CalculusApp,
-                'fractal': FractalApp,
-                'board': BoardApp,
-                'music': MusicApp,
-                'focus': FocusApp,
-                'task': TaskMgrApp,
-                'algo': AlgoApp,
-                'crypto': CryptoApp,
-                'resistor': ResistorApp,
-                'base': BaseApp,
-                'truth': TruthApp,
-                'regex': RegexApp,
-                'optics': OpticsApp,
-                'genetic': GeneticApp,
-                'balance': BalanceApp
+                'graph': GraphApp, 'solver': SolverApp, 'periodic': PeriodicApp,
+                'physics': PhysicsApp, 'formulas': FormulaApp, 'converter': ConverterApp,
+                'code': CodeApp, 'settings': SettingsApp, 'systems': SystemSolverApp,
+                'geo': GeometryApp, 'stats': StatsApp, 'bio': BioApp,
+                'nexus': NexusApp, 'export': ExportApp, 'exam': ExamApp,
+                'astro': AstroApp, 'chemi': ChemiApp, 'wave': WaveApp,
+                'circuit': CircuitApp, 'organic': OrganicApp, 'logic': LogicApp,
+                'vector': VectorApp, 'thermo': ThermoApp, 'matrix': MatrixApp,
+                'trig': TrigApp, 'proj': ProjectileApp, 'dict': DictApp,
+                'calc': CalculusApp, 'fractal': FractalApp, 'board': BoardApp,
+                'music': MusicApp, 'focus': FocusApp, 'task': TaskMgrApp,
+                'algo': AlgoApp, 'crypto': CryptoApp, 'resistor': ResistorApp,
+                'base': BaseApp, 'truth': TruthApp, 'regex': RegexApp,
+                'optics': OpticsApp, 'genetic': GeneticApp, 'balance': BalanceApp
             };
 
             return (
@@ -7476,6 +7387,19 @@ const BootScreen = ({ onComplete }) => {
         </div>
     );
 };
+        const BootScreen = ({ onComplete }) => {
+            React.useEffect(() => {
+                const timer = setTimeout(onComplete, 2000);
+                return () => clearTimeout(timer);
+            }, [onComplete]);
+
+            return (
+                <div className="flex items-center justify-center h-full w-full bg-black text-white flex-col gap-4">
+                    <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+                    <div className="text-xl font-mono animate-pulse">System Booting...</div>
+                </div>
+            );
+        };
         const RootApp = () => {
             const [booted, setBooted] = React.useState(false);
             
