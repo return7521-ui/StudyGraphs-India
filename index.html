@@ -1856,21 +1856,21 @@ const solveSystem = (eqs) => {
             // Map IDs to Component Functions
             // Inside DynamicWindowRenderer...
 const COMPONENT_MAP = {
-                'graph': GraphApp, 'solver': SolverApp, 'periodic': PeriodicApp,
-                'physics': PhysicsApp, 'formulas': FormulaApp, 'converter': ConverterApp,
-                'code': CodeApp, 'settings': SettingsApp, 'systems': SystemSolverApp,
-                'geo': GeometryApp, 'stats': StatsApp, 'bio': BioApp,
-                'nexus': NexusApp, 'export': ExportApp, 'exam': ExamApp,
-                'astro': AstroApp, 'chemi': ChemiApp, 'wave': WaveApp,
-                'circuit': CircuitApp, 'organic': OrganicApp, 'logic': LogicApp,
-                'vector': VectorApp, 'thermo': ThermoApp, 'matrix': MatrixApp,
-                'trig': TrigApp, 'proj': ProjectileApp, 'dict': DictApp,
-                'calc': CalculusApp, 'fractal': FractalApp, 'board': BoardApp,
-                'music': MusicApp, 'focus': FocusApp, 'task': TaskMgrApp,
-                'algo': AlgoApp, 'crypto': CryptoApp, 'resistor': ResistorApp,
-                'base': BaseApp, 'truth': TruthApp, 'regex': RegexApp,
-                'optics': OpticsApp, 'genetic': GeneticApp, 'balance': BalanceApp
-            };
+    'graph': GraphApp, 'solver': SolverApp, 'periodic': PeriodicApp,
+    'physics': PhysicsApp, 'formulas': FormulaApp, 'converter': ConverterApp,
+    'code': CodeApp, 'settings': SettingsApp, 'systems': SystemSolverApp,
+    'geo': GeometryApp, 'stats': StatsApp, 'bio': BioApp,
+    'nexus': NexusApp, 'export': ExportApp, 'exam': ExamApp,
+    'astro': AstroApp, 'chemi': ChemiApp, 'wave': WaveApp,
+    'circuit': CircuitApp, 'organic': OrganicApp, 'logic': LogicApp,
+    'vector': VectorApp, 'thermo': ThermoApp, 'matrix': MatrixApp,
+    'trig': TrigApp, 'proj': ProjectileApp, 'dict': DictApp,
+    'calc': CalculusApp, 'fractal': FractalApp, 'board': BoardApp,
+    'music': MusicApp, 'focus': FocusApp, 'task': TaskMgrApp,
+    'algo': AlgoApp, 'crypto': CryptoApp, 'resistor': ResistorApp,
+    'base': BaseApp, 'truth': TruthApp, 'regex': RegexApp,
+    'optics': OpticsApp, 'genetic': GeneticApp, 'balance': BalanceApp
+};
 
             return (
                 <>
@@ -7357,38 +7357,14 @@ const COMPONENT_MAP = {
             );
         };
 
-        // --- FINAL RENDER OVERRIDE ---
-        // Add this BEFORE 'const RootApp = ...'
-const BootScreen = ({ onComplete }) => {
-    React.useEffect(() => {
-        // Simulate a 2-second boot sequence
-        const timer = setTimeout(onComplete, 2000);
-        return () => clearTimeout(timer);
-    }, [onComplete]);
+        // ==================================================================================
+        // FINAL SYSTEM BOOT SEQUENCE
+        // ==================================================================================
 
-    return (
-        <div className="flex items-center justify-center h-full w-full bg-black text-white flex-col gap-4">
-            <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-            <div className="text-xl font-mono animate-pulse">System Booting...</div>
-        </div>
-    );
-};
-        // ADD THIS COMPONENT
-const BootScreen = ({ onComplete }) => {
-    React.useEffect(() => {
-        const timer = setTimeout(onComplete, 2000);
-        return () => clearTimeout(timer);
-    }, [onComplete]);
-
-    return (
-        <div className="flex items-center justify-center h-full w-full bg-black text-white flex-col gap-4">
-            <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-            <div className="text-xl font-mono animate-pulse">System Booting...</div>
-        </div>
-    );
-};
+        // --- BOOT SCREEN COMPONENT ---
         const BootScreen = ({ onComplete }) => {
             React.useEffect(() => {
+                // Simulate a 2-second boot sequence
                 const timer = setTimeout(onComplete, 2000);
                 return () => clearTimeout(timer);
             }, [onComplete]);
@@ -7400,6 +7376,8 @@ const BootScreen = ({ onComplete }) => {
                 </div>
             );
         };
+
+        // --- ROOT APPLICATION ---
         const RootApp = () => {
             const [booted, setBooted] = React.useState(false);
             
@@ -7414,18 +7392,18 @@ const BootScreen = ({ onComplete }) => {
                 <OSProvider>
                     <div className="relative w-full h-full text-white select-none overflow-hidden bg-black">
                         <Desktop />
-                        {/* Use the V2 Taskbar with Start Menu */}
-                        <TaskbarV2 />
+                        <Taskbar />
                         <DynamicWindowRenderer />
                     </div>
                 </OSProvider>
             );
         };
 
-        // Mount
+        // --- MOUNT TO DOM ---
         const rootNode = document.getElementById('root');
-    const root = ReactDOM.createRoot(rootNode);
-    root.render(<RootApp />);
-</script>
+        const root = ReactDOM.createRoot(rootNode);
+        root.render(<RootApp />);
+
+    </script>
 </body>
 </html>
