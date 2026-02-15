@@ -1450,6 +1450,7 @@ const solveSystem = (eqs) => {
 
         /* PART 9 COMPLETE: PHYSICS LAB READY */
         // ==================================================================================
+        // ==================================================================================
         // 10. APP MODULE: FORMULA LIBRARY (Reference Database)
         // ==================================================================================
 
@@ -1457,13 +1458,15 @@ const solveSystem = (eqs) => {
             const [activeCat, setActiveCat] = React.useState('Algebra');
             const [search, setSearch] = React.useState('');
 
-            // --- DATABASE ---
+            // --- MERGED DATABASE ---
             const library = {
                 'Algebra': [
                     { t: 'Quadratic Formula', f: 'x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}' },
                     { t: 'Logarithm Rules', f: '\\log_b(xy) = \\log_b(x) + \\log_b(y)' },
                     { t: 'Binomial Theorem', f: '(a+b)^n = \\sum_{k=0}^{n} \\binom{n}{k} a^{n-k}b^k' },
-                    { t: 'Complex Number Form', f: 'z = r(\\cos \\theta + i \\sin \\theta) = re^{i\\theta}' }
+                    { t: 'Complex Number Form', f: 'z = r(\\cos \\theta + i \\sin \\theta) = re^{i\\theta}' },
+                    { t: 'Arithmetic Progression', f: 'a_n = a + (n-1)d' },
+                    { t: 'Geometric Sum', f: 'S_n = \\frac{a(r^n - 1)}{r-1}' }
                 ],
                 'Trigonometry': [
                     { t: 'Pythagorean Identity', f: '\\sin^2\\theta + \\cos^2\\theta = 1' },
@@ -1475,32 +1478,37 @@ const solveSystem = (eqs) => {
                     { t: 'Power Rule', f: '\\frac{d}{dx}x^n = nx^{n-1}' },
                     { t: 'Product Rule', f: '(uv)\' = u\'v + uv\'' },
                     { t: 'Chain Rule', f: '\\frac{dy}{dx} = \\frac{dy}{du} \\cdot \\frac{du}{dx}' },
-                    { t: 'Integration by Parts', f: '\\int u \\, dv = uv - \\int v \\, du' }
+                    { t: 'Integration by Parts', f: '\\int u \\, dv = uv - \\int v \\, du' },
+                    { t: 'Gaussian Integral', f: '\\int_{-\\infty}^{\\infty} e^{-x^2} \\, dx = \\sqrt{\\pi}' }
                 ],
                 'Physics': [
                     { t: 'Newton\'s Second Law', f: 'F = ma' },
                     { t: 'Kinematics', f: 's = ut + \\frac{1}{2}at^2' },
                     { t: 'Kinetic Energy', f: 'E_k = \\frac{1}{2}mv^2' },
-                    { t: 'Gravitational Force', f: 'F = G\\frac{m_1m_2}{r^2}' }
+                    { t: 'Gravitational Force', f: 'F = G\\frac{m_1m_2}{r^2}' },
+                    { t: 'Photoelectric Eq', f: 'h\\nu = \\phi + K_{max}' }
                 ],
                 'Thermodynamics': [
                     { t: 'First Law', f: '\\Delta Q = \\Delta U + \\Delta W' },
                     { t: 'Ideal Gas Law', f: 'PV = nRT' },
-                    { t: 'Entropy Change', f: '\\Delta S = \\int \\frac{dQ_{rev}}{T}' }
+                    { t: 'Entropy Change', f: '\\Delta S = \\int \\frac{dQ_{rev}}{T}' },
+                    { t: 'RMS Speed', f: 'v_{rms} = \\sqrt{\\frac{3RT}{M}}' }
                 ],
                 'Electromagnetism': [
                     { t: 'Coulomb\'s Law', f: 'F = \\frac{1}{4\\pi\\epsilon_0} \\frac{q_1 q_2}{r^2}' },
                     { t: 'Gauss\'s Law', f: '\\oint \\vec{E} \\cdot d\\vec{A} = \\frac{Q_{encl}}{\\epsilon_0}' },
-                    { t: 'Faraday\'s Law', f: '\\mathcal{E} = - \\frac{d\\Phi_B}{dt}' }
+                    { t: 'Faraday\'s Law', f: '\\mathcal{E} = - \\frac{d\\Phi_B}{dt}' },
+                    { t: 'Capacitance', f: 'C = \\frac{\\epsilon_0 A}{d}' }
                 ],
                 'Chemistry': [
                     { t: 'Molarity', f: 'M = \\frac{n_{solute}}{V_{solution} (L)}' },
                     { t: 'Nernst Equation', f: 'E_{cell} = E^0_{cell} - \\frac{0.0591}{n} \\log Q' },
-                    { t: 'Arrhenius Equation', f: 'k = A e^{-E_a/RT}' }
+                    { t: 'Arrhenius Equation', f: 'k = A e^{-E_a/RT}' },
+                    { t: 'Gibbs Free Energy', f: '\\Delta G = \\Delta H - T\\Delta S' }
                 ]
             };
-            
-            // Helper to render KaTeX
+
+            // Helper to render KaTeX safely
             const Tex = ({ tex }) => {
                 const r = React.useRef(null);
                 React.useEffect(() => {
@@ -1519,7 +1527,7 @@ const solveSystem = (eqs) => {
                 <div className="flex h-full bg-sg-bg text-white font-sans overflow-hidden">
                     
                     {/* --- SIDEBAR (Categories) --- */}
-                    <div className="w-16 sm:w-48 bg-sg-surface border-r border-sg-border flex flex-col pt-4 items-center sm:items-stretch">
+                    <div className="w-16 sm:w-48 bg-sg-surface border-r border-sg-border flex flex-col pt-4 items-center sm:items-stretch overflow-y-auto no-scrollbar">
                         <div className="px-4 mb-4 hidden sm:block">
                             <h2 className="text-xs font-bold text-gray-500 uppercase tracking-wider">Chapters</h2>
                         </div>
@@ -1534,12 +1542,9 @@ const solveSystem = (eqs) => {
                                 title={cat}
                             >
                                 <div className="text-lg w-6 text-center">
-                                    {cat === 'Algebra' && <i className="fas fa-square-root-variable"></i>}
-                                    {cat === 'Trigonometry' && <i className="fas fa-draw-polygon"></i>}
-                                    {cat === 'Calculus' && <i className="fas fa-infinity"></i>}
-                                    {cat === 'Physics' && <i className="fas fa-atom"></i>}
+                                    <i className="fas fa-book"></i>
                                 </div>
-                                <span className="hidden sm:block text-sm font-medium">{cat}</span>
+                                <span className="hidden sm:block text-sm font-medium truncate">{cat}</span>
                             </button>
                         ))}
                     </div>
@@ -1567,7 +1572,7 @@ const solveSystem = (eqs) => {
                             </h2>
                             
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                                {filtered.map((item, idx) => (
+                                {filtered && filtered.map((item, idx) => (
                                     <div key={idx} className="bg-sg-surface/50 border border-white/5 rounded-xl p-4 hover:border-brand-primary/50 transition-all hover:shadow-lg group">
                                         <div className="flex justify-between items-start mb-2">
                                             <h3 className="text-sm font-bold text-gray-300 group-hover:text-white transition-colors">
@@ -1586,18 +1591,13 @@ const solveSystem = (eqs) => {
                                         </div>
                                     </div>
                                 ))}
-                                {filtered.length === 0 && (
-                                    <div className="col-span-full text-center py-12 text-gray-500">
-                                        No formulas found. Try searching for "Sine Rule" or "Gravity".
-                                    </div>
-                                )}
                             </div>
                         </div>
                     </div>
                 </div>
             );
         };
-
+        
         /* PART 10 COMPLETE: FORMULA LIBRARY READY */
         // ==================================================================================
         // 11. APP MODULE: CONVERTER (Units & Currency)
