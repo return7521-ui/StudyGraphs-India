@@ -2016,17 +2016,52 @@ const solveSystem = (eqs) => {
             const { state, APP_REGISTRY } = useOS();
             
             // Map IDs to Component Functions
-            const COMPONENT_MAP = {
-                'graph': GraphApp,
-                'solver': SolverApp,
-                'periodic': PeriodicApp,
-                'physics': PhysicsApp,
-                'formulas': FormulaApp,
-                'converter': ConverterApp,
-                'code': CodeApp,
-                'settings': SettingsApp,
-                'systems': SystemSolverApp // <--- The new app added here
-            };
+            // Inside DynamicWindowRenderer...
+const COMPONENT_MAP = {
+    'graph': GraphApp,
+    'solver': SolverApp,
+    'periodic': PeriodicApp,
+    'physics': PhysicsApp,
+    'formulas': FormulaApp,
+    'converter': ConverterApp,
+    'code': CodeApp,
+    'settings': SettingsApp,
+    'systems': SystemSolverApp,
+    // --- ADD THESE MISSING MAPPINGS ---
+    'geo': GeometryApp,
+    'stats': StatsApp,
+    'bio': BioApp,
+    'nexus': NexusApp,
+    'export': ExportApp,
+    'exam': ExamApp,
+    'astro': AstroApp,
+    'chemi': ChemiApp,
+    'wave': WaveApp,
+    'circuit': CircuitApp,
+    'organic': OrganicApp,
+    'logic': LogicApp,
+    'vector': VectorApp,
+    'thermo': ThermoApp,
+    'matrix': MatrixApp,
+    'trig': TrigApp,
+    'proj': ProjectileApp,
+    'dict': DictApp,
+    'calc': CalculusApp,
+    'fractal': FractalApp,
+    'board': BoardApp,
+    'music': MusicApp,
+    'focus': FocusApp,
+    'task': TaskMgrApp,
+    'algo': AlgoApp,
+    'crypto': CryptoApp,
+    'resistor': ResistorApp,
+    'base': BaseApp,
+    'truth': TruthApp,
+    'regex': RegexApp,
+    'optics': OpticsApp,
+    'genetic': GeneticApp,
+    'balance': BalanceApp
+};
 
             return (
                 <>
@@ -2042,27 +2077,6 @@ const solveSystem = (eqs) => {
                 </>
             );
         };
-
-        // 3. Re-Mount the App with the New Renderer
-        // This effectively "updates" the OS without a page refresh if executed in console,
-        // but here it prepares the final render structure.
-        const AppV2 = () => {
-            const [booted, setBooted] = React.useState(true); // Skip boot on update
-            return (
-                <OSProvider>
-                    <div className="relative w-full h-full text-white select-none">
-                        <Desktop />
-                        <Taskbar />
-                        <DynamicWindowRenderer /> {/* Using the new Dynamic Renderer */}
-                    </div>
-                </OSProvider>
-            );
-        };
-
-        // 4. Hot Reload
-        // Overwrites the previous render.
-        const rootV2 = ReactDOM.createRoot(document.getElementById('root'));
-        rootV2.render(<AppV2 />);
 
         /* PART 26 COMPLETE: SYSTEM SOLVER INTEGRATED */
         // ==================================================================================
@@ -7535,6 +7549,21 @@ const solveSystem = (eqs) => {
         };
 
         // --- FINAL RENDER OVERRIDE ---
+        // Add this BEFORE 'const RootApp = ...'
+const BootScreen = ({ onComplete }) => {
+    React.useEffect(() => {
+        // Simulate a 2-second boot sequence
+        const timer = setTimeout(onComplete, 2000);
+        return () => clearTimeout(timer);
+    }, [onComplete]);
+
+    return (
+        <div className="flex items-center justify-center h-full w-full bg-black text-white flex-col gap-4">
+            <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+            <div className="text-xl font-mono animate-pulse">System Booting...</div>
+        </div>
+    );
+};
         const RootApp = () => {
             const [booted, setBooted] = React.useState(false);
             
