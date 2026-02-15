@@ -1462,8 +1462,8 @@ const solveSystem = (eqs) => {
                 'Algebra': [
                     { t: 'Quadratic Formula', f: 'x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}' },
                     { t: 'Logarithm Rules', f: '\\log_b(xy) = \\log_b(x) + \\log_b(y)' },
-                    { t: 'Difference of Squares', f: 'a^2 - b^2 = (a-b)(a+b)' },
-                    { t: 'Binomial Theorem', f: '(a+b)^n = \\sum_{k=0}^{n} \\binom{n}{k} a^{n-k}b^k' }
+                    { t: 'Binomial Theorem', f: '(a+b)^n = \\sum_{k=0}^{n} \\binom{n}{k} a^{n-k}b^k' },
+                    { t: 'Complex Number Form', f: 'z = r(\\cos \\theta + i \\sin \\theta) = re^{i\\theta}' }
                 ],
                 'Trigonometry': [
                     { t: 'Pythagorean Identity', f: '\\sin^2\\theta + \\cos^2\\theta = 1' },
@@ -1474,133 +1474,32 @@ const solveSystem = (eqs) => {
                 'Calculus': [
                     { t: 'Power Rule', f: '\\frac{d}{dx}x^n = nx^{n-1}' },
                     { t: 'Product Rule', f: '(uv)\' = u\'v + uv\'' },
-                    { t: 'Quotient Rule', f: '(\\frac{u}{v})\' = \\frac{u\'v - uv\'}{v^2}' },
-                    { t: 'Chain Rule', f: '\\frac{dy}{dx} = \\frac{dy}{du} \\cdot \\frac{du}{dx}' }
+                    { t: 'Chain Rule', f: '\\frac{dy}{dx} = \\frac{dy}{du} \\cdot \\frac{du}{dx}' },
+                    { t: 'Integration by Parts', f: '\\int u \\, dv = uv - \\int v \\, du' }
                 ],
                 'Physics': [
                     { t: 'Newton\'s Second Law', f: 'F = ma' },
-                    { t: 'Kinematics (Displacement)', f: 's = ut + \\frac{1}{2}at^2' },
+                    { t: 'Kinematics', f: 's = ut + \\frac{1}{2}at^2' },
                     { t: 'Kinetic Energy', f: 'E_k = \\frac{1}{2}mv^2' },
                     { t: 'Gravitational Force', f: 'F = G\\frac{m_1m_2}{r^2}' }
+                ],
+                'Thermodynamics': [
+                    { t: 'First Law', f: '\\Delta Q = \\Delta U + \\Delta W' },
+                    { t: 'Ideal Gas Law', f: 'PV = nRT' },
+                    { t: 'Entropy Change', f: '\\Delta S = \\int \\frac{dQ_{rev}}{T}' }
+                ],
+                'Electromagnetism': [
+                    { t: 'Coulomb\'s Law', f: 'F = \\frac{1}{4\\pi\\epsilon_0} \\frac{q_1 q_2}{r^2}' },
+                    { t: 'Gauss\'s Law', f: '\\oint \\vec{E} \\cdot d\\vec{A} = \\frac{Q_{encl}}{\\epsilon_0}' },
+                    { t: 'Faraday\'s Law', f: '\\mathcal{E} = - \\frac{d\\Phi_B}{dt}' }
+                ],
+                'Chemistry': [
+                    { t: 'Molarity', f: 'M = \\frac{n_{solute}}{V_{solution} (L)}' },
+                    { t: 'Nernst Equation', f: 'E_{cell} = E^0_{cell} - \\frac{0.0591}{n} \\log Q' },
+                    { t: 'Arrhenius Equation', f: 'k = A e^{-E_a/RT}' }
                 ]
             };
-            // ==================================================================================
-        // 23. FORMULA REPOSITORY EXPANSION: VOLUME 1
-        // ==================================================================================
-
-        // Append these to your existing library object in FormulaApp
-        const extendedMathLibrary = {
-            'Advanced Algebra': [
-                { t: 'Complex Number Form', f: 'z = a + ib = r(\cos \theta + i \sin \theta) = re^{i\theta}' },
-                { t: 'De Moivre\'s Theorem', f: '(\cos \theta + i \sin \theta)^n = \cos(n\theta) + i \sin(n\theta)' },
-                { t: 'Arithmetic Progression (n-th)', f: 'a_n = a + (n-1)d' },
-                { t: 'Geometric Progression (Sum)', f: 'S_n = \frac{a(r^n - 1)}{r-1}, r \neq 1' },
-                { t: 'Logarithmic Change of Base', f: '\log_b a = \frac{\log_c a}{\log_c b}' }
-            ],
-            'Vector Algebra': [
-                { t: 'Dot Product', f: '\vec{A} \cdot \vec{B} = |\vec{A}||\vec{B}| \cos \theta' },
-                { t: 'Cross Product', f: '\vec{A} \times \vec{B} = |\vec{A}||\vec{B}| \sin \theta \hat{n}' },
-                { t: 'Magnitude of Vector', f: '|\vec{v}| = \sqrt{x^2 + y^2 + z^2}' },
-                { t: 'Projection of A on B', f: 'proj_{\vec{B}}\vec{A} = \frac{\vec{A} \cdot \vec{B}}{|\vec{B}|^2} \vec{B}' }
-            ],
-            'Integral Calculus': [
-                { t: 'Integration by Parts', f: '\int u \, dv = uv - \int v \, du' },
-                { t: 'Integral of 1/x', f: '\int \frac{1}{x} \, dx = \ln|x| + C' },
-                { t: 'Gaussian Integral', f: '\int_{-\infty}^{\infty} e^{-x^2} \, dx = \sqrt{\pi}' },
-                { t: 'Definite Integral Property', f: '\int_a^b f(x) \, dx = F(b) - F(a)' }
-            ],
-            'Coordinate Geometry': [
-                { t: 'Distance Formula', f: 'd = \sqrt{(x_2-x_1)^2 + (y_2-y_1)^2}' },
-                { t: 'Section Formula (Internal)', f: 'P(x,y) = \left( \frac{mx_2+nx_1}{m+n}, \frac{my_2+ny_1}{m+n} \right)' },
-                { t: 'Equation of Circle', f: '(x-h)^2 + (y-k)^2 = r^2' },
-                { t: 'General Conic Section', f: 'Ax^2 + Bxy + Cy^2 + Dx + Ey + F = 0' }
-            ]
-        };
-            // ==================================================================================
-        // 24. FORMULA REPOSITORY EXPANSION: VOLUME 2 (PHYSICS)
-        // ==================================================================================
-
-        // Add these categories to the 'library' object in FormulaApp
-        
-        'Thermodynamics': [
-            { t: 'First Law', f: '\Delta Q = \Delta U + \Delta W' },
-            { t: 'Ideal Gas Law', f: 'PV = nRT = N k_B T' },
-            { t: 'Work Done (Isothermal)', f: 'W = nRT \ln(\frac{V_2}{V_1})' },
-            { t: 'Carnot Efficiency', f: '\eta = 1 - \frac{T_{cold}}{T_{hot}}' },
-            { t: 'RMS Speed', f: 'v_{rms} = \sqrt{\frac{3RT}{M}}' },
-            { t: 'Mean Free Path', f: '\lambda = \frac{1}{\sqrt{2}\pi d^2 n}' },
-            { t: 'Entropy Change', f: '\Delta S = \int \frac{dQ_{rev}}{T}' }
-        ],
-        'Electromagnetism': [
-            { t: 'Coulomb\'s Law', f: 'F = \frac{1}{4\pi\epsilon_0} \frac{q_1 q_2}{r^2}' },
-            { t: 'Electric Field (Point)', f: 'E = \frac{1}{4\pi\epsilon_0} \frac{q}{r^2}' },
-            { t: 'Gauss\'s Law', f: '\oint \vec{E} \cdot d\vec{A} = \frac{Q_{encl}}{\epsilon_0}' },
-            { t: 'Capacitance (Parallel)', f: 'C = \frac{\epsilon_0 A}{d}' },
-            { t: 'Biot-Savart Law', f: 'd\vec{B} = \frac{\mu_0 I}{4\pi} \frac{d\vec{l} \times \hat{r}}{r^2}' },
-            { t: 'Ampere\'s Law', f: '\oint \vec{B} \cdot d\vec{l} = \mu_0 I_{encl}' },
-            { t: 'Faraday\'s Law', f: '\mathcal{E} = - \frac{d\Phi_B}{dt}' },
-            { t: 'LCR Impedance', f: 'Z = \sqrt{R^2 + (X_L - X_C)^2}' }
-        ],
-        'Optics': [
-            { t: 'Snell\'s Law', f: 'n_1 \sin i = n_2 \sin r' },
-            { t: 'Lens Maker\'s Formula', f: '\frac{1}{f} = (n-1)(\frac{1}{R_1} - \frac{1}{R_2})' },
-            { t: 'Magnification', f: 'm = \frac{h_i}{h_o} = -\frac{v}{u}' },
-            { t: 'Prism Formula', f: 'n = \frac{\sin((A+\delta_m)/2)}{\sin(A/2)}' },
-            { t: 'Young\'s Double Slit', f: '\beta = \frac{\lambda D}{d}' },
-            { t: 'Malus\'s Law', f: 'I = I_0 \cos^2 \theta' }
-        ],
-        'Modern Physics': [
-            { t: 'Photoelectric Eq', f: 'h\nu = \phi + K_{max}' },
-            { t: 'De Broglie Wavelength', f: '\lambda = \frac{h}{p} = \frac{h}{mv}' },
-            { t: 'Bohr Quantization', f: 'L = mvr = \frac{nh}{2\pi}' },
-            { t: 'Radioactive Decay', f: 'N = N_0 e^{-\lambda t}' },
-            { t: 'Half Life', f: 'T_{1/2} = \frac{\ln 2}{\lambda} \approx \frac{0.693}{\lambda}' },
-            { t: 'Mass-Energy Equivalence', f: 'E = mc^2' },
-            { t: 'Rydberg Formula', f: '\frac{1}{\lambda} = R (\frac{1}{n_f^2} - \frac{1}{n_i^2})' }
-        ]
-            // ==================================================================================
-        // 25. FORMULA REPOSITORY EXPANSION: VOLUME 3 (CHEMISTRY)
-        // ==================================================================================
-
-        // Add these categories to the 'library' object in FormulaApp
-
-        'Physical Chemistry': [
-            { t: 'Ideal Gas Law', f: 'PV = nRT' },
-            { t: 'Density', f: 'd = \frac{PM}{RT}' },
-            { t: 'Dalton\'s Partial Pressure', f: 'P_i = \chi_i P_{total}' },
-            { t: 'Root Mean Square Speed', f: 'u_{rms} = \sqrt{\frac{3RT}{M}}' },
-            { t: 'Graham\'s Law', f: '\frac{r_1}{r_2} = \sqrt{\frac{M_2}{M_1}}' },
-            { t: 'Work (Irreversible)', f: 'w = -P_{ext} \Delta V' },
-            { t: 'Work (Reversible Isothermal)', f: 'w = -2.303nRT \log \frac{V_2}{V_1}' },
-            { t: 'Enthalpy Change', f: '\Delta H = \Delta U + P\Delta V' },
-            { t: 'Gibbs Free Energy', f: '\Delta G = \Delta H - T\Delta S' }
-        ],
-        'Solutions & Colligative': [
-            { t: 'Molarity (M)', f: 'M = \frac{n_{solute}}{V_{solution} (L)}' },
-            { t: 'Molality (m)', f: 'm = \frac{n_{solute}}{Mass_{solvent} (kg)}' },
-            { t: 'Henry\'s Law', f: 'p = K_H \chi' },
-            { t: 'Raoult\'s Law', f: 'P_{sol} = \chi_A P^0_A + \chi_B P^0_B' },
-            { t: 'Boiling Point Elevation', f: '\Delta T_b = i K_b m' },
-            { t: 'Freezing Point Depression', f: '\Delta T_f = i K_f m' },
-            { t: 'Osmotic Pressure', f: '\pi = iCRT' }
-        ],
-        'Electrochemistry': [
-            { t: 'Nernst Equation', f: 'E_{cell} = E^0_{cell} - \frac{0.0591}{n} \log Q' },
-            { t: 'Standard EMF', f: 'E^0_{cell} = E^0_{cathode} - E^0_{anode}' },
-            { t: 'Gibbs & EMF', f: '\Delta G^0 = -nFE^0_{cell}' },
-            { t: 'Conductivity (Kappa)', f: '\kappa = \frac{1}{\rho} = G \frac{l}{A}' },
-            { t: 'Molar Conductivity', f: '\Lambda_m = \frac{\kappa \times 1000}{M}' },
-            { t: 'Faraday\'s First Law', f: 'w = ZIt' }
-        ],
-        'Chemical Kinetics': [
-            { t: 'Rate Law', f: 'Rate = k[A]^x[B]^y' },
-            { t: 'First Order Integrated', f: '\ln[A]_t = -kt + \ln[A]_0' },
-            { t: 'Half Life (First Order)', f: 't_{1/2} = \frac{0.693}{k}' },
-            { t: 'Half Life (Zero Order)', f: 't_{1/2} = \frac{[A]_0}{2k}' },
-            { t: 'Arrhenius Equation', f: 'k = A e^{-E_a/RT}' },
-            { t: 'Arrhenius (Two Temps)', f: '\log \frac{k_2}{k_1} = \frac{E_a}{2.303R} (\frac{1}{T_1} - \frac{1}{T_2})' }
-        ]
-
+            
             // Helper to render KaTeX
             const Tex = ({ tex }) => {
                 const r = React.useRef(null);
@@ -2018,50 +1917,49 @@ const solveSystem = (eqs) => {
             // Map IDs to Component Functions
             // Inside DynamicWindowRenderer...
 const COMPONENT_MAP = {
-    'graph': GraphApp,
-    'solver': SolverApp,
-    'periodic': PeriodicApp,
-    'physics': PhysicsApp,
-    'formulas': FormulaApp,
-    'converter': ConverterApp,
-    'code': CodeApp,
-    'settings': SettingsApp,
-    'systems': SystemSolverApp,
-    // --- ADD THESE MISSING MAPPINGS ---
-    'geo': GeometryApp,
-    'stats': StatsApp,
-    'bio': BioApp,
-    'nexus': NexusApp,
-    'export': ExportApp,
-    'exam': ExamApp,
-    'astro': AstroApp,
-    'chemi': ChemiApp,
-    'wave': WaveApp,
-    'circuit': CircuitApp,
-    'organic': OrganicApp,
-    'logic': LogicApp,
-    'vector': VectorApp,
-    'thermo': ThermoApp,
-    'matrix': MatrixApp,
-    'trig': TrigApp,
-    'proj': ProjectileApp,
-    'dict': DictApp,
-    'calc': CalculusApp,
-    'fractal': FractalApp,
-    'board': BoardApp,
-    'music': MusicApp,
-    'focus': FocusApp,
-    'task': TaskMgrApp,
-    'algo': AlgoApp,
-    'crypto': CryptoApp,
-    'resistor': ResistorApp,
-    'base': BaseApp,
-    'truth': TruthApp,
-    'regex': RegexApp,
-    'optics': OpticsApp,
-    'genetic': GeneticApp,
-    'balance': BalanceApp
-};
+                'graph': GraphApp,
+                'solver': SolverApp,
+                'periodic': PeriodicApp,
+                'physics': PhysicsApp,
+                'formulas': FormulaApp,
+                'converter': ConverterApp,
+                'code': CodeApp,
+                'settings': SettingsApp,
+                'systems': SystemSolverApp,
+                'geo': GeometryApp,
+                'stats': StatsApp,
+                'bio': BioApp,
+                'nexus': NexusApp,
+                'export': ExportApp,
+                'exam': ExamApp,
+                'astro': AstroApp,
+                'chemi': ChemiApp,
+                'wave': WaveApp,
+                'circuit': CircuitApp,
+                'organic': OrganicApp,
+                'logic': LogicApp,
+                'vector': VectorApp,
+                'thermo': ThermoApp,
+                'matrix': MatrixApp,
+                'trig': TrigApp,
+                'proj': ProjectileApp,
+                'dict': DictApp,
+                'calc': CalculusApp,
+                'fractal': FractalApp,
+                'board': BoardApp,
+                'music': MusicApp,
+                'focus': FocusApp,
+                'task': TaskMgrApp,
+                'algo': AlgoApp,
+                'crypto': CryptoApp,
+                'resistor': ResistorApp,
+                'base': BaseApp,
+                'truth': TruthApp,
+                'regex': RegexApp,
+                'optics': OpticsApp,
+                'genetic': GeneticApp,
+                'balance': BalanceApp
+            };
 
             return (
                 <>
@@ -7564,6 +7462,20 @@ const BootScreen = ({ onComplete }) => {
         </div>
     );
 };
+        // ADD THIS COMPONENT
+const BootScreen = ({ onComplete }) => {
+    React.useEffect(() => {
+        const timer = setTimeout(onComplete, 2000);
+        return () => clearTimeout(timer);
+    }, [onComplete]);
+
+    return (
+        <div className="flex items-center justify-center h-full w-full bg-black text-white flex-col gap-4">
+            <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+            <div className="text-xl font-mono animate-pulse">System Booting...</div>
+        </div>
+    );
+};
         const RootApp = () => {
             const [booted, setBooted] = React.useState(false);
             
@@ -7588,9 +7500,8 @@ const BootScreen = ({ onComplete }) => {
 
         // Mount
         const rootNode = document.getElementById('root');
-        const root = ReactDOM.createRoot(rootNode);
-        root.render(<RootApp />);
-
-    </script>
+    const root = ReactDOM.createRoot(rootNode);
+    root.render(<RootApp />);
+</script>
 </body>
 </html>
