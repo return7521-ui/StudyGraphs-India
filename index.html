@@ -35,6 +35,7 @@
                     animation: {
                         'fade-in': 'fadeIn 0.5s ease-out',
                         'slide-up': 'slideUp 0.5s ease-out forwards',
+                        'pulse-glow': 'pulseGlow 2s infinite',
                     },
                     keyframes: {
                         fadeIn: {
@@ -44,6 +45,10 @@
                         slideUp: {
                             '0%': { opacity: '0', transform: 'translateY(20px)' },
                             '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        pulseGlow: {
+                            '0%, 100%': { boxShadow: '0 0 15px rgba(6,182,212,0.4)' },
+                            '50%': { boxShadow: '0 0 30px rgba(6,182,212,0.8)' },
                         }
                     }
                 }
@@ -73,6 +78,15 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
+
+        /* Custom Checkbox Styling */
+        .custom-checkbox input:checked + div {
+            background-color: #06B6D4;
+            border-color: #06B6D4;
+        }
+        .custom-checkbox input:checked + div svg {
+            display: block;
+        }
     </style>
 </head>
 <body class="bg-comfest-navy text-slate-300 font-sans antialiased selection:bg-comfest-cyan selection:text-white">
@@ -81,7 +95,20 @@
         // CENTRAL CONFIGURATION
         const GOOGLE_FORM_URL = "PASTE_GOOGLE_FORM_LINK_HERE";
 
-        function openGoogleForm() {
+        // Scroll to the checklist section instead of opening the form directly
+        function scrollToChecklist() {
+            const checklistSection = document.getElementById('registration-checklist');
+            checklistSection.scrollIntoView({ behavior: 'smooth' });
+            
+            // Highlight the section briefly
+            checklistSection.classList.add('ring-4', 'ring-comfest-cyan', 'ring-offset-8', 'ring-offset-comfest-navy', 'rounded-3xl');
+            setTimeout(() => {
+                checklistSection.classList.remove('ring-4', 'ring-comfest-cyan', 'ring-offset-8', 'ring-offset-comfest-navy', 'rounded-3xl');
+            }, 1500);
+        }
+
+        // Final submission function (unlocked by checkboxes)
+        function submitRegistration() {
             if(GOOGLE_FORM_URL === "PASTE_GOOGLE_FORM_LINK_HERE") {
                 // Friendly fallback for development/preview
                 const modal = document.getElementById('placeholder-modal');
@@ -110,7 +137,7 @@
                     <a href="#events" class="text-sm font-medium text-slate-300 hover:text-white transition">Explore Events</a>
                     <a href="#dates" class="text-sm font-medium text-slate-300 hover:text-white transition">Timeline</a>
                     <a href="#discipline" class="text-sm font-medium text-slate-300 hover:text-white transition">Travel & Discipline</a>
-                    <button onclick="openGoogleForm()" class="bg-comfest-cyan hover:bg-cyan-500 text-slate-900 font-bold py-2 px-5 rounded-full text-sm transition transform hover:scale-105 shadow-[0_0_15px_rgba(6,182,212,0.4)]">
+                    <button onclick="scrollToChecklist()" class="bg-comfest-cyan hover:bg-cyan-500 text-slate-900 font-bold py-2 px-5 rounded-full text-sm transition transform hover:scale-105 shadow-[0_0_15px_rgba(6,182,212,0.4)]">
                         Register Interest
                     </button>
                 </div>
@@ -129,7 +156,7 @@
                 <a href="#events" onclick="document.getElementById('mobile-menu').classList.add('hidden')" class="block px-3 py-2 rounded-md text-base font-medium text-slate-300 hover:text-white hover:bg-slate-800">Explore Events</a>
                 <a href="#dates" onclick="document.getElementById('mobile-menu').classList.add('hidden')" class="block px-3 py-2 rounded-md text-base font-medium text-slate-300 hover:text-white hover:bg-slate-800">Timeline</a>
                 <a href="#discipline" onclick="document.getElementById('mobile-menu').classList.add('hidden')" class="block px-3 py-2 rounded-md text-base font-medium text-slate-300 hover:text-white hover:bg-slate-800">Travel & Discipline</a>
-                <button onclick="openGoogleForm(); document.getElementById('mobile-menu').classList.add('hidden')" class="w-full mt-2 bg-comfest-cyan text-slate-900 font-bold py-3 px-5 rounded-lg text-center transition">
+                <button onclick="scrollToChecklist(); document.getElementById('mobile-menu').classList.add('hidden')" class="w-full mt-2 bg-comfest-cyan text-slate-900 font-bold py-3 px-5 rounded-lg text-center transition">
                     Register Interest
                 </button>
             </div>
@@ -161,7 +188,7 @@
                 <a href="#events" class="bg-white text-slate-900 hover:bg-slate-200 font-bold py-3.5 px-8 rounded-full text-base transition duration-300">
                     Explore All Events
                 </a>
-                <button onclick="openGoogleForm()" class="bg-comfest-cyan hover:bg-cyan-500 text-slate-900 font-bold py-3.5 px-8 rounded-full text-base transition duration-300 shadow-[0_0_20px_rgba(6,182,212,0.3)]">
+                <button onclick="scrollToChecklist()" class="bg-comfest-cyan hover:bg-cyan-500 text-slate-900 font-bold py-3.5 px-8 rounded-full text-base transition duration-300 shadow-[0_0_20px_rgba(6,182,212,0.3)]">
                     Register Your Interest
                 </button>
             </div>
@@ -183,7 +210,7 @@
                     </div>
                     <h3 class="text-white font-bold mb-2">Registration & Cost</h3>
                     <ul class="text-sm text-slate-300 space-y-2 list-disc pl-4">
-                        <li>If you are interested in participating in ANY COMFEST event (one or multiple), submit the Google Form provided on this website.</li>
+                        <li>If you are interested in participating in ANY COMFEST event (one or multiple), submit the Google Form provided below.</li>
                         <li>Participation in COMFEST is <strong>completely FREE</strong>.</li>
                         <li>Only genuine/interested students should submit the form. Do not submit casually.</li>
                     </ul>
@@ -347,7 +374,7 @@
 
                     <!-- Modal Footer -->
                     <div class="bg-slate-800 px-4 py-4 sm:flex sm:flex-row-reverse sm:px-6 border-t border-slate-700 shrink-0">
-                        <button type="button" onclick="openGoogleForm()" class="inline-flex w-full justify-center rounded-lg bg-comfest-cyan px-4 py-2.5 text-sm font-bold text-slate-900 shadow-sm hover:bg-cyan-500 sm:ml-3 sm:w-auto transition">
+                        <button type="button" onclick="scrollToChecklist(); closeModal();" class="inline-flex w-full justify-center rounded-lg bg-comfest-cyan px-4 py-2.5 text-sm font-bold text-slate-900 shadow-sm hover:bg-cyan-500 sm:ml-3 sm:w-auto transition">
                             Register For COMFEST'26
                         </button>
                         <button type="button" onclick="closeModal()" class="mt-3 inline-flex w-full justify-center rounded-lg bg-slate-700 px-4 py-2.5 text-sm font-bold text-white shadow-sm hover:bg-slate-600 sm:mt-0 sm:w-auto transition">
@@ -1428,7 +1455,6 @@
             
             const modal = document.getElementById('eventModal');
             modal.classList.remove('hidden');
-            // Small delay to allow display:block to apply before animating opacity if we were using complex transitions
         }
 
         function closeModal() {
@@ -1612,24 +1638,94 @@
         </div>
     </section>
 
-    <section id="cta" class="py-20 bg-gradient-to-b from-comfest-navy to-slate-900 text-center relative overflow-hidden">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <h2 class="text-4xl md:text-5xl font-display font-black text-white mb-6">READY TO REPRESENT YOUR SCHOOL?</h2>
+    <section id="registration-checklist" class="py-20 bg-gradient-to-b from-comfest-navy to-slate-900 text-center relative overflow-hidden transition-all duration-500">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="w-16 h-16 bg-slate-800/80 rounded-2xl flex items-center justify-center mx-auto mb-6 border border-slate-700 text-comfest-cyan text-3xl shadow-[0_0_15px_rgba(6,182,212,0.2)]">
+                <i class="fas fa-clipboard-check"></i>
+            </div>
+            <h2 class="text-4xl font-display font-black text-white mb-3">READY TO REGISTER?</h2>
+            <p class="text-sm text-slate-400 mb-8 max-w-xl mx-auto">Please confirm you understand the participation requirements before accessing the registration form.</p>
             
-            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 text-sm font-bold text-slate-400 mb-10 uppercase tracking-widest">
-                <span>Choose Event</span> <i class="fas fa-chevron-right text-comfest-cyan hidden sm:block"></i>
-                <span>Read Rules</span> <i class="fas fa-chevron-right text-comfest-cyan hidden sm:block"></i>
-                <span>Form Team</span> <i class="fas fa-chevron-right text-comfest-cyan hidden sm:block"></i>
-                <span class="text-white">Submit Form</span>
+            <div class="bg-slate-800/60 border border-slate-700 rounded-2xl p-6 md:p-8 text-left space-y-4 mb-10 shadow-lg">
+                
+                <label class="custom-checkbox flex items-start gap-4 cursor-pointer group">
+                    <input type="checkbox" class="disclaimer-check sr-only">
+                    <div class="w-6 h-6 rounded border-2 border-slate-600 flex-shrink-0 flex items-center justify-center transition-colors group-hover:border-comfest-cyan bg-slate-900 mt-0.5">
+                        <svg class="w-3.5 h-3.5 text-white hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                    </div>
+                    <span class="text-sm text-slate-300 group-hover:text-white transition-colors">I am genuinely interested in participating and am not submitting this form casually.</span>
+                </label>
+
+                <label class="custom-checkbox flex items-start gap-4 cursor-pointer group">
+                    <input type="checkbox" class="disclaimer-check sr-only">
+                    <div class="w-6 h-6 rounded border-2 border-slate-600 flex-shrink-0 flex items-center justify-center transition-colors group-hover:border-comfest-cyan bg-slate-900 mt-0.5">
+                        <svg class="w-3.5 h-3.5 text-white hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                    </div>
+                    <span class="text-sm text-slate-300 group-hover:text-white transition-colors">I have carefully read the event rules, timings, participant limits, and device allowances for my chosen events.</span>
+                </label>
+
+                <label class="custom-checkbox flex items-start gap-4 cursor-pointer group">
+                    <input type="checkbox" class="disclaimer-check sr-only">
+                    <div class="w-6 h-6 rounded border-2 border-slate-600 flex-shrink-0 flex items-center justify-center transition-colors group-hover:border-comfest-cyan bg-slate-900 mt-0.5">
+                        <svg class="w-3.5 h-3.5 text-white hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                    </div>
+                    <span class="text-sm text-slate-300 group-hover:text-white transition-colors">I understand that any misbehaviour, uncultural activity, or use of unfair means will result in immediate disqualification.</span>
+                </label>
+
+                <label class="custom-checkbox flex items-start gap-4 cursor-pointer group">
+                    <input type="checkbox" class="disclaimer-check sr-only">
+                    <div class="w-6 h-6 rounded border-2 border-slate-600 flex-shrink-0 flex items-center justify-center transition-colors group-hover:border-comfest-cyan bg-slate-900 mt-0.5">
+                        <svg class="w-3.5 h-3.5 text-white hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                    </div>
+                    <span class="text-sm text-slate-300 group-hover:text-white transition-colors">I have read the transport guidelines (Return to school around 8:00 PM; self-travel arrangement from school to home).</span>
+                </label>
+
+                <label class="custom-checkbox flex items-start gap-4 cursor-pointer group">
+                    <input type="checkbox" class="disclaimer-check sr-only">
+                    <div class="w-6 h-6 rounded border-2 border-slate-600 flex-shrink-0 flex items-center justify-center transition-colors group-hover:border-comfest-cyan bg-slate-900 mt-0.5">
+                        <svg class="w-3.5 h-3.5 text-white hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                    </div>
+                    <span class="text-sm text-slate-300 group-hover:text-white transition-colors">I agree to maintain discipline, carry my ID card, and strictly follow all instructions from the JCC and Organizers.</span>
+                </label>
+
             </div>
 
-            <button onclick="openGoogleForm()" class="bg-comfest-cyan hover:bg-cyan-400 text-slate-900 font-black text-lg py-4 px-12 rounded-full transition transform hover:scale-105 shadow-[0_0_30px_rgba(6,182,212,0.4)] mb-6">
-                REGISTER YOUR INTEREST
+            <!-- Lock/Unlock State handled via JS -->
+            <button id="final-submit-btn" disabled onclick="submitRegistration()" class="w-full sm:w-auto bg-slate-700 text-slate-400 cursor-not-allowed font-black text-lg py-4 px-12 rounded-full transition-all duration-300 flex items-center justify-center mx-auto gap-3">
+                <i id="btn-lock-icon" class="fas fa-lock"></i>
+                <span id="btn-text">ACCEPT TERMS TO UNLOCK</span>
             </button>
             
-            <p class="text-xs text-slate-500">Please read the official event rules carefully before participating. Do not submit the form casually.</p>
+            <p class="text-xs text-slate-500 mt-6">Do not submit the form if you are not sure about your participation.</p>
         </div>
     </section>
+
+    <script>
+        const checkboxes = document.querySelectorAll('.disclaimer-check');
+        const submitBtn = document.getElementById('final-submit-btn');
+        const lockIcon = document.getElementById('btn-lock-icon');
+        const btnText = document.getElementById('btn-text');
+
+        checkboxes.forEach(box => {
+            box.addEventListener('change', () => {
+                const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+                
+                if (allChecked) {
+                    submitBtn.disabled = false;
+                    submitBtn.classList.remove('bg-slate-700', 'text-slate-400', 'cursor-not-allowed');
+                    submitBtn.classList.add('bg-comfest-cyan', 'text-slate-900', 'hover:bg-cyan-400', 'hover:scale-105', 'shadow-[0_0_30px_rgba(6,182,212,0.4)]', 'animate-pulse-glow');
+                    lockIcon.className = "fas fa-lock-open";
+                    btnText.textContent = "REGISTER YOUR INTEREST";
+                } else {
+                    submitBtn.disabled = true;
+                    submitBtn.classList.add('bg-slate-700', 'text-slate-400', 'cursor-not-allowed');
+                    submitBtn.classList.remove('bg-comfest-cyan', 'text-slate-900', 'hover:bg-cyan-400', 'hover:scale-105', 'shadow-[0_0_30px_rgba(6,182,212,0.4)]', 'animate-pulse-glow');
+                    lockIcon.className = "fas fa-lock";
+                    btnText.textContent = "ACCEPT TERMS TO UNLOCK";
+                }
+            });
+        });
+    </script>
 
     <footer class="bg-slate-950 border-t border-slate-800 py-12 text-center">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -1642,17 +1738,20 @@
             </div>
 
             <div class="border-t border-slate-800 pt-8 mt-8">
-                <p class="text-[10px] text-slate-600 max-w-3xl mx-auto leading-relaxed mb-6">
-                    Event information on this page has been simplified for student convenience and is based on the COMFEST'26 invitation brochure. In case of conflict, official instructions issued by the Jaipuria Computer Club / COMFEST organizers will prevail.
+                <p class="text-[10px] text-slate-600 max-w-3xl mx-auto leading-relaxed mb-8">
+                    Event information on this page has been simplified for student convenience and is strictly based on the COMFEST'26 invitation brochure. In case of conflict, official instructions issued by the Jaipuria Computer Club / COMFEST organizers will always prevail.
                 </p>
                 
-                <div class="flex flex-col items-center justify-center gap-4 pt-6 border-t border-slate-800/50 mt-4">
-                    <p class="text-xs text-slate-400 font-medium tracking-wide">
-                        This website is an integrated property of <span class="text-white font-bold">Shashank Kushwaha</span>.
+                <div class="flex flex-col items-center justify-center gap-4 pt-6 border-t border-slate-800/50 mt-4 bg-slate-900/50 rounded-2xl p-6 shadow-inner max-w-lg mx-auto border border-slate-800/80">
+                    <div class="w-12 h-12 bg-slate-800 rounded-full flex items-center justify-center text-slate-400 mb-1 border border-slate-700">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <p class="text-xs text-slate-300 font-medium tracking-wide text-center">
+                        This digital experience and website is an <span class="text-white font-bold">integral property of Shashank Kushwaha</span>. Developed to enhance the student participation experience.
                     </p>
-                    <a href="https://www.linkedin.com/in/shashank-kushwaha" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-5 py-2 bg-[#0A66C2]/10 hover:bg-[#0A66C2]/20 text-[#0A66C2] hover:text-[#0A66C2] border border-[#0A66C2]/30 hover:border-[#0A66C2]/60 rounded-full text-xs font-bold transition-all duration-300 shadow-[0_0_10px_rgba(10,102,194,0.1)] hover:shadow-[0_0_15px_rgba(10,102,194,0.3)]">
-                        <i class="fab fa-linkedin text-sm"></i>
-                        Connect on LinkedIn
+                    <a href="https://www.linkedin.com/in/studytoolsindia" target="_blank" rel="noopener noreferrer" class="mt-2 inline-flex items-center gap-2 px-6 py-2.5 bg-[#0A66C2]/10 hover:bg-[#0A66C2]/20 text-[#0A66C2] hover:text-[#0A66C2] border border-[#0A66C2]/30 hover:border-[#0A66C2]/60 rounded-full text-sm font-bold transition-all duration-300 shadow-[0_0_10px_rgba(10,102,194,0.1)] hover:shadow-[0_0_15px_rgba(10,102,194,0.3)]">
+                        <i class="fab fa-linkedin text-lg"></i>
+                        Connect with Shashank on LinkedIn
                     </a>
                 </div>
             </div>
