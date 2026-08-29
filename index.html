@@ -2,7 +2,7 @@
 <html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>COMFEST'26 | Student Participation Guide</title>
     
     <!-- Tailwind CSS -->
@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;800;900&display=swap" rel="stylesheet">
 
     <!-- Tailwind Config -->
     <script>
@@ -24,18 +24,23 @@
                         display: ['Outfit', 'sans-serif'],
                     },
                     colors: {
-                        comfest: {
-                            navy: '#0B1120',
-                            blue: '#1E293B',
-                            cyan: '#06B6D4',
-                            accent: '#F59E0B',
-                            light: '#F8FAFC'
+                        brand: {
+                            dark: '#030712', // Very deep navy/black
+                            panel: '#0f172a', // Slate 900
+                            card: '#1e293b', // Slate 800
+                            cyan: '#06b6d4',
+                            blue: '#3b82f6',
+                            purple: '#8b5cf6',
+                            accent: '#f59e0b',
                         }
                     },
                     animation: {
-                        'fade-in': 'fadeIn 0.5s ease-out',
-                        'slide-up': 'slideUp 0.5s ease-out forwards',
-                        'pulse-glow': 'pulseGlow 2s infinite',
+                        'fade-in': 'fadeIn 0.8s ease-out forwards',
+                        'slide-up': 'slideUp 0.8s ease-out forwards',
+                        'float': 'float 6s ease-in-out infinite',
+                        'float-delayed': 'float 6s ease-in-out 3s infinite',
+                        'pulse-glow': 'pulseGlow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'spin-slow': 'spin 8s linear infinite',
                     },
                     keyframes: {
                         fadeIn: {
@@ -43,12 +48,16 @@
                             '100%': { opacity: '1' },
                         },
                         slideUp: {
-                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '0%': { opacity: '0', transform: 'translateY(30px)' },
                             '100%': { opacity: '1', transform: 'translateY(0)' },
                         },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
                         pulseGlow: {
-                            '0%, 100%': { boxShadow: '0 0 15px rgba(6,182,212,0.4)' },
-                            '50%': { boxShadow: '0 0 30px rgba(6,182,212,0.8)' },
+                            '0%, 100%': { opacity: '1', filter: 'brightness(1)' },
+                            '50%': { opacity: '.7', filter: 'brightness(1.2)' },
                         }
                     }
                 }
@@ -57,60 +66,114 @@
     </script>
 
     <style>
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 8px; height: 8px; }
-        ::-webkit-scrollbar-track { background: #0B1120; }
-        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+        body {
+            background-color: #030712;
+            color: #cbd5e1;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Modern Scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #030712; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #06b6d4; }
         
-        /* Hide scrollbar for horizontal chips */
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         
-        .glass-panel {
-            background: rgba(30, 41, 59, 0.7);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+        /* Glassmorphism Utilities */
+        .glass {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
         
-        .gradient-text {
-            background: linear-gradient(to right, #06B6D4, #3B82F6);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        .glass-card {
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.7) 0%, rgba(15, 23, 42, 0.9) 100%);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
         }
 
-        /* Custom Checkbox Styling */
-        .custom-checkbox input:checked + div {
-            background-color: #06B6D4;
-            border-color: #06B6D4;
+        /* Typography Gradients */
+        .text-gradient {
+            background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
-        .custom-checkbox input:checked + div svg {
-            display: block;
+        
+        .text-gradient-purple {
+            background: linear-gradient(135deg, #8b5cf6 0%, #d946ef 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Checkbox Styling */
+        .check-wrapper input:checked + div {
+            background-color: #06b6d4;
+            border-color: #06b6d4;
+            box-shadow: 0 0 10px rgba(6, 182, 212, 0.5);
+        }
+        .check-wrapper input:checked + div svg {
+            opacity: 1;
+            transform: scale(1);
+        }
+        .check-wrapper div svg {
+            opacity: 0;
+            transform: scale(0.5);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Animated Border wrapper */
+        .animated-border-box {
+            position: relative;
+            border-radius: 1rem;
+            background: #0f172a;
+            z-index: 1;
+        }
+        .animated-border-box::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: 1.1rem;
+            background: linear-gradient(45deg, #06b6d4, #3b82f6, #8b5cf6, #06b6d4);
+            background-size: 400%;
+            z-index: -1;
+            animation: borderGlow 6s linear infinite;
+            opacity: 0.5;
+        }
+        @keyframes borderGlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Modal Transitions */
+        .modal-enter {
+            animation: modalFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: scale(0.95) translateY(10px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
         }
     </style>
 </head>
-<body class="bg-comfest-navy text-slate-300 font-sans antialiased selection:bg-comfest-cyan selection:text-white">
+<body class="selection:bg-brand-cyan selection:text-white relative">
 
     <script>
-        // CENTRAL CONFIGURATION
         const GOOGLE_FORM_URL = "PASTE_GOOGLE_FORM_LINK_HERE";
 
-        // Scroll to the checklist section instead of opening the form directly
         function scrollToChecklist() {
-            const checklistSection = document.getElementById('registration-checklist');
-            checklistSection.scrollIntoView({ behavior: 'smooth' });
-            
-            // Highlight the section briefly
-            checklistSection.classList.add('ring-4', 'ring-comfest-cyan', 'ring-offset-8', 'ring-offset-comfest-navy', 'rounded-3xl');
-            setTimeout(() => {
-                checklistSection.classList.remove('ring-4', 'ring-comfest-cyan', 'ring-offset-8', 'ring-offset-comfest-navy', 'rounded-3xl');
-            }, 1500);
+            const el = document.getElementById('registration-section');
+            el.scrollIntoView({ behavior: 'smooth' });
         }
 
-        // Final submission function (unlocked by checkboxes)
-        function submitRegistration() {
+        function handleRegistrationClick() {
             if(GOOGLE_FORM_URL === "PASTE_GOOGLE_FORM_LINK_HERE") {
-                // Friendly fallback for development/preview
                 const modal = document.getElementById('placeholder-modal');
                 modal.classList.remove('hidden');
                 modal.classList.add('flex');
@@ -120,290 +183,269 @@
         }
 
         function closePlaceholderModal() {
-            const modal = document.getElementById('placeholder-modal');
-            modal.classList.add('hidden');
-            modal.classList.remove('flex');
+            document.getElementById('placeholder-modal').classList.add('hidden');
+            document.getElementById('placeholder-modal').classList.remove('flex');
         }
     </script>
 
-    <nav class="fixed w-full z-40 glass-panel border-b-0 transition-all duration-300">
+    <nav class="fixed w-full z-40 glass border-b border-white/5 transition-all duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
-                <div class="flex-shrink-0 flex items-center cursor-pointer" onclick="window.scrollTo(0,0)">
-                    <span class="font-display font-black text-2xl text-white tracking-tight">COMFEST<span class="text-comfest-cyan">'26</span></span>
+            <div class="flex justify-between items-center h-16 sm:h-20">
+                <div class="flex-shrink-0 flex items-center cursor-pointer group" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+                    <span class="font-display font-black text-2xl tracking-tighter text-white group-hover:scale-105 transition-transform">
+                        COMFEST<span class="text-brand-cyan">.26</span>
+                    </span>
                 </div>
+                
+                <!-- Desktop Nav -->
                 <div class="hidden md:flex space-x-8 items-center">
-                    <a href="#important" class="text-sm font-medium text-slate-300 hover:text-white transition">Important Rules</a>
-                    <a href="#events" class="text-sm font-medium text-slate-300 hover:text-white transition">Explore Events</a>
-                    <a href="#dates" class="text-sm font-medium text-slate-300 hover:text-white transition">Timeline</a>
-                    <a href="#discipline" class="text-sm font-medium text-slate-300 hover:text-white transition">Travel & Discipline</a>
-                    <button onclick="scrollToChecklist()" class="bg-comfest-cyan hover:bg-cyan-500 text-slate-900 font-bold py-2 px-5 rounded-full text-sm transition transform hover:scale-105 shadow-[0_0_15px_rgba(6,182,212,0.4)]">
-                        Register Interest
+                    <a href="#about" class="text-sm font-medium text-slate-300 hover:text-white transition-colors relative group">
+                        About
+                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-brand-cyan transition-all duration-300 group-hover:w-full"></span>
+                    </a>
+                    <a href="#events" class="text-sm font-medium text-slate-300 hover:text-white transition-colors relative group">
+                        Events
+                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-brand-cyan transition-all duration-300 group-hover:w-full"></span>
+                    </a>
+                    <a href="#dates" class="text-sm font-medium text-slate-300 hover:text-white transition-colors relative group">
+                        Timeline
+                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-brand-cyan transition-all duration-300 group-hover:w-full"></span>
+                    </a>
+                    <a href="#logistics" class="text-sm font-medium text-slate-300 hover:text-white transition-colors relative group">
+                        Logistics
+                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-brand-cyan transition-all duration-300 group-hover:w-full"></span>
+                    </a>
+                    <button onclick="scrollToChecklist()" class="bg-brand-cyan text-brand-dark hover:bg-white hover:text-brand-dark font-bold py-2.5 px-6 rounded-full text-sm transition-all duration-300 shadow-[0_0_15px_rgba(6,182,212,0.3)] hover:shadow-[0_0_25px_rgba(255,255,255,0.5)] transform hover:-translate-y-0.5">
+                        Register
                     </button>
                 </div>
-                <!-- Mobile menu button -->
+
+                <!-- Mobile Menu Button -->
                 <div class="md:hidden flex items-center">
-                    <button onclick="document.getElementById('mobile-menu').classList.toggle('hidden')" class="text-slate-300 hover:text-white focus:outline-none">
+                    <button onclick="document.getElementById('mobile-menu').classList.toggle('hidden')" class="text-slate-300 hover:text-white p-2 focus:outline-none">
                         <i class="fas fa-bars text-2xl"></i>
                     </button>
                 </div>
             </div>
         </div>
-        <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden glass-panel border-t border-slate-700">
-            <div class="px-2 pt-2 pb-4 space-y-1 sm:px-3">
-                <a href="#important" onclick="document.getElementById('mobile-menu').classList.add('hidden')" class="block px-3 py-2 rounded-md text-base font-medium text-slate-300 hover:text-white hover:bg-slate-800">Important Rules</a>
-                <a href="#events" onclick="document.getElementById('mobile-menu').classList.add('hidden')" class="block px-3 py-2 rounded-md text-base font-medium text-slate-300 hover:text-white hover:bg-slate-800">Explore Events</a>
-                <a href="#dates" onclick="document.getElementById('mobile-menu').classList.add('hidden')" class="block px-3 py-2 rounded-md text-base font-medium text-slate-300 hover:text-white hover:bg-slate-800">Timeline</a>
-                <a href="#discipline" onclick="document.getElementById('mobile-menu').classList.add('hidden')" class="block px-3 py-2 rounded-md text-base font-medium text-slate-300 hover:text-white hover:bg-slate-800">Travel & Discipline</a>
-                <button onclick="scrollToChecklist(); document.getElementById('mobile-menu').classList.add('hidden')" class="w-full mt-2 bg-comfest-cyan text-slate-900 font-bold py-3 px-5 rounded-lg text-center transition">
-                    Register Interest
+
+        <!-- Mobile Menu Panel -->
+        <div id="mobile-menu" class="hidden md:hidden glass border-t border-white/5 absolute w-full">
+            <div class="px-4 pt-2 pb-6 space-y-2 shadow-2xl">
+                <a href="#about" onclick="document.getElementById('mobile-menu').classList.add('hidden')" class="block px-4 py-3 rounded-xl text-base font-medium text-slate-200 hover:bg-white/10 transition-colors">About & Rules</a>
+                <a href="#events" onclick="document.getElementById('mobile-menu').classList.add('hidden')" class="block px-4 py-3 rounded-xl text-base font-medium text-slate-200 hover:bg-white/10 transition-colors">Explore Events</a>
+                <a href="#dates" onclick="document.getElementById('mobile-menu').classList.add('hidden')" class="block px-4 py-3 rounded-xl text-base font-medium text-slate-200 hover:bg-white/10 transition-colors">Important Dates</a>
+                <a href="#logistics" onclick="document.getElementById('mobile-menu').classList.add('hidden')" class="block px-4 py-3 rounded-xl text-base font-medium text-slate-200 hover:bg-white/10 transition-colors">Travel & Discipline</a>
+                <button onclick="scrollToChecklist(); document.getElementById('mobile-menu').classList.add('hidden')" class="w-full mt-4 bg-brand-cyan text-brand-dark font-bold py-3.5 rounded-xl transition-all shadow-[0_0_15px_rgba(6,182,212,0.3)]">
+                    Register Your Interest
                 </button>
             </div>
         </div>
     </nav>
 
-    <section class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
-        <!-- Background graphics -->
-        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-full opacity-20 pointer-events-none">
-            <div class="absolute top-20 left-10 w-64 h-64 bg-comfest-cyan rounded-full mix-blend-screen filter blur-[100px]"></div>
-            <div class="absolute top-40 right-10 w-72 h-72 bg-blue-600 rounded-full mix-blend-screen filter blur-[120px]"></div>
+    <section class="relative min-h-[90vh] flex flex-col justify-center items-center pt-24 pb-12 overflow-hidden">
+        <!-- Abstract Background Elements -->
+        <div class="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+            <div class="absolute top-[10%] left-[5%] w-[50vw] h-[50vw] max-w-[600px] max-h-[600px] rounded-full bg-brand-cyan/10 blur-[80px] sm:blur-[120px] animate-float"></div>
+            <div class="absolute bottom-[10%] right-[5%] w-[40vw] h-[40vw] max-w-[500px] max-h-[500px] rounded-full bg-brand-purple/10 blur-[80px] sm:blur-[120px] animate-float-delayed"></div>
+            <!-- Grid Pattern overlay -->
+            <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAwIDEwIEwgNDAgMTAgTSAxMCAwIEwgMTAgNDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjAzKSIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyaWQpIi8+PC9zdmc+')] opacity-50 mask-image:linear-gradient(to_bottom,transparent,black,transparent)"></div>
         </div>
 
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center animate-slide-up">
-            <div class="inline-block mb-4 px-4 py-1.5 rounded-full border border-slate-700 bg-slate-800/50 backdrop-blur-sm text-xs font-bold tracking-widest text-comfest-cyan uppercase">
-                The 27th Edition • 15–17 October 2026
+        <div class="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            
+            <div class="opacity-0 animate-slide-up" style="animation-delay: 0.1s;">
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/10 bg-white/5 backdrop-blur-md text-xs sm:text-sm font-bold tracking-widest text-slate-300 uppercase mb-6 shadow-xl">
+                    <span class="w-2 h-2 rounded-full bg-brand-cyan animate-pulse"></span>
+                    The 27th Edition • 15–17 Oct 2026
+                </div>
             </div>
-            <h1 class="text-5xl md:text-7xl font-display font-black text-white tracking-tight mb-6 leading-tight">
-                Welcome to <br/> <span class="gradient-text">COMFEST'26</span>
+
+            <h1 class="opacity-0 animate-slide-up text-5xl sm:text-7xl lg:text-8xl font-display font-black text-white tracking-tight leading-[1.1] mb-6" style="animation-delay: 0.2s;">
+                Welcome to <br/>
+                <span class="text-gradient drop-shadow-2xl">COMFEST'26</span>
             </h1>
-            <p class="mt-4 max-w-2xl text-lg md:text-xl text-slate-400 mx-auto mb-2">
+
+            <p class="opacity-0 animate-slide-up mt-4 max-w-2xl text-lg sm:text-xl text-slate-400 mx-auto mb-4 font-medium" style="animation-delay: 0.3s;">
                 Technology • Culture • Literature • Creativity • Competition
             </p>
-            <p class="text-sm text-slate-500 mb-10 font-medium">
+            
+            <p class="opacity-0 animate-slide-up text-sm text-slate-500 mb-10" style="animation-delay: 0.4s;">
                 Organised by: Seth Anandram Jaipuria School, Kanpur & Jaipuria Computer Club
             </p>
             
-            <div class="flex flex-col sm:flex-row justify-center gap-4">
-                <a href="#events" class="bg-white text-slate-900 hover:bg-slate-200 font-bold py-3.5 px-8 rounded-full text-base transition duration-300">
+            <div class="opacity-0 animate-slide-up flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-6" style="animation-delay: 0.5s;">
+                <a href="#events" class="w-full sm:w-auto bg-white/10 hover:bg-white/20 text-white border border-white/20 font-bold py-4 px-8 rounded-full text-base transition-all duration-300 backdrop-blur-md">
                     Explore All Events
                 </a>
-                <button onclick="scrollToChecklist()" class="bg-comfest-cyan hover:bg-cyan-500 text-slate-900 font-bold py-3.5 px-8 rounded-full text-base transition duration-300 shadow-[0_0_20px_rgba(6,182,212,0.3)]">
+                <button onclick="scrollToChecklist()" class="w-full sm:w-auto bg-brand-cyan hover:bg-white text-brand-dark font-black py-4 px-8 rounded-full text-base transition-all duration-300 shadow-[0_0_20px_rgba(6,182,212,0.4)] hover:shadow-[0_0_30px_rgba(255,255,255,0.6)] transform hover:-translate-y-1 group">
                     Register Your Interest
+                    <i class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
                 </button>
             </div>
 
-            <div class="max-w-3xl mx-auto mt-16 bg-slate-800/90 border border-comfest-cyan/40 rounded-2xl p-6 shadow-[0_0_30px_rgba(6,182,212,0.15)] backdrop-blur-md animate-slide-up" style="animation-delay: 0.2s;">
-                <h2 class="text-amber-400 font-display font-black text-lg md:text-xl tracking-widest uppercase mb-2">
-                    <i class="fas fa-bullhorn mr-2"></i> IMPORTANT NOTICE
-                </h2>
-                <p class="text-slate-300 text-base md:text-lg">
-                    This preparation guide and participation form are exclusively for <br class="block sm:hidden" />
-                    <span class="text-comfest-cyan font-black text-lg md:text-xl inline-block mt-1 sm:mt-0 underline decoration-comfest-cyan/50 underline-offset-4">Sir Syed Public School, Unnao students</span>.
-                </p>
+            <div class="opacity-0 animate-slide-up mt-16 max-w-3xl mx-auto w-full" style="animation-delay: 0.7s;">
+                <div class="animated-border-box p-1 group">
+                    <div class="bg-brand-dark/90 backdrop-blur-xl rounded-[0.9rem] p-6 sm:p-8 flex flex-col items-center relative overflow-hidden">
+                        <!-- Decorative glow -->
+                        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-1 bg-gradient-to-r from-transparent via-brand-cyan to-transparent opacity-50"></div>
+                        
+                        <h2 class="text-brand-accent font-display font-black text-sm sm:text-base tracking-widest uppercase mb-3 flex items-center justify-center gap-2">
+                            <i class="fas fa-bullhorn animate-bounce"></i> IMPORTANT NOTICE
+                        </h2>
+                        <p class="text-slate-300 text-sm sm:text-base md:text-lg text-center leading-relaxed">
+                            This preparation guide and participation form are exclusively for <br class="hidden sm:block"/>
+                            <span class="text-white text-lg sm:text-xl md:text-2xl font-black mt-2 inline-block px-4 py-1 bg-white/5 rounded-lg border border-white/10 group-hover:border-brand-cyan/50 transition-colors shadow-lg">
+                                Sir Syed Public School, Unnao students
+                            </span>
+                        </p>
+                    </div>
+                </div>
             </div>
 
         </div>
     </section>
 
-    <section id="important" class="py-12 bg-comfest-blue/50 border-y border-slate-800">
+    <section id="about" class="py-20 relative bg-brand-panel/30 border-y border-white/5">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="mb-10 text-center">
-                <h2 class="text-3xl font-display font-bold text-white"><i class="fas fa-exclamation-circle text-amber-500 mr-2"></i> IMPORTANT — PLEASE READ BEFORE REGISTERING</h2>
-                <p class="text-slate-400 mt-2 max-w-3xl mx-auto text-sm">Please read these official participation instructions carefully. Submitting the interest form implies you are ready to adhere to these rules.</p>
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-5xl font-display font-black text-white mb-4">READ BEFORE REGISTERING</h2>
+                <p class="text-slate-400 max-w-2xl mx-auto">Please read these official participation instructions carefully. Submitting the interest form implies you are ready to adhere to these rules.</p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Card 1 -->
-                <div class="bg-slate-800/80 rounded-2xl p-6 border border-slate-700">
-                    <div class="w-10 h-10 rounded-full bg-cyan-500/20 flex items-center justify-center text-comfest-cyan mb-4">
-                        <i class="fas fa-file-signature"></i>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+                <!-- Registration -->
+                <div class="glass-card rounded-2xl p-8 hover:-translate-y-2 transition-transform duration-300 group">
+                    <div class="w-14 h-14 rounded-xl bg-brand-cyan/20 flex items-center justify-center text-brand-cyan text-2xl mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-ticket-alt"></i>
                     </div>
-                    <h3 class="text-white font-bold mb-2">Registration & Cost</h3>
-                    <ul class="text-sm text-slate-300 space-y-2 list-disc pl-4">
-                        <li>If you are interested in participating in ANY COMFEST event (one or multiple), submit the Google Form provided below.</li>
-                        <li>Participation in COMFEST is <strong>completely FREE</strong>.</li>
-                        <li>Only genuine/interested students should submit the form. Do not submit casually.</li>
+                    <h3 class="text-xl font-bold text-white mb-4">Registration & Fee</h3>
+                    <ul class="text-sm text-slate-300 space-y-3">
+                        <li class="flex items-start gap-3"><i class="fas fa-check text-brand-cyan mt-1"></i> <span>If interested in ANY event, submit the Google Form at the bottom of this page.</span></li>
+                        <li class="flex items-start gap-3"><i class="fas fa-check text-brand-cyan mt-1"></i> <span>Participation in COMFEST is <strong>completely FREE</strong>.</span></li>
+                        <li class="flex items-start gap-3"><i class="fas fa-check text-brand-cyan mt-1"></i> <span>Only genuine students should submit. Do not submit casually.</span></li>
                     </ul>
                 </div>
 
-                <!-- Card 2 -->
-                <div class="bg-slate-800/80 rounded-2xl p-6 border border-slate-700">
-                    <div class="w-10 h-10 rounded-full bg-amber-500/20 flex items-center justify-center text-amber-500 mb-4">
-                        <i class="fas fa-balance-scale"></i>
+                <!-- Conduct -->
+                <div class="glass-card rounded-2xl p-8 hover:-translate-y-2 transition-transform duration-300 group">
+                    <div class="w-14 h-14 rounded-xl bg-brand-purple/20 flex items-center justify-center text-brand-purple text-2xl mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-user-shield"></i>
                     </div>
-                    <h3 class="text-white font-bold mb-2">Discipline & Conduct</h3>
-                    <ul class="text-sm text-slate-300 space-y-2 list-disc pl-4">
-                        <li>Students must maintain strict discipline and behave properly.</li>
-                        <li>Do not engage in inappropriate, indecent, disruptive or uncultural activities.</li>
-                        <li>Participants must follow instructions from JCC, ushers, and organizers.</li>
-                        <li>Misbehaviour or violation of rules may result in immediate disqualification.</li>
+                    <h3 class="text-xl font-bold text-white mb-4">Discipline & Conduct</h3>
+                    <ul class="text-sm text-slate-300 space-y-3">
+                        <li class="flex items-start gap-3"><i class="fas fa-check text-brand-purple mt-1"></i> <span>Maintain strict discipline and behave respectfully.</span></li>
+                        <li class="flex items-start gap-3"><i class="fas fa-check text-brand-purple mt-1"></i> <span>Do not engage in inappropriate, disruptive or uncultural activities.</span></li>
+                        <li class="flex items-start gap-3"><i class="fas fa-check text-brand-purple mt-1"></i> <span>Follow instructions from organizers and ushers. Misbehaviour results in disqualification.</span></li>
                     </ul>
                 </div>
 
-                <!-- Card 3 -->
-                <div class="bg-slate-800/80 rounded-2xl p-6 border border-slate-700">
-                    <div class="w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400 mb-4">
-                        <i class="fas fa-bus"></i>
+                <!-- Logistics -->
+                <div class="glass-card rounded-2xl p-8 hover:-translate-y-2 transition-transform duration-300 group">
+                    <div class="w-14 h-14 rounded-xl bg-emerald-500/20 flex items-center justify-center text-emerald-400 text-2xl mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-map-marker-alt"></i>
                     </div>
-                    <h3 class="text-white font-bold mb-2">Campus & Travel</h3>
-                    <ul class="text-sm text-slate-300 space-y-2 list-disc pl-4">
-                        <li>Remain within the host-school campus. Do not leave except in emergencies.</li>
-                        <li>On event days, the school bus takes students to COMFEST and brings them back. Return to school is expected around <strong>8:00 PM</strong>.</li>
-                        <li><strong>After reaching school, students must arrange their own travel home.</strong></li>
-                        <li>Parents/guardians may pick up their child directly from the COMFEST venue.</li>
+                    <h3 class="text-xl font-bold text-white mb-4">Campus Rules</h3>
+                    <ul class="text-sm text-slate-300 space-y-3">
+                        <li class="flex items-start gap-3"><i class="fas fa-check text-emerald-400 mt-1"></i> <span>Remain within the host-school campus. Do not leave except in emergencies.</span></li>
+                        <li class="flex items-start gap-3"><i class="fas fa-check text-emerald-400 mt-1"></i> <span>Report to your event venue at least 10 minutes in advance.</span></li>
+                        <li class="flex items-start gap-3"><i class="fas fa-check text-emerald-400 mt-1"></i> <span>Carry your required COMFEST identity card whenever applicable.</span></li>
                     </ul>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="why-participate" class="py-16 relative">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-3xl font-display font-bold text-white text-center mb-10">WHY SHOULD YOU TAKE PART?</h2>
+    <section class="py-20 relative overflow-hidden">
+        <!-- Abstract gradient blob -->
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl h-64 bg-brand-cyan/5 blur-[100px] rounded-full pointer-events-none"></div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <h2 class="text-2xl md:text-4xl font-display font-bold text-center text-white mb-12">WHY SHOULD YOU TAKE PART?</h2>
             
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-8">
                 <div class="text-center p-4">
-                    <div class="text-3xl text-comfest-cyan mb-3"><i class="fas fa-users"></i></div>
+                    <div class="w-16 h-16 mx-auto rounded-full bg-slate-800/50 flex items-center justify-center text-2xl text-white mb-4 border border-white/5"><i class="fas fa-globe"></i></div>
                     <h4 class="text-white font-bold mb-2">Compete & Connect</h4>
-                    <p class="text-sm text-slate-400">Compete with students from other schools and experience a massive student-organized festival.</p>
+                    <p class="text-xs sm:text-sm text-slate-400">Compete with students from other schools in a massive festival.</p>
                 </div>
                 <div class="text-center p-4">
-                    <div class="text-3xl text-comfest-cyan mb-3"><i class="fas fa-compass"></i></div>
+                    <div class="w-16 h-16 mx-auto rounded-full bg-slate-800/50 flex items-center justify-center text-2xl text-white mb-4 border border-white/5"><i class="fas fa-lightbulb"></i></div>
                     <h4 class="text-white font-bold mb-2">Explore Interests</h4>
-                    <p class="text-sm text-slate-400">Dive into technology, creativity, literature, business, design, and gaming.</p>
+                    <p class="text-xs sm:text-sm text-slate-400">Dive into tech, creativity, literature, business, and gaming.</p>
                 </div>
                 <div class="text-center p-4">
-                    <div class="text-3xl text-comfest-cyan mb-3"><i class="fas fa-brain"></i></div>
+                    <div class="w-16 h-16 mx-auto rounded-full bg-slate-800/50 flex items-center justify-center text-2xl text-white mb-4 border border-white/5"><i class="fas fa-fire"></i></div>
                     <h4 class="text-white font-bold mb-2">Learn Under Pressure</h4>
-                    <p class="text-sm text-slate-400">Experience competition beyond the classroom and learn through actual live challenges.</p>
+                    <p class="text-xs sm:text-sm text-slate-400">Experience actual live challenges beyond the classroom.</p>
                 </div>
                 <div class="text-center p-4">
-                    <div class="text-3xl text-comfest-cyan mb-3"><i class="fas fa-school"></i></div>
-                    <h4 class="text-white font-bold mb-2">Represent Your School</h4>
-                    <p class="text-sm text-slate-400">Work in teams, build your confidence, and proudly represent your school on a major platform.</p>
+                    <div class="w-16 h-16 mx-auto rounded-full bg-slate-800/50 flex items-center justify-center text-2xl text-white mb-4 border border-white/5"><i class="fas fa-flag"></i></div>
+                    <h4 class="text-white font-bold mb-2">Represent School</h4>
+                    <p class="text-xs sm:text-sm text-slate-400">Work in teams and represent your school proudly.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="events" class="py-16 bg-comfest-blue/30 border-t border-slate-800">
+    <section id="events" class="py-24 bg-brand-dark relative z-20 border-t border-white/10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-10">
-                <h2 class="text-3xl md:text-4xl font-display font-bold text-white mb-4">EXPLORE COMFEST'26 EVENTS</h2>
-                <p class="text-slate-400 max-w-2xl mx-auto text-sm">Choose based on what you are actually good at or genuinely interested in — not simply because an event sounds impressive. <br/><span class="text-amber-500 text-xs mt-2 block">Note: Some event details are intentionally kept secret by COMFEST and will be revealed on the spot.</span></p>
+            <div class="text-center mb-12">
+                <span class="text-brand-cyan font-bold tracking-widest uppercase text-sm mb-2 block">The Main Arena</span>
+                <h2 class="text-4xl md:text-6xl font-display font-black text-white mb-6">EXPLORE EVENTS</h2>
+                <p class="text-slate-400 max-w-2xl mx-auto text-base">Choose based on what you are actually good at or genuinely interested in — not simply because an event sounds impressive.</p>
+                <div class="mt-4 inline-flex items-center gap-2 bg-amber-500/10 border border-amber-500/20 px-4 py-2 rounded-lg text-amber-400 text-xs sm:text-sm">
+                    <i class="fas fa-info-circle"></i>
+                    <span>Some event details are intentionally kept secret and will be revealed on the spot.</span>
+                </div>
             </div>
 
-            <!-- Search and Filters -->
-            <div class="mb-8 space-y-4">
-                <div class="relative max-w-md mx-auto">
-                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <!-- Controls -->
+            <div class="mb-10 space-y-6">
+                <!-- Search -->
+                <div class="relative max-w-xl mx-auto">
+                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                         <i class="fas fa-search text-slate-500"></i>
                     </div>
-                    <input type="text" id="searchInput" placeholder="Search events (e.g., Robot, Debate, Code)..." class="block w-full pl-10 pr-3 py-3 border border-slate-700 rounded-xl leading-5 bg-slate-800/80 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-comfest-cyan focus:border-comfest-cyan sm:text-sm transition">
+                    <input type="text" id="searchInput" placeholder="Search events (e.g., Debate, Robot, Code)..." class="block w-full pl-12 pr-4 py-4 border border-slate-700 hover:border-slate-500 rounded-2xl bg-slate-800/50 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-cyan focus:border-transparent transition-all shadow-inner">
                 </div>
 
-                <!-- Filter Chips -->
-                <div class="flex overflow-x-auto no-scrollbar space-x-2 pb-2 justify-start md:justify-center" id="filterContainer">
-                    <button class="filter-btn active whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-bold bg-comfest-cyan text-slate-900 transition" data-filter="All">All Events</button>
-                    <button class="filter-btn whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 transition border border-slate-700" data-filter="Tech">Tech / Coding</button>
-                    <button class="filter-btn whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 transition border border-slate-700" data-filter="Robotics">Robotics</button>
-                    <button class="filter-btn whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 transition border border-slate-700" data-filter="Brain">Brain / Logic</button>
-                    <button class="filter-btn whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 transition border border-slate-700" data-filter="Creative">Creative / Design</button>
-                    <button class="filter-btn whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 transition border border-slate-700" data-filter="Visual">Visual Media</button>
-                    <button class="filter-btn whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 transition border border-slate-700" data-filter="Stage">Performing Arts</button>
-                    <button class="filter-btn whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 transition border border-slate-700" data-filter="Language">Comm / Debate</button>
-                    <button class="filter-btn whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 transition border border-slate-700" data-filter="Business">Business</button>
-                    <button class="filter-btn whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 transition border border-slate-700" data-filter="Games">Games & Surprise</button>
+                <!-- Filters -->
+                <div class="flex overflow-x-auto no-scrollbar space-x-3 pb-2 pt-2 justify-start lg:justify-center px-2" id="filterContainer">
+                    <button class="filter-btn active whitespace-nowrap px-5 py-2.5 rounded-xl text-sm font-bold bg-white text-brand-dark shadow-[0_0_15px_rgba(255,255,255,0.2)] transition-all transform hover:-translate-y-0.5" data-filter="All">All Events</button>
+                    <button class="filter-btn whitespace-nowrap px-5 py-2.5 rounded-xl text-sm font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 transition-all border border-slate-700" data-filter="Tech">Tech / Coding</button>
+                    <button class="filter-btn whitespace-nowrap px-5 py-2.5 rounded-xl text-sm font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 transition-all border border-slate-700" data-filter="Robotics">Robotics</button>
+                    <button class="filter-btn whitespace-nowrap px-5 py-2.5 rounded-xl text-sm font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 transition-all border border-slate-700" data-filter="Brain">Brain / Logic</button>
+                    <button class="filter-btn whitespace-nowrap px-5 py-2.5 rounded-xl text-sm font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 transition-all border border-slate-700" data-filter="Creative">Creative / Design</button>
+                    <button class="filter-btn whitespace-nowrap px-5 py-2.5 rounded-xl text-sm font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 transition-all border border-slate-700" data-filter="Visual">Visual Media</button>
+                    <button class="filter-btn whitespace-nowrap px-5 py-2.5 rounded-xl text-sm font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 transition-all border border-slate-700" data-filter="Stage">Performing Arts</button>
+                    <button class="filter-btn whitespace-nowrap px-5 py-2.5 rounded-xl text-sm font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 transition-all border border-slate-700" data-filter="Language">Comm / Debate</button>
+                    <button class="filter-btn whitespace-nowrap px-5 py-2.5 rounded-xl text-sm font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 transition-all border border-slate-700" data-filter="Business">Business</button>
+                    <button class="filter-btn whitespace-nowrap px-5 py-2.5 rounded-xl text-sm font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 transition-all border border-slate-700" data-filter="Games">Games & Surprise</button>
                 </div>
             </div>
 
             <!-- Event Grid -->
-            <div id="eventsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Events injected via JS -->
+            <div id="eventsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 relative">
+                <!-- Injected via JS -->
             </div>
             
-            <div id="noResults" class="hidden text-center py-10">
-                <i class="fas fa-ghost text-4xl text-slate-600 mb-3"></i>
-                <h3 class="text-lg font-medium text-white">No events found</h3>
-                <p class="text-slate-400 text-sm">Try adjusting your search or filters.</p>
+            <!-- Empty State -->
+            <div id="noResults" class="hidden text-center py-20 bg-slate-900/50 rounded-3xl border border-dashed border-slate-700">
+                <div class="w-20 h-20 bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-4 text-slate-500 text-3xl">
+                    <i class="fas fa-search-minus"></i>
+                </div>
+                <h3 class="text-xl font-bold text-white mb-2">No events found</h3>
+                <p class="text-slate-400">Try adjusting your search or category filters.</p>
             </div>
         </div>
     </section>
 
-    <div id="eventModal" class="fixed inset-0 z-50 hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-        <!-- Backdrop -->
-        <div class="fixed inset-0 bg-comfest-navy/90 backdrop-blur-sm transition-opacity" aria-hidden="true" onclick="closeModal()"></div>
-        
-        <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
-            <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-                <!-- Modal Panel -->
-                <div class="relative transform overflow-hidden rounded-2xl bg-slate-900 text-left shadow-2xl transition-all sm:my-8 sm:w-full sm:max-w-3xl border border-slate-700 flex flex-col max-h-[90vh]">
-                    
-                    <!-- Modal Header -->
-                    <div class="bg-slate-800 px-4 py-4 sm:px-6 flex justify-between items-start border-b border-slate-700 shrink-0">
-                        <div>
-                            <div class="flex items-center gap-2 mb-1">
-                                <span id="modalNum" class="text-xs font-bold bg-slate-700 text-white px-2 py-0.5 rounded">00</span>
-                                <span id="modalCategory" class="text-xs font-bold text-comfest-cyan uppercase tracking-wider">CATEGORY</span>
-                            </div>
-                            <h3 class="text-2xl font-display font-black text-white leading-tight" id="modalTitle">Event Title</h3>
-                            <p id="modalSubtitle" class="text-sm text-slate-400 mt-0.5">Subtitle</p>
-                        </div>
-                        <button onclick="closeModal()" class="text-slate-400 hover:text-white transition bg-slate-700/50 hover:bg-slate-700 rounded-full w-8 h-8 flex items-center justify-center focus:outline-none">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-
-                    <!-- Modal Body (Scrollable) -->
-                    <div class="px-4 py-5 sm:p-6 overflow-y-auto custom-scrollbar flex-grow">
-                        <!-- Quick Stats Bar -->
-                        <div class="grid grid-cols-3 gap-2 mb-6 bg-slate-800/50 rounded-xl p-3 border border-slate-700">
-                            <div class="text-center">
-                                <p class="text-[10px] text-slate-500 uppercase font-bold tracking-wider mb-1">Participants</p>
-                                <p id="modalPax" class="text-sm font-bold text-white"><i class="fas fa-users text-slate-400 mr-1"></i> -</p>
-                            </div>
-                            <div class="text-center border-x border-slate-700">
-                                <p class="text-[10px] text-slate-500 uppercase font-bold tracking-wider mb-1">Device</p>
-                                <p id="modalDevice" class="text-sm font-bold text-white">-</p>
-                            </div>
-                            <div class="text-center">
-                                <p class="text-[10px] text-slate-500 uppercase font-bold tracking-wider mb-1">Time</p>
-                                <p id="modalTime" class="text-sm font-bold text-white"><i class="far fa-clock text-slate-400 mr-1"></i> -</p>
-                            </div>
-                        </div>
-
-                        <!-- Dynamic Content Container -->
-                        <div id="modalContent" class="space-y-6 text-sm text-slate-300">
-                            <!-- Injected by JS -->
-                        </div>
-                    </div>
-
-                    <!-- Modal Footer -->
-                    <div class="bg-slate-800 px-4 py-4 sm:flex sm:flex-row-reverse sm:px-6 border-t border-slate-700 shrink-0">
-                        <button type="button" onclick="scrollToChecklist(); closeModal();" class="inline-flex w-full justify-center rounded-lg bg-comfest-cyan px-4 py-2.5 text-sm font-bold text-slate-900 shadow-sm hover:bg-cyan-500 sm:ml-3 sm:w-auto transition">
-                            Register For COMFEST'26
-                        </button>
-                        <button type="button" onclick="closeModal()" class="mt-3 inline-flex w-full justify-center rounded-lg bg-slate-700 px-4 py-2.5 text-sm font-bold text-white shadow-sm hover:bg-slate-600 sm:mt-0 sm:w-auto transition">
-                            Back to Events
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <script>
         const eventsData = [
             {
-                id: "01",
-                name: "CF Broadway",
-                subtitle: "Mega Event — Theatre",
-                category: "Stage",
-                participants: "4–7",
-                device: "YES",
-                time: "4 Hours",
-                type: "Theatre",
+                id: "01", name: "CF Broadway", subtitle: "Mega Event — Theatre", category: "Stage",
+                participants: "4–7", device: "YES", time: "4 Hours", type: "Theatre", icon: "fa-theater-masks",
                 overview: "Enact a 4-minute scene from an allotted Broadway musical or play strictly in English, incorporating a surprise prop.",
                 howItWorks: [
                     "Each team is allotted a Broadway musical or play.",
@@ -427,17 +469,12 @@
                 submission: "Any audio tracks must be submitted at least 30 minutes before the event.",
                 judging: "Judges and organizing committee decisions are final and binding.",
                 example: "If your team is given an unexpected object, that object should become an important part of your performance rather than simply appearing once.",
-                bestFor: "Students interested in acting, directing, stagecraft, and creative storytelling."
+                bestFor: "Students interested in acting, directing, stagecraft, and creative storytelling.",
+                prep: "Practice acting, voice projection, blocking (deciding where actors stand/move on stage), and characterization."
             },
             {
-                id: "02",
-                name: "Gambit",
-                subtitle: "Event X",
-                category: "Games",
-                participants: "2",
-                device: "YES",
-                time: "2 Hours 30 Minutes",
-                type: "Surprise",
+                id: "02", name: "Gambit", subtitle: "Event X", category: "Games",
+                participants: "2", device: "YES", time: "2 Hours 30 Mins", type: "Surprise", icon: "fa-question-circle",
                 overview: "A complete surprise event where all details and tasks are disclosed on the spot.",
                 howItWorks: [
                     "This is a surprise event. Further details will be announced on the spot."
@@ -446,21 +483,13 @@
                     "[OFFICIAL 2026 RULE] Details, judging criteria, and event variations will be declared on the spot.",
                     "[OFFICIAL 2026 RULE] Schools are requested to send their best two all-rounders."
                 ],
-                restrictions: [],
-                submission: "Not specified in the 2026 brochure.",
-                judging: "Criteria will be declared on the spot.",
-                example: "",
-                bestFor: "Versatile all-rounders who can adapt quickly to unpredictable challenges."
+                restrictions: [], submission: "", judging: "Criteria will be declared on the spot.",
+                example: "", bestFor: "Versatile all-rounders who can adapt quickly to unpredictable challenges.",
+                prep: "Do not try to guess the format. Build adaptability and be ready to read instructions carefully on the spot."
             },
             {
-                id: "03",
-                name: "Junk's The Punk",
-                subtitle: "Treasure Hunt",
-                category: "Games",
-                participants: "2",
-                device: "NO",
-                time: "1 Hour + 2 Hours",
-                type: "Offline Hunt",
+                id: "03", name: "Junk's The Punk", subtitle: "Treasure Hunt", category: "Games",
+                participants: "2", device: "NO", time: "1h + 2h", type: "Offline Hunt", icon: "fa-map",
                 overview: "A two-round event starting with time-limit tasks and advancing to a traditional treasure hunt.",
                 howItWorks: [
                     "ROUND 1: Teams complete tasks within a time limit (e.g., puzzles or locating objects). Exact details announced during the event.",
@@ -474,20 +503,14 @@
                     "Disclosure of clues to other parties can result in disqualification.",
                     "Exceeding designated event boundaries can result in disqualification."
                 ],
-                submission: "Not specified in the 2026 brochure.",
-                judging: "Not specified in the 2026 brochure.",
-                example: "",
-                bestFor: "Quick thinkers, problem solvers, and students who enjoy physical logic puzzles."
+                submission: "", judging: "",
+                example: "Your team may have to solve a clue, use the answer to find something, and then use that finding to reach the next step.",
+                bestFor: "Quick thinkers, problem solvers, and students who enjoy physical logic puzzles.",
+                prep: ""
             },
             {
-                id: "04",
-                name: "RoboWars",
-                subtitle: "Robot Race and Robot War",
-                category: "Robotics",
-                participants: "2",
-                device: "YES",
-                time: "4 Hours",
-                type: "Robotics Combat & Race",
+                id: "04", name: "RoboWars", subtitle: "Robot Race and Robot War", category: "Robotics",
+                participants: "2", device: "YES", time: "4 Hours", type: "Robotics", icon: "fa-robot",
                 overview: "Design and race a robot through an obstacle course, followed by a combat arena battle.",
                 howItWorks: [
                     "ROUND 1 (ROBOT RACE): The bot must cross an obstacle track (may contain stones, sand, elevation, water, fire, etc.). Further rules revealed at the event.",
@@ -505,20 +528,14 @@
                     "Latecomers will be disqualified.",
                     "JCC is not responsible for damage to the bot."
                 ],
-                submission: "Not specified in the 2026 brochure.",
-                judging: "Not specified in the 2026 brochure.",
+                submission: "", judging: "",
                 example: "Race through obstacles -> qualify -> battle another robot.",
-                bestFor: "Robotics enthusiasts, engineers, and builders."
+                bestFor: "Robotics enthusiasts, engineers, and builders.",
+                prep: "Test your robot repeatedly. Check dimensions and weight! Carry required power supplies/batteries."
             },
             {
-                id: "05",
-                name: "Crack D-Code",
-                subtitle: "Debugging",
-                category: "Tech",
-                participants: "2",
-                device: "NO",
-                time: "1.5h + 1.5h",
-                type: "Code Logic",
+                id: "05", name: "Crack D-Code", subtitle: "Debugging", category: "Tech",
+                participants: "2", device: "NO", time: "1.5h + 1.5h", type: "Code Logic", icon: "fa-bug",
                 overview: "Analyze and fix programming problems on paper without using a computer.",
                 howItWorks: [
                     "Event has two rounds: Preliminary and Final.",
@@ -532,20 +549,14 @@
                     "Computer is NOT used.",
                     "Inappropriate or unwarranted comments on answer sheets can cause disqualification."
                 ],
-                submission: "Not specified in the 2026 brochure.",
-                judging: "Accuracy marks are at the event supervisor's discretion.",
-                example: "",
-                bestFor: "Coders with strong code-reading skills and logical deduction."
+                submission: "", judging: "Accuracy marks are at the event supervisor's discretion.",
+                example: "You may be given broken or scrambled code and have to figure out what is wrong or how it should be corrected — without running it.",
+                bestFor: "Coders with strong code-reading skills and logical deduction.",
+                prep: "Practice reading and fixing broken code on paper. Revise Java/Python syntax."
             },
             {
-                id: "06",
-                name: "Wiz-Pro",
-                subtitle: "Programming",
-                category: "Tech",
-                participants: "1",
-                device: "NO",
-                time: "2 Hours + 2 Hours",
-                type: "Competitive Coding",
+                id: "06", name: "Wiz-Pro", subtitle: "Programming", category: "Tech",
+                participants: "1", device: "NO", time: "2h + 2h", type: "Coding", icon: "fa-code",
                 overview: "A solo competitive programming challenge across two rounds.",
                 howItWorks: [
                     "Two rounds: Preliminary and Final.",
@@ -557,21 +568,13 @@
                     "[OFFICIAL 2026 RULE] Java or Python. Participant must choose one language and stick with it throughout.",
                     "[OFFICIAL 2026 RULE] Tiebreaker rules for boundary rankers will be announced on the spot."
                 ],
-                restrictions: [],
-                submission: "Not specified in the 2026 brochure.",
-                judging: "Dynamic marking based on problem and completion time.",
-                example: "",
-                bestFor: "Strong competitive programmers comfortable under pressure."
+                restrictions: [], submission: "", judging: "Dynamic marking based on problem and completion time.",
+                example: "", bestFor: "Strong competitive programmers comfortable under pressure.",
+                prep: "Practice timed algorithmic coding."
             },
             {
-                id: "07",
-                name: "Code Baton",
-                subtitle: "Split-Brain Programming",
-                category: "Tech",
-                participants: "2",
-                device: "NO",
-                time: "1 Hour 30 Minutes",
-                type: "Relay Coding",
+                id: "07", name: "Code Baton", subtitle: "Split-Brain Programming", category: "Tech",
+                participants: "2", device: "NO", time: "1.5 Hours", type: "Relay Coding", icon: "fa-people-arrows",
                 overview: "A programming challenge where a pair shares one terminal but cannot freely communicate, working in strict shifts.",
                 howItWorks: [
                     "Only one member inside the workstation laboratory at a time.",
@@ -587,20 +590,14 @@
                     "Physical media, written documentation, external storage, and digital files CANNOT be exchanged.",
                     "Violation results in immediate team forfeiture."
                 ],
-                submission: "Not specified in the 2026 brochure.",
-                judging: "Not specified in the 2026 brochure.",
+                submission: "", judging: "",
                 example: "Player A codes -> 10 minutes end -> Player A verbally explains the current state at the door -> 60-second rotation -> Player B continues.",
-                bestFor: "Coders with excellent communication, memory, and teamwork."
+                bestFor: "Coders with excellent communication, memory, and teamwork.",
+                prep: "Practice explaining code verbally and picking up from where someone else left off."
             },
             {
-                id: "08",
-                name: "Mechanoid",
-                subtitle: "Autonomous Robot Race",
-                category: "Robotics",
-                participants: "2",
-                device: "YES",
-                time: "2 Hours",
-                type: "Autonomous Speed Trial",
+                id: "08", name: "Mechanoid", subtitle: "Autonomous Robot Race", category: "Robotics",
+                participants: "2", device: "YES", time: "2 Hours", type: "Robotics", icon: "fa-car-side",
                 overview: "A fully autonomous robotic speed trial on a track with a black line.",
                 howItWorks: [
                     "The track is a white surface with a 2.5 cm black line featuring sharp 90-degree turns, curves, small breaks/missing lines, and dead ends.",
@@ -619,20 +616,13 @@
                     "Leaving line completely or failing to recover within safety window = disqualification.",
                     "External control = disqualification."
                 ],
-                submission: "Not specified in the 2026 brochure.",
-                judging: "Fastest time with least errors wins.",
-                example: "",
-                bestFor: "Students skilled in microcontrollers, sensors, and robotics programming."
+                submission: "", judging: "Fastest time with least errors wins.",
+                example: "", bestFor: "Students skilled in microcontrollers, sensors, and robotics programming.",
+                prep: "Test autonomy thoroughly. Build strong line-following logic for breaks and sharp turns."
             },
             {
-                id: "09",
-                name: "Pandora's Box",
-                subtitle: "Surprise Software",
-                category: "Tech",
-                participants: "2",
-                device: "NO",
-                time: "30 Min + 1.5 Hours",
-                type: "Adaptability Challenge",
+                id: "09", name: "Pandora's Box", subtitle: "Surprise Software", category: "Tech",
+                participants: "2", device: "NO", time: "30m + 1.5h", type: "Adaptability", icon: "fa-box-open",
                 overview: "A software challenge where the application is revealed on the spot, and tools may break randomly.",
                 howItWorks: [
                     "Software/application is revealed on the spot.",
@@ -643,21 +633,14 @@
                 rules: [
                     "[OFFICIAL 2026 RULE] No request for grace marking, or change of application/assignment will be entertained."
                 ],
-                restrictions: [],
-                submission: "Not specified in the 2026 brochure.",
-                judging: "Not specified in the 2026 brochure.",
+                restrictions: [], submission: "", judging: "",
                 example: "A global text-formatting engine could be disabled, forcing teams to use alternative methods such as vector shape-masking.",
-                bestFor: "Highly adaptable designers/creators."
+                bestFor: "Highly adaptable designers/creators.",
+                prep: "Learn the fundamentals of design/creation rather than relying heavily on one specific tool feature."
             },
             {
-                id: "10",
-                name: "Draft 1.0",
-                subtitle: "Prompt-Engineering",
-                category: "Tech",
-                participants: "1",
-                device: "NO",
-                time: "2 Hours 30 Minutes",
-                type: "AI Prompting",
+                id: "10", name: "Draft 1.0", subtitle: "Prompt-Engineering", category: "Tech",
+                participants: "1", device: "NO", time: "2.5 Hours", type: "AI", icon: "fa-microchip",
                 overview: "Write precise prompts across 3 stages to generate specific outputs using pre-declared AI applications.",
                 howItWorks: [
                     "3 stages.",
@@ -668,21 +651,15 @@
                     "[OFFICIAL 2026 RULE] Prompts may ONLY be run on AI applications submitted by the participant.",
                     "[OFFICIAL 2026 RULE] Participant must submit a list of 3 or fewer AI applications by 10 October 2026, 11:59 PM."
                 ],
-                restrictions: [],
-                submission: "Submit AI list to info@comfest.in | Subject: 'Draft 1.0 - School Name' | Include participant names.",
+                restrictions: [], 
+                submission: "Deadline: 10 Oct 2026, 11:59 PM | Email: info@comfest.in | Subject: 'Draft 1.0 - School Name' | Include participant names.",
                 judging: "Judging based on similarity, creativity, and accuracy.",
-                example: "",
-                bestFor: "AI users, prompt engineers, and creative thinkers."
+                example: "", bestFor: "AI users, prompt engineers, and creative thinkers.",
+                prep: "Practice achieving highly specific outputs using different AI models."
             },
             {
-                id: "11",
-                name: "Athletic Arithmetic",
-                subtitle: "Rapid Fire Mathematics",
-                category: "Brain",
-                participants: "1",
-                device: "NO",
-                time: "1h + 30m + 1h",
-                type: "Math & Strategy",
+                id: "11", name: "Athletic Arithmetic", subtitle: "Rapid Fire Mathematics", category: "Brain",
+                participants: "1", device: "NO", time: "1h + 30m + 1h", type: "Math", icon: "fa-calculator",
                 overview: "A fast-paced math competition featuring a strategic wagering buzzer round.",
                 howItWorks: [
                     "PRELIMINARY: BODMAS, analytical questions, basic terminology. Display time depends on difficulty.",
@@ -695,21 +672,14 @@
                     "[OFFICIAL 2026 RULE] If opposing team intercepts and answers correctly first, they get +1 point, and wagering team gets -1.",
                     "[OFFICIAL 2026 RULE] If nobody uses pre-buzzer, first correct responder gets +1."
                 ],
-                restrictions: [],
-                submission: "Not specified in the 2026 brochure.",
-                judging: "Speed and accuracy.",
+                restrictions: [], submission: "", judging: "Speed and accuracy.",
                 example: "If you wager 3 points and answer correctly -> +3. If wrong -> -3.",
-                bestFor: "Fast, accurate mathematicians who can handle strategic pressure."
+                bestFor: "Fast, accurate mathematicians who can handle strategic pressure.",
+                prep: ""
             },
             {
-                id: "12",
-                name: "SYTYCS",
-                subtitle: "Logical Reasoning",
-                category: "Brain",
-                participants: "2",
-                device: "NO",
-                time: "2 Hours + 2 Hours",
-                type: "Logic & Math",
+                id: "12", name: "SYTYCS", subtitle: "Logical Reasoning", category: "Brain",
+                participants: "2", device: "NO", time: "2h + 2h", type: "Logic", icon: "fa-brain",
                 overview: "Two rounds of questions involving logic, reasoning, and mathematical skills.",
                 howItWorks: [
                     "Two rounds.",
@@ -722,20 +692,11 @@
                 restrictions: [
                     "Unnecessary scratch work on the answer sheet can lead to disqualification."
                 ],
-                submission: "Not specified in the 2026 brochure.",
-                judging: "Not specified in the 2026 brochure.",
-                example: "",
-                bestFor: "Logical and analytical thinkers."
+                submission: "", judging: "", example: "", bestFor: "Logical and analytical thinkers.", prep: ""
             },
             {
-                id: "13",
-                name: "Quizart",
-                subtitle: "Cryptic Hunt",
-                category: "Brain",
-                participants: "2",
-                device: "YES",
-                time: "Multi-day Online",
-                type: "Online Hunt",
+                id: "13", name: "Quizart", subtitle: "Cryptic Hunt", category: "Brain",
+                participants: "2", device: "YES", time: "Online", type: "Online Hunt", icon: "fa-user-secret",
                 overview: "An intense online cryptic hunt where everything on screen might be a clue.",
                 howItWorks: [
                     "Event runs online from 12:00 AM, 24 September 2026 to 12:00 AM, 14 October 2026.",
@@ -747,21 +708,12 @@
                     "[OFFICIAL 2026 RULE] Numbers must be written in words.",
                     "[OFFICIAL 2026 RULE] No spaces in answers."
                 ],
-                restrictions: [],
-                submission: "Online platform.",
-                judging: "Not specified in the 2026 brochure.",
-                example: "AK 47 -> akfourseven",
-                bestFor: "Internet detectives and persistent puzzle solvers."
+                restrictions: [], submission: "Online platform.", judging: "",
+                example: "AK 47 -> akfourseven", bestFor: "Internet detectives and persistent puzzle solvers.", prep: ""
             },
             {
-                id: "14",
-                name: "IT Quest",
-                subtitle: "Quizzing",
-                category: "Brain",
-                participants: "2",
-                device: "NO",
-                time: "1 Hour + 2 Hours",
-                type: "IT Trivia",
+                id: "14", name: "IT Quest", subtitle: "Quizzing", category: "Brain",
+                participants: "2", device: "NO", time: "1h + 2h", type: "Quiz", icon: "fa-question",
                 overview: "An IT quiz featuring a high-stakes 'Data-Drain' mechanic in the finals.",
                 howItWorks: [
                     "Topics: software, hardware, IT buzzwords, acronyms, abbreviations, recent tech developments, eminent personalities, IT companies, etc.",
@@ -773,21 +725,12 @@
                     "[OFFICIAL 2026 RULE] Correct Data-Drain answer siphons points from the current leading team's scoreboard.",
                     "[OFFICIAL 2026 RULE] Incorrect Data-Drain causes points to be drained from their own score and distributed to the rest of the board."
                 ],
-                restrictions: [],
-                submission: "Not specified in the 2026 brochure.",
-                judging: "Not specified in the 2026 brochure.",
-                example: "",
-                bestFor: "Tech-savvy students with deep general knowledge and stage confidence."
+                restrictions: [], submission: "", judging: "", example: "", 
+                bestFor: "Tech-savvy students with deep general knowledge and stage confidence.", prep: ""
             },
             {
-                id: "15",
-                name: "The Third Front",
-                subtitle: "Graphic Designing",
-                category: "Creative",
-                participants: "4",
-                device: "YES",
-                time: "3 Hours + 1 Hour",
-                type: "Ad & Mock-up Design",
+                id: "15", name: "The Third Front", subtitle: "Graphic Designing", category: "Creative",
+                participants: "4", device: "YES", time: "3h + 1h", type: "Design", icon: "fa-pen-nib",
                 overview: "Create an advertisement and brand mock-ups, then pitch your designs.",
                 howItWorks: [
                     "Brand profile is provided along with pre-allotted brand images/resources.",
@@ -800,20 +743,12 @@
                     "Reference images, templates, AI-generated design material, and pre-designed material are STRICTLY PROHIBITED.",
                     "Violation can lead to disqualification."
                 ],
-                submission: "Not specified in the 2026 brochure.",
-                judging: "Ideation, execution strategy, creativity, and spontaneity during Q&A.",
-                example: "",
-                bestFor: "Graphic designers and strategic brand thinkers."
+                submission: "", judging: "Ideation, execution strategy, creativity, and spontaneity during Q&A.",
+                example: "", bestFor: "Graphic designers and strategic brand thinkers.", prep: ""
             },
             {
-                id: "16",
-                name: "Flip the Script",
-                subtitle: "Branding and Visual Identity",
-                category: "Creative",
-                participants: "2–4",
-                device: "YES",
-                time: "3 Hours",
-                type: "Rebranding Challenge",
+                id: "16", name: "Flip the Script", subtitle: "Branding & Visual Identity", category: "Creative",
+                participants: "2–4", device: "YES", time: "3 Hours", type: "Design", icon: "fa-palette",
                 overview: "Redesign COMFEST's visual identity based on a randomly drawn theme.",
                 howItWorks: [
                     "Redesign at least TWO of: COMFEST Poster, COMFEST Logo, JCC Jerseys/Merchandise, Webpage Design.",
@@ -827,20 +762,11 @@
                 restrictions: [
                     "Reference images, templates, AI-generated design material, and pre-designed material are STRICTLY PROHIBITED."
                 ],
-                submission: "Not specified in the 2026 brochure.",
-                judging: "Not specified in the 2026 brochure.",
-                example: "",
-                bestFor: "Visual identity designers and creative thinkers."
+                submission: "", judging: "", example: "", bestFor: "Visual identity designers and creative thinkers.", prep: ""
             },
             {
-                id: "17",
-                name: "J-A-M on H-A-M",
-                subtitle: "Just A Minute on Half A Minute",
-                category: "Stage",
-                participants: "1",
-                device: "NO",
-                time: "2 Hours",
-                type: "Public Speaking",
+                id: "17", name: "J-A-M on H-A-M", subtitle: "Just A Minute on Half A Minute", category: "Stage",
+                participants: "1", device: "NO", time: "2 Hours", type: "Speaking", icon: "fa-microphone",
                 overview: "A fast-paced speaking competition where participants can interrupt each other.",
                 howItWorks: [
                     "ROUND 1: Half-minute speaking.",
@@ -853,21 +779,12 @@
                     "[OFFICIAL 2026 RULE] If valid, interrupter speaks for the remaining time from where the previous speaker stopped.",
                     "[OFFICIAL 2026 RULE] Marking scheme disclosed on the spot."
                 ],
-                restrictions: [],
-                submission: "Not specified in the 2026 brochure.",
-                judging: "Marking scheme disclosed on the spot.",
-                example: "",
-                bestFor: "Highly confident speakers and quick thinkers."
+                restrictions: [], submission: "", judging: "Marking scheme disclosed on the spot.",
+                example: "", bestFor: "Highly confident speakers and quick thinkers.", prep: ""
             },
             {
-                id: "18",
-                name: "Journaltopia",
-                subtitle: "Report Writing",
-                category: "Language",
-                participants: "1",
-                device: "YES",
-                time: "Online Submission",
-                type: "Online Writing",
+                id: "18", name: "Journaltopia", subtitle: "Report Writing", category: "Language",
+                participants: "1", device: "YES", time: "Online", type: "Writing", icon: "fa-file-alt",
                 overview: "Write a 1000-word report based on a provided problem statement.",
                 howItWorks: [
                     "One report per participant.",
@@ -881,19 +798,11 @@
                     "Use of AI indicated in entry results in immediate disqualification."
                 ],
                 submission: "Deadline: 6 Oct 2026, 11:59 PM | Email: info@comfest.in | Subject: 'Journaltopia - School Name' | Include participant names.",
-                judging: "Not specified in the 2026 brochure.",
-                example: "",
-                bestFor: "Strong writers and analytical thinkers."
+                judging: "", example: "", bestFor: "Strong writers and analytical thinkers.", prep: ""
             },
             {
-                id: "19",
-                name: "Invert Oxford",
-                subtitle: "Debate",
-                category: "Language",
-                participants: "1",
-                device: "NO",
-                time: "1.5 Hours + 2 Hours",
-                type: "Multi-Format Debate",
+                id: "19", name: "Invert Oxford", subtitle: "Debate", category: "Language",
+                participants: "1", device: "NO", time: "1.5h + 2h", type: "Debate", icon: "fa-comments",
                 overview: "A rigorous three-round debate testing objective analysis, team debate, and rapid stance-switching.",
                 howItWorks: [
                     "ROUND 1 (Exploratory): Newspaper article provided 30 mins before. Objective analysis for max 3 mins.",
@@ -904,21 +813,13 @@
                     "[OFFICIAL 2026 RULE] Block and Tackle: Begin 'for' the motion. Switch stance when moderator says 'Block'. Return to original stance when moderator says 'Tackle'.",
                     "[OFFICIAL 2026 RULE] Participants are advised to study debate formats and speaker roles."
                 ],
-                restrictions: [],
-                submission: "Not specified in the 2026 brochure.",
-                judging: "Analytical ability, adaptability, logical reasoning, articulation, command over both sides.",
+                restrictions: [], submission: "", judging: "Analytical ability, adaptability, logical reasoning, articulation, command over both sides.",
                 example: "Start FOR -> moderator says BLOCK -> argue AGAINST -> moderator says TACKLE -> return to FOR.",
-                bestFor: "Elite debaters and fast-thinkers."
+                bestFor: "Elite debaters and fast-thinkers.", prep: ""
             },
             {
-                id: "20",
-                name: "Obscura",
-                subtitle: "Black-Out Poetry",
-                category: "Language",
-                participants: "1",
-                device: "NO",
-                time: "2 Hours",
-                type: "Creative Poetry",
+                id: "20", name: "Obscura", subtitle: "Black-Out Poetry", category: "Language",
+                participants: "1", device: "NO", time: "2 Hours", type: "Poetry", icon: "fa-marker",
                 overview: "Create a poem by keeping specific words on a printed page visible and blacking out the rest.",
                 howItWorks: [
                     "Receive a printed page (newspaper, novel, article, or textbook).",
@@ -932,20 +833,13 @@
                 restrictions: [
                     "External words/materials prohibited."
                 ],
-                submission: "Not specified in the 2026 brochure.",
-                judging: "Language, impact, visual presentation, neatness, clarity, creative negative space, aesthetic balance.",
+                submission: "", judging: "Language, impact, visual presentation, neatness, clarity, creative negative space, aesthetic balance.",
                 example: "Keep selected words visible and black out the rest.",
-                bestFor: "Creative writers and visual thinkers."
+                bestFor: "Creative writers and visual thinkers.", prep: ""
             },
             {
-                id: "21",
-                name: "To Be or Not To Be",
-                subtitle: "Drama",
-                category: "Stage",
-                participants: "1",
-                device: "NO",
-                time: "1 Hour",
-                type: "Monologue",
+                id: "21", name: "To Be or Not To Be", subtitle: "Drama", category: "Stage",
+                participants: "1", device: "NO", time: "1 Hour", type: "Drama", icon: "fa-mask",
                 overview: "Perform a memorized speech and instantly shift emotional delivery when prompted.",
                 howItWorks: [
                     "Perform a memorized monologue OR famous speech (from play, movie, historical event) in English.",
@@ -963,17 +857,11 @@
                 submission: "Final script by 9 Oct 2026, 11:59 PM | Email: info@comfest.in | Subject: 'To Be Or Not To Be - School Name' | Include participant names.",
                 judging: "Clarity, memorization, range, transitions, stage presence, creativity, overall impact.",
                 example: "Same memorized speech -> suddenly shift delivery from calm to angry to joyful.",
-                bestFor: "Actors and adaptable public speakers."
+                bestFor: "Actors and adaptable public speakers.", prep: ""
             },
             {
-                id: "22",
-                name: "Strings Attached",
-                subtitle: "Folk Puppetry",
-                category: "Stage",
-                participants: "1–4",
-                device: "NO",
-                time: "1 Hour Final",
-                type: "Puppetry",
+                id: "22", name: "Strings Attached", subtitle: "Folk Puppetry", category: "Stage",
+                participants: "1–4", device: "NO", time: "1h Final", type: "Puppetry", icon: "fa-hands",
                 overview: "A live puppetry performance blending traditional contexts with modern issues.",
                 howItWorks: [
                     "ROUND 1: Online video submission of original folk puppetry. Jury selects entries.",
@@ -991,19 +879,11 @@
                     "External voiceovers, recorded audio, and lip-sync are PROHIBITED."
                 ],
                 submission: "Deadline: 6 Oct 2026, 11:59 PM | Email: info@comfest.in | Subject: 'Strings Attached- School Name' | Include participant names.",
-                judging: "Not specified in the 2026 brochure.",
-                example: "",
-                bestFor: "Storytellers and culturally creative students."
+                judging: "", example: "", bestFor: "Storytellers and culturally creative students.", prep: ""
             },
             {
-                id: "23",
-                name: "Prima Facie",
-                subtitle: "Legal Debate",
-                category: "Language",
-                participants: "1",
-                device: "NO",
-                time: "2.5 Hours",
-                type: "Courtroom Simulation",
+                id: "23", name: "Prima Facie", subtitle: "Legal Debate", category: "Language",
+                participants: "1", device: "NO", time: "2.5 Hours", type: "Law", icon: "fa-gavel",
                 overview: "Analyze a case file and present legal arguments mimicking a courtroom.",
                 howItWorks: [
                     "Receive case file, applicable laws, and legal glossary on the spot.",
@@ -1020,20 +900,12 @@
                 restrictions: [
                     "External sources prohibited and can cause disqualification."
                 ],
-                submission: "Not specified in the 2026 brochure.",
-                judging: "Understanding of case, use of provided laws, logical reasoning, responses to questions.",
-                example: "",
-                bestFor: "Debaters and students interested in law/argumentation."
+                submission: "", judging: "Understanding of case, use of provided laws, logical reasoning, responses to questions.",
+                example: "", bestFor: "Debaters and students interested in law/argumentation.", prep: ""
             },
             {
-                id: "24",
-                name: "Métier Projet",
-                subtitle: "Business Plan",
-                category: "Business",
-                participants: "2",
-                device: "YES",
-                time: "1 Hour + 1 Hour Final",
-                type: "Entrepreneurship",
+                id: "24", name: "Métier Projet", subtitle: "Business Plan", category: "Business",
+                participants: "2", device: "YES", time: "1h + 1h", type: "Business", icon: "fa-chart-line",
                 overview: "Create a comprehensive business plan and pitch it to investor-style judges.",
                 howItWorks: [
                     "PRELIMINARY (Online): Create approx 8–20 page business summary covering implementation, funding, execution, revenue, profit, etc. (Cover/TOC excluded from count).",
@@ -1047,19 +919,13 @@
                 ],
                 restrictions: [],
                 submission: "Deadline: 5 Oct 2026, 11:59 PM | Email: info@comfest.in | Subject: 'Métier Projet - School Name' | Include participant names.",
-                judging: "Innovation, problem identification, feasibility, financial planning. Expected: competitive awareness, growth opportunities, strategic justification.",
+                judging: "Innovation, problem identification, feasibility, financial planning.",
                 example: "Problem -> solution -> customer -> implementation -> funding -> revenue -> profit.",
-                bestFor: "Entrepreneurs and business thinkers."
+                bestFor: "Entrepreneurs and business thinkers.", prep: ""
             },
             {
-                id: "25",
-                name: "Ace the Case",
-                subtitle: "Case Analysis",
-                category: "Business",
-                participants: "2",
-                device: "NO",
-                time: "3 Hours",
-                type: "Business Strategy",
+                id: "25", name: "Ace the Case", subtitle: "Case Analysis", category: "Business",
+                participants: "2", device: "NO", time: "3 Hours", type: "Strategy", icon: "fa-briefcase",
                 overview: "Analyze a business case, propose a strategic plan, and adapt to a mid-round crisis.",
                 howItWorks: [
                     "Single round.",
@@ -1068,22 +934,14 @@
                     "Plan must include: problem identification, revival/growth plan, key action steps, strategic justification. Flowcharts/timelines optional.",
                     "Mid-round: Crisis twist introduced. Teams must adapt/revise strategy in real time."
                 ],
-                rules: [],
-                restrictions: [],
-                submission: "Not specified in the 2026 brochure.",
+                rules: [], restrictions: [], submission: "",
                 judging: "Depth of analysis, creativity, feasibility, adaptability to crisis.",
                 example: "Identify problem -> propose solution -> explain actions -> crisis occurs -> adapt strategy.",
-                bestFor: "Analytical thinkers and business strategy students."
+                bestFor: "Analytical thinkers and business strategy students.", prep: ""
             },
             {
-                id: "26",
-                name: "Investor Incubator",
-                subtitle: "Stock Market Simulation",
-                category: "Business",
-                participants: "2",
-                device: "NO",
-                time: "3 Hours",
-                type: "Finance Simulation",
+                id: "26", name: "Investor Incubator", subtitle: "Stock Market Simulation", category: "Business",
+                participants: "2", device: "NO", time: "3 Hours", type: "Finance", icon: "fa-chart-bar",
                 overview: "Trade stocks in a simulated market based on rolling news releases.",
                 howItWorks: [
                     "Offline event.",
@@ -1096,21 +954,12 @@
                     "[OFFICIAL 2026 RULE] Participant with highest portfolio balance at end wins.",
                     "[OFFICIAL 2026 RULE] Further rules and procedures are disclosed on event day."
                 ],
-                restrictions: [],
-                submission: "Not specified in the 2026 brochure.",
-                judging: "Highest portfolio balance.",
-                example: "",
-                bestFor: "Students interested in finance, negotiation, and fast decision-making."
+                restrictions: [], submission: "", judging: "Highest portfolio balance.",
+                example: "", bestFor: "Students interested in finance, negotiation, and fast decision-making.", prep: ""
             },
             {
-                id: "27",
-                name: "Pitch Perfect",
-                subtitle: "Selling and Branding",
-                category: "Business",
-                participants: "2",
-                device: "NO",
-                time: "1 Hour + 1 Hour",
-                type: "Marketing",
+                id: "27", name: "Pitch Perfect", subtitle: "Selling and Branding", category: "Business",
+                participants: "2", device: "NO", time: "1h + 1h", type: "Marketing", icon: "fa-bullhorn",
                 overview: "Build a brand around an unconventional product and pitch its concept.",
                 howItWorks: [
                     "Unconventional product assigned one hour before event.",
@@ -1121,21 +970,13 @@
                 rules: [
                     "[OFFICIAL 2026 RULE] Focus is selling the concept, narrative, and perceived value rather than the physical product itself."
                 ],
-                restrictions: [],
-                submission: "Not specified in the 2026 brochure.",
-                judging: "Not specified in the 2026 brochure.",
+                restrictions: [], submission: "", judging: "",
                 example: "Given a strange everyday object -> create a brand, target audience, price, USP and campaign around it.",
-                bestFor: "Sales, marketing, and creative thinkers."
+                bestFor: "Sales, marketing, and creative thinkers.", prep: ""
             },
             {
-                id: "28",
-                name: "Graffiti",
-                subtitle: "Graffiti Making",
-                category: "Creative",
-                participants: "4",
-                device: "NO",
-                time: "4 Hours",
-                type: "Mural Art",
+                id: "28", name: "Graffiti", subtitle: "Graffiti Making", category: "Creative",
+                participants: "4", device: "NO", time: "4 Hours", type: "Art", icon: "fa-spray-can",
                 overview: "Create a 10x10 ft graffiti mural based on a theme.",
                 howItWorks: [
                     "Theme announced after Opening Ceremony on Day 0.",
@@ -1148,20 +989,11 @@
                 restrictions: [
                     "Stencils prohibited."
                 ],
-                submission: "Not specified in the 2026 brochure.",
-                judging: "Not specified in the 2026 brochure.",
-                example: "",
-                bestFor: "Visual artists and painters."
+                submission: "", judging: "", example: "", bestFor: "Visual artists and painters.", prep: "Do not wait until the event to discover you are missing materials."
             },
             {
-                id: "29",
-                name: "Impressions",
-                subtitle: "COMFEST Through Your Eyes",
-                category: "Creative",
-                participants: "1",
-                device: "YES",
-                time: "2 Hours",
-                type: "Sketching",
+                id: "29", name: "Impressions", subtitle: "COMFEST Through Your Eyes", category: "Creative",
+                participants: "1", device: "YES", time: "2 Hours", type: "Sketching", icon: "fa-pencil-alt",
                 overview: "Create a live sketch combining photos you've taken during the festival.",
                 howItWorks: [
                     "Themes: Reminiscence, Chaos and Creativity, Faces of Leadership.",
@@ -1174,20 +1006,11 @@
                 restrictions: [
                     "Paints STRICTLY PROHIBITED."
                 ],
-                submission: "Not specified in the 2026 brochure.",
-                judging: "Not specified in the 2026 brochure.",
-                example: "",
-                bestFor: "Sketch artists and visual storytellers."
+                submission: "", judging: "", example: "", bestFor: "Sketch artists and visual storytellers.", prep: ""
             },
             {
-                id: "30",
-                name: "Picsel",
-                subtitle: "Photography / Photo-Editing",
-                category: "Visual",
-                participants: "1",
-                device: "YES",
-                time: "Round 2: 1 Hour",
-                type: "Photography",
+                id: "30", name: "Picsel", subtitle: "Photography / Photo-Editing", category: "Visual",
+                participants: "1", device: "YES", time: "1h (R2)", type: "Photography", icon: "fa-camera",
                 overview: "Capture COMFEST highlights and perform a live photo-editing challenge.",
                 howItWorks: [
                     "ROUND 1: Submit minimum 15 UNEDITED photos capturing COMFEST highlights starting Day 0. Segregate day-wise. JPEG/JPG only. Submit right after breakfast Day 2 in computer lab by pendrive or Drive link.",
@@ -1201,19 +1024,11 @@
                     "Round 1 edited images = immediate disqualification."
                 ],
                 submission: "See Round details for specific pendrive/Drive timings.",
-                judging: "Not specified in the 2026 brochure.",
-                example: "",
-                bestFor: "Photographers and photo editors."
+                judging: "", example: "", bestFor: "Photographers and photo editors.", prep: "Maintain backups and format cards beforehand."
             },
             {
-                id: "31",
-                name: "Capture the Moment",
-                subtitle: "Videography / Video Editing",
-                category: "Visual",
-                participants: "1",
-                device: "YES",
-                time: "Not specified in brochure",
-                type: "Video Production",
+                id: "31", name: "Capture the Moment", subtitle: "Videography / Video Editing", category: "Visual",
+                participants: "1", device: "YES", time: "N/A", type: "Video", icon: "fa-video",
                 overview: "Shoot and edit a 3–5 minute video capturing major COMFEST highlights.",
                 howItWorks: [
                     "Create video capturing major highlights from Day 0.",
@@ -1231,19 +1046,11 @@
                     "Premade templates strictly prohibited and may lead to disqualification."
                 ],
                 submission: "Submit right after breakfast on Day 2 via pendrive.",
-                judging: "Not specified in the 2026 brochure.",
-                example: "",
-                bestFor: "Videographers and digital storytellers."
+                judging: "", example: "", bestFor: "Videographers and digital storytellers.", prep: "Capture continuously. Do not depend on recreating moments later."
             },
             {
-                id: "32",
-                name: "Blitz",
-                subtitle: "Speed Chess",
-                category: "Games",
-                participants: "1",
-                device: "NO",
-                time: "2 Hours",
-                type: "Rapid Chess",
+                id: "32", name: "Blitz", subtitle: "Speed Chess", category: "Games",
+                participants: "1", device: "NO", time: "2 Hours", type: "Chess", icon: "fa-chess-knight",
                 overview: "A knockout speed chess tournament featuring Chess 960 in the later rounds.",
                 howItWorks: [
                     "Knockout format.",
@@ -1251,23 +1058,14 @@
                     "Draw -> rematch using 2|1 format.",
                     "Semi-finals and finals: Chess 960 regulations, 10-minute rapid format."
                 ],
-                rules: [],
-                restrictions: [],
-                submission: "Not specified in the 2026 brochure.",
-                judging: "Standard chess rules applied via knockout.",
+                rules: [], restrictions: [], submission: "", judging: "Standard chess rules applied via knockout.",
                 example: "5|0 time control as specified in the brochure (Standard chess meaning: 5 minutes per player with no increment).",
-                bestFor: "Chess players comfortable with time pressure."
+                bestFor: "Chess players comfortable with time pressure.", prep: ""
             },
             {
-                id: "33",
-                name: "The Season Begins",
-                subtitle: "Gaming",
-                category: "Games",
-                participants: "1",
-                device: "NO",
-                time: "2.5h + 2.5h + 1h",
-                type: "Esports",
-                overview: "A multi-round gaming tournament where the game title is a surprise. Register for Gaming only if you are skilled in multiple types of games and are comfortable playing across different platforms, including PC, mobile phones, and consoles.",
+                id: "33", name: "The Season Begins", subtitle: "Gaming", category: "Games",
+                participants: "1", device: "NO", time: "2.5h + 2.5h + 1h", type: "Gaming", icon: "fa-gamepad",
+                overview: "A multi-round gaming tournament. The game will be announced on the spot at the venue. Participants should be prepared to play whichever game is announced. Register for Gaming only if you are skilled in multiple types of games and are comfortable playing across different platforms, including PC, mobile phones, and consoles.",
                 howItWorks: [
                     "ROUND 1: 1-vs-1 matches. 50% participants qualify.",
                     "ROUND 2: Teams of two.",
@@ -1277,21 +1075,12 @@
                     "[OFFICIAL 2026 RULE] The game will be announced on the spot at the venue. Participants should be prepared to play whichever game is announced.",
                     "[OFFICIAL 2026 RULE] Platform may be PC, console, or mobile."
                 ],
-                restrictions: [],
-                submission: "Not specified in the 2026 brochure.",
-                judging: "Tournament bracket progression.",
-                example: "",
-                bestFor: "Gamers skilled in multiple types of games and comfortable playing across different platforms, including PC, mobile phones, and consoles."
+                restrictions: [], submission: "", judging: "Tournament bracket progression.",
+                example: "", bestFor: "Gamers skilled in multiple types of games and comfortable playing across different platforms, including PC, mobile phones, and consoles.", prep: ""
             },
             {
-                id: "34",
-                name: "Hackom",
-                subtitle: "24-Hour Hackathon",
-                category: "Tech",
-                participants: "4",
-                device: "YES",
-                time: "24h + 3h presentations",
-                type: "Online Hackathon",
+                id: "34", name: "Hackom", subtitle: "24-Hour Hackathon", category: "Tech",
+                participants: "4", device: "YES", time: "24h + 3h", type: "Hackathon", icon: "fa-laptop-code",
                 overview: "A massive 24-hour online hackathon to build and pitch a working project.",
                 howItWorks: [
                     "Starts: 09:00 AM — 16 October 2026. Ends: 09:00 AM — 17 October 2026.",
@@ -1308,10 +1097,8 @@
                 restrictions: [
                     "External teams from schools not participating in COMFEST require screening/application."
                 ],
-                submission: "Not specified in the 2026 brochure.",
-                judging: "Novelty, clarity, practicality, technical implementation.",
-                example: "",
-                bestFor: "Developers, designers, and tech builders ready for a 24-hour commitment."
+                submission: "", judging: "Novelty, clarity, practicality, technical implementation.",
+                example: "", bestFor: "Developers, designers, and tech builders ready for a 24-hour commitment.", prep: ""
             }
         ];
 
@@ -1323,7 +1110,8 @@
             const filteredEvents = eventsData.filter(event => {
                 const matchesFilter = filter === "All" || event.category === filter;
                 const matchesSearch = event.name.toLowerCase().includes(search.toLowerCase()) || 
-                                      event.subtitle.toLowerCase().includes(search.toLowerCase());
+                                      event.subtitle.toLowerCase().includes(search.toLowerCase()) ||
+                                      event.type.toLowerCase().includes(search.toLowerCase());
                 return matchesFilter && matchesSearch;
             });
 
@@ -1336,243 +1124,353 @@
                 noResults.classList.add('hidden');
             }
 
-            filteredEvents.forEach(event => {
+            filteredEvents.forEach((event, index) => {
                 const card = document.createElement('div');
-                card.className = "bg-slate-800/80 border border-slate-700 hover:border-comfest-cyan/50 rounded-2xl p-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_10px_20px_rgba(6,182,212,0.15)] cursor-pointer flex flex-col h-full group";
+                card.className = "group relative rounded-2xl bg-brand-card border border-white/5 overflow-hidden transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_10px_30px_rgba(6,182,212,0.15)] flex flex-col h-full animate-slide-up cursor-pointer";
+                card.style.animationDelay = `${index * 0.05}s`;
                 card.onclick = () => openModal(event);
 
-                card.innerHTML = `
-                    <div class="flex justify-between items-start mb-3">
-                        <span class="text-xs font-bold bg-slate-700 text-slate-300 px-2 py-0.5 rounded border border-slate-600">${event.id}</span>
-                        <span class="text-[10px] font-bold uppercase tracking-wider text-comfest-cyan bg-cyan-900/30 px-2 py-0.5 rounded border border-cyan-800/50">${event.type}</span>
-                    </div>
-                    <h3 class="text-xl font-display font-bold text-white group-hover:text-comfest-cyan transition-colors">${event.name}</h3>
-                    <p class="text-xs text-slate-400 font-medium mb-3">${event.subtitle}</p>
-                    
-                    <p class="text-sm text-slate-300 mb-4 line-clamp-2 flex-grow">${event.overview}</p>
-                    
-                    <div class="flex items-center justify-between text-xs text-slate-400 pt-4 border-t border-slate-700">
-                        <div class="flex gap-3">
-                            <span title="Participants"><i class="fas fa-users mr-1"></i>${event.participants}</span>
-                            <span title="Device"><i class="${event.device === 'YES' ? 'fas fa-laptop text-emerald-400' : 'fas fa-ban text-rose-400'} mr-1"></i>${event.device}</span>
+                // Hover glow effect
+                const glow = document.createElement('div');
+                glow.className = "absolute inset-0 bg-gradient-to-b from-brand-cyan/0 to-brand-cyan/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none";
+                card.appendChild(glow);
+
+                const topBar = `
+                    <div class="p-5 flex justify-between items-start border-b border-white/5 relative z-10">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-lg bg-slate-900/80 flex items-center justify-center text-brand-cyan shadow-inner border border-white/5 group-hover:scale-110 transition-transform">
+                                <i class="fas ${event.icon} text-lg"></i>
+                            </div>
+                            <div>
+                                <span class="text-xs font-black text-slate-500 tracking-wider">EVENT ${event.id}</span>
+                                <h3 class="text-lg font-bold text-white leading-tight group-hover:text-brand-cyan transition-colors">${event.name}</h3>
+                            </div>
                         </div>
-                        <span class="text-comfest-cyan font-medium group-hover:underline">Details <i class="fas fa-arrow-right ml-1"></i></span>
                     </div>
                 `;
+
+                const content = `
+                    <div class="p-5 flex flex-col flex-grow relative z-10">
+                        <p class="text-xs font-semibold text-brand-purple uppercase tracking-wider mb-2">${event.type}</p>
+                        <p class="text-sm text-slate-400 mb-4 line-clamp-3 flex-grow">${event.overview}</p>
+                        
+                        <div class="grid grid-cols-2 gap-2 mt-auto pt-4 border-t border-white/5">
+                            <div class="flex items-center gap-2 text-xs text-slate-300 bg-slate-900/50 p-2 rounded-lg border border-white/5">
+                                <i class="fas fa-users text-slate-500 w-4"></i>
+                                <span class="font-medium">${event.participants}</span>
+                            </div>
+                            <div class="flex items-center gap-2 text-xs text-slate-300 bg-slate-900/50 p-2 rounded-lg border border-white/5">
+                                <i class="fas ${event.device === 'YES' ? 'fa-laptop text-emerald-500' : 'fa-ban text-rose-500'} w-4"></i>
+                                <span class="font-medium">${event.device === 'YES' ? 'Device OK' : 'No Device'}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                card.innerHTML += topBar + content;
                 grid.appendChild(card);
             });
         }
 
-        // Search and Filter Listeners
-        document.getElementById('searchInput').addEventListener('input', (e) => {
-            const activeFilter = document.querySelector('.filter-btn.active').dataset.filter;
-            renderEvents(activeFilter, e.target.value);
-        });
-
-        document.querySelectorAll('.filter-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                document.querySelectorAll('.filter-btn').forEach(b => {
-                    b.classList.remove('active', 'bg-comfest-cyan', 'text-slate-900');
-                    b.classList.add('bg-slate-800', 'text-slate-300');
-                });
-                const target = e.target;
-                target.classList.remove('bg-slate-800', 'text-slate-300');
-                target.classList.add('active', 'bg-comfest-cyan', 'text-slate-900');
-                
-                const searchVal = document.getElementById('searchInput').value;
-                renderEvents(target.dataset.filter, searchVal);
+        document.addEventListener('DOMContentLoaded', () => {
+            // Search and Filter Listeners
+            document.getElementById('searchInput').addEventListener('input', (e) => {
+                const activeFilter = document.querySelector('.filter-btn.active').dataset.filter;
+                renderEvents(activeFilter, e.target.value);
             });
-        });
 
-        // Initialize Grid
-        renderEvents();
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    document.querySelectorAll('.filter-btn').forEach(b => {
+                        b.classList.remove('active', 'bg-white', 'text-brand-dark', 'shadow-[0_0_15px_rgba(255,255,255,0.2)]');
+                        b.classList.add('bg-slate-800', 'text-slate-300');
+                    });
+                    const target = e.target;
+                    target.classList.remove('bg-slate-800', 'text-slate-300');
+                    target.classList.add('active', 'bg-white', 'text-brand-dark', 'shadow-[0_0_15px_rgba(255,255,255,0.2)]');
+                    
+                    const searchVal = document.getElementById('searchInput').value;
+                    renderEvents(target.dataset.filter, searchVal);
+                });
+            });
+
+            renderEvents();
+        });
 
         function openModal(event) {
-            document.getElementById('modalNum').textContent = event.id;
-            document.getElementById('modalCategory').textContent = event.category;
+            document.getElementById('modalNum').textContent = `EVENT ${event.id}`;
             document.getElementById('modalTitle').textContent = event.name;
             document.getElementById('modalSubtitle').textContent = event.subtitle;
+            document.getElementById('modalIcon').className = `fas ${event.icon} text-3xl`;
             
-            document.getElementById('modalPax').innerHTML = `<i class="fas fa-users text-slate-400 mr-1"></i> ${event.participants}`;
-            document.getElementById('modalDevice').innerHTML = event.device === 'YES' ? '<span class="text-emerald-400"><i class="fas fa-laptop mr-1"></i> YES</span>' : '<span class="text-rose-400"><i class="fas fa-ban mr-1"></i> NO</span>';
-            document.getElementById('modalTime').innerHTML = `<i class="far fa-clock text-slate-400 mr-1"></i> ${event.time}`;
+            document.getElementById('modalPax').innerHTML = `<i class="fas fa-users text-slate-400 mr-2"></i> ${event.participants}`;
+            document.getElementById('modalDevice').innerHTML = event.device === 'YES' 
+                ? '<span class="text-emerald-400"><i class="fas fa-laptop mr-2"></i> Device Allowed</span>' 
+                : '<span class="text-rose-400"><i class="fas fa-ban mr-2"></i> No Device</span>';
+            document.getElementById('modalTime').innerHTML = `<i class="far fa-clock text-slate-400 mr-2"></i> ${event.time}`;
 
             let contentHTML = `
-                <div>
-                    <h4 class="text-xs font-bold uppercase tracking-wider text-comfest-cyan mb-1.5">What is this event?</h4>
-                    <p class="leading-relaxed bg-slate-800/40 p-3 rounded-lg border border-slate-700/50">${event.overview}</p>
+                <div class="mb-8">
+                    <h4 class="text-sm font-bold uppercase tracking-wider text-slate-500 mb-3">Overview</h4>
+                    <p class="text-base text-slate-200 leading-relaxed">${event.overview}</p>
                 </div>
             `;
 
-            if(event.howItWorks.length > 0) {
+            if(event.howItWorks && event.howItWorks.length > 0) {
                 contentHTML += `
-                <div>
-                    <h4 class="text-xs font-bold uppercase tracking-wider text-comfest-cyan mb-2">How it works / Stages</h4>
-                    <ul class="space-y-2">
-                        ${event.howItWorks.map(step => `<li class="flex items-start"><i class="fas fa-chevron-right text-comfest-cyan mt-1 mr-2 text-[10px]"></i><span>${step}</span></li>`).join('')}
+                <div class="mb-8">
+                    <h4 class="text-sm font-bold uppercase tracking-wider text-brand-cyan mb-4 flex items-center gap-2">
+                        <i class="fas fa-cogs"></i> How it works / Stages
+                    </h4>
+                    <div class="space-y-3">
+                        ${event.howItWorks.map((step, i) => `
+                            <div class="flex items-start gap-3 bg-slate-800/50 p-4 rounded-xl border border-white/5">
+                                <div class="w-6 h-6 rounded-full bg-slate-700 text-brand-cyan flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">${i+1}</div>
+                                <span class="text-sm text-slate-300 leading-relaxed">${step}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>`;
+            }
+
+            if(event.rules && event.rules.length > 0) {
+                contentHTML += `
+                <div class="mb-8">
+                    <h4 class="text-sm font-bold uppercase tracking-wider text-white mb-4 flex items-center gap-2">
+                        <i class="fas fa-gavel text-slate-400"></i> Official Rules
+                    </h4>
+                    <ul class="space-y-3 bg-slate-800/80 rounded-xl p-5 border border-white/5">
+                        ${event.rules.map(rule => `
+                            <li class="flex items-start gap-3 text-sm text-slate-300">
+                                <i class="fas fa-check text-brand-cyan mt-1 shrink-0"></i>
+                                <span class="leading-relaxed">${rule.replace('[OFFICIAL 2026 RULE]', '<span class="text-xs font-bold text-slate-500 uppercase mr-1">[Rule]</span>')}</span>
+                            </li>
+                        `).join('')}
                     </ul>
                 </div>`;
             }
 
-            if(event.rules.length > 0) {
+            if(event.restrictions && event.restrictions.length > 0) {
                 contentHTML += `
-                <div>
-                    <h4 class="text-xs font-bold uppercase tracking-wider text-amber-500 mb-2">Official Rules</h4>
-                    <ul class="space-y-2 bg-amber-500/5 border border-amber-500/20 rounded-lg p-3">
-                        ${event.rules.map(rule => `<li class="flex items-start text-amber-100/90"><i class="fas fa-check-circle text-amber-500 mt-1 mr-2 text-[10px]"></i><span>${rule}</span></li>`).join('')}
-                    </ul>
-                </div>`;
-            }
-
-            if(event.restrictions.length > 0) {
-                contentHTML += `
-                <div>
-                    <h4 class="text-xs font-bold uppercase tracking-wider text-rose-400 mb-2">Important Restrictions</h4>
-                    <ul class="space-y-2 bg-rose-500/5 border border-rose-500/20 rounded-lg p-3">
-                        ${event.restrictions.map(req => `<li class="flex items-start text-rose-200"><i class="fas fa-times-circle text-rose-400 mt-1 mr-2 text-[10px]"></i><span>${req}</span></li>`).join('')}
+                <div class="mb-8">
+                    <h4 class="text-sm font-bold uppercase tracking-wider text-rose-400 mb-4 flex items-center gap-2">
+                        <i class="fas fa-exclamation-triangle"></i> Important Restrictions
+                    </h4>
+                    <ul class="space-y-3 bg-rose-500/10 rounded-xl p-5 border border-rose-500/20">
+                        ${event.restrictions.map(req => `
+                            <li class="flex items-start gap-3 text-sm text-rose-200/90">
+                                <i class="fas fa-times-circle text-rose-400 mt-1 shrink-0"></i>
+                                <span class="leading-relaxed">${req}</span>
+                            </li>
+                        `).join('')}
                     </ul>
                 </div>`;
             }
             
-            if(event.submission && event.submission !== "Not specified in the 2026 brochure.") {
-                contentHTML += `
-                <div>
-                    <h4 class="text-xs font-bold uppercase tracking-wider text-emerald-400 mb-1.5">Submission / Deadline</h4>
-                    <p class="leading-relaxed bg-emerald-500/10 p-3 rounded-lg border border-emerald-500/20 text-emerald-100">${event.submission}</p>
-                </div>`;
-            }
-
-            if(event.judging && event.judging !== "Not specified in the 2026 brochure.") {
-                contentHTML += `
-                <div>
-                    <h4 class="text-xs font-bold uppercase tracking-wider text-purple-400 mb-1.5">Judging / Scoring</h4>
-                    <p class="leading-relaxed">${event.judging}</p>
-                </div>`;
+            if(event.submission || event.judging) {
+                contentHTML += `<div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">`;
+                if(event.submission) {
+                    contentHTML += `
+                    <div class="bg-emerald-500/10 p-5 rounded-xl border border-emerald-500/20">
+                        <h4 class="text-xs font-bold uppercase tracking-wider text-emerald-400 mb-2"><i class="fas fa-paper-plane mr-1"></i> Submission / Deadline</h4>
+                        <p class="text-sm text-emerald-100/90 leading-relaxed">${event.submission}</p>
+                    </div>`;
+                }
+                if(event.judging && event.judging !== "Not specified in the 2026 brochure.") {
+                    contentHTML += `
+                    <div class="bg-brand-purple/10 p-5 rounded-xl border border-brand-purple/20">
+                        <h4 class="text-xs font-bold uppercase tracking-wider text-brand-purple mb-2"><i class="fas fa-balance-scale mr-1"></i> Judging</h4>
+                        <p class="text-sm text-purple-100/90 leading-relaxed">${event.judging}</p>
+                    </div>`;
+                }
+                contentHTML += `</div>`;
             }
 
             if(event.example) {
                 contentHTML += `
-                <div>
-                    <p class="text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">Example — For Understanding Only</p>
-                    <p class="italic text-slate-400 bg-slate-800 p-3 rounded-lg border-l-2 border-slate-600">${event.example}</p>
+                <div class="mb-8">
+                    <p class="text-xs font-bold uppercase tracking-wider text-brand-accent mb-2 flex items-center gap-2">
+                        <i class="fas fa-lightbulb"></i> Example — For Understanding Only
+                    </p>
+                    <p class="text-sm italic text-amber-100/80 bg-amber-500/10 p-4 rounded-xl border-l-4 border-brand-accent">${event.example}</p>
+                </div>`;
+            }
+
+            if(event.prep) {
+                contentHTML += `
+                <div class="mt-8 pt-8 border-t border-white/10">
+                    <p class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Preparation Tip</p>
+                    <p class="text-sm text-slate-300 bg-slate-800 p-4 rounded-xl">${event.prep}</p>
                 </div>`;
             }
 
             document.getElementById('modalContent').innerHTML = contentHTML;
-            
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
             const modal = document.getElementById('eventModal');
             modal.classList.remove('hidden');
+            modal.querySelector('.modal-panel').classList.add('modal-enter');
         }
 
         function closeModal() {
-            document.getElementById('eventModal').classList.add('hidden');
+            document.body.style.overflow = ''; // Restore scrolling
+            const modal = document.getElementById('eventModal');
+            modal.classList.add('hidden');
+            modal.querySelector('.modal-panel').classList.remove('modal-enter');
         }
     </script>
 
-    <section id="dates" class="py-16 relative">
+    <div id="eventModal" class="fixed inset-0 z-50 hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <div class="fixed inset-0 bg-brand-dark/90 backdrop-blur-md transition-opacity" aria-hidden="true" onclick="closeModal()"></div>
+        
+        <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
+            <div class="flex min-h-full items-end justify-center p-0 text-center sm:items-center sm:p-4">
+                <div class="modal-panel relative transform overflow-hidden bg-brand-panel text-left shadow-2xl transition-all sm:rounded-3xl w-full sm:max-w-4xl border border-white/10 flex flex-col h-[90vh] sm:h-auto sm:max-h-[90vh] mt-10 sm:mt-0">
+                    
+                    <!-- Header -->
+                    <div class="relative px-6 py-6 border-b border-white/5 bg-slate-900 shrink-0 overflow-hidden">
+                        <!-- BG Glow -->
+                        <div class="absolute top-0 right-0 w-32 h-32 bg-brand-cyan/10 blur-[50px] rounded-full pointer-events-none"></div>
+                        
+                        <div class="flex justify-between items-start relative z-10">
+                            <div class="flex items-start gap-4">
+                                <div class="hidden sm:flex w-16 h-16 rounded-2xl bg-brand-card items-center justify-center text-brand-cyan border border-white/5 shadow-inner">
+                                    <i id="modalIcon" class="fas fa-star text-3xl"></i>
+                                </div>
+                                <div>
+                                    <p id="modalNum" class="text-xs font-bold text-brand-cyan tracking-widest mb-1 uppercase">EVENT 00</p>
+                                    <h3 class="text-2xl sm:text-3xl font-display font-black text-white leading-tight" id="modalTitle">Event Title</h3>
+                                    <p id="modalSubtitle" class="text-sm sm:text-base text-slate-400 mt-1 font-medium">Subtitle</p>
+                                </div>
+                            </div>
+                            <button onclick="closeModal()" class="text-slate-400 hover:text-white transition-colors bg-white/5 hover:bg-white/10 rounded-full w-10 h-10 flex items-center justify-center shrink-0">
+                                <i class="fas fa-times text-lg"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Body -->
+                    <div class="px-6 py-6 overflow-y-auto custom-scrollbar flex-grow bg-[#0b1121]">
+                        <!-- Quick Stats -->
+                        <div class="grid grid-cols-3 gap-3 mb-8">
+                            <div class="bg-brand-card rounded-xl p-3 sm:p-4 border border-white/5 text-center">
+                                <p class="text-[10px] sm:text-xs text-slate-500 uppercase font-bold tracking-wider mb-1">Participants</p>
+                                <p id="modalPax" class="text-sm sm:text-base font-bold text-white flex items-center justify-center">-</p>
+                            </div>
+                            <div class="bg-brand-card rounded-xl p-3 sm:p-4 border border-white/5 text-center">
+                                <p class="text-[10px] sm:text-xs text-slate-500 uppercase font-bold tracking-wider mb-1">Device</p>
+                                <p id="modalDevice" class="text-sm sm:text-base font-bold text-white flex items-center justify-center">-</p>
+                            </div>
+                            <div class="bg-brand-card rounded-xl p-3 sm:p-4 border border-white/5 text-center">
+                                <p class="text-[10px] sm:text-xs text-slate-500 uppercase font-bold tracking-wider mb-1">Time</p>
+                                <p id="modalTime" class="text-sm sm:text-base font-bold text-white flex items-center justify-center">-</p>
+                            </div>
+                        </div>
+
+                        <!-- Dynamic Content -->
+                        <div id="modalContent" class="text-slate-300">
+                            <!-- Injected by JS -->
+                        </div>
+                    </div>
+
+                    <!-- Footer -->
+                    <div class="px-6 py-5 bg-slate-900 border-t border-white/5 shrink-0 flex flex-col sm:flex-row-reverse gap-3 sm:gap-4">
+                        <button type="button" onclick="scrollToChecklist(); closeModal();" class="w-full sm:w-auto inline-flex justify-center items-center rounded-xl bg-brand-cyan px-6 py-3 text-sm font-bold text-brand-dark shadow-[0_0_15px_rgba(6,182,212,0.3)] hover:bg-white transition-all transform hover:-translate-y-0.5">
+                            Register Interest
+                        </button>
+                        <button type="button" onclick="closeModal()" class="w-full sm:w-auto inline-flex justify-center items-center rounded-xl bg-slate-800 border border-slate-700 px-6 py-3 text-sm font-bold text-white hover:bg-slate-700 transition-colors">
+                            Back to Events
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section id="dates" class="py-24 bg-brand-card relative border-t border-white/5">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
                 
                 <!-- Timeline -->
                 <div>
-                    <h2 class="text-3xl font-display font-bold text-white mb-8">IMPORTANT DATES</h2>
-                    <div class="relative border-l border-slate-700 ml-3 space-y-6">
+                    <h2 class="text-3xl md:text-4xl font-display font-black text-white mb-10">IMPORTANT DATES</h2>
+                    <div class="relative border-l-2 border-slate-700 ml-4 space-y-8 pb-4">
                         
-                        <div class="relative pl-6">
-                            <div class="absolute w-3 h-3 bg-slate-400 rounded-full -left-[6px] top-1.5 ring-4 ring-comfest-navy"></div>
-                            <p class="text-xs font-bold text-comfest-cyan mb-1">24 Sep 2026 (12:00 AM)</p>
-                            <h4 class="text-white font-bold">Cryptic Hunt Begins</h4>
+                        <div class="relative pl-8 animate-slide-up" style="animation-delay: 0.1s;">
+                            <div class="absolute w-4 h-4 bg-slate-400 rounded-full -left-[9px] top-1 ring-4 ring-brand-card"></div>
+                            <p class="text-sm font-bold text-brand-cyan mb-1">24 Sep 2026 (12:00 AM)</p>
+                            <h4 class="text-lg font-bold text-white">Cryptic Hunt Begins</h4>
                         </div>
 
-                        <div class="relative pl-6">
-                            <div class="absolute w-3 h-3 bg-slate-400 rounded-full -left-[6px] top-1.5 ring-4 ring-comfest-navy"></div>
-                            <p class="text-xs font-bold text-comfest-cyan mb-1">25 Sep 2026</p>
-                            <h4 class="text-white font-bold">Hackom Registration Deadline</h4>
-                            <p class="text-xs text-slate-400 mt-1">Participating-school team registration on Unstop.</p>
+                        <div class="relative pl-8 animate-slide-up" style="animation-delay: 0.2s;">
+                            <div class="absolute w-4 h-4 bg-slate-400 rounded-full -left-[9px] top-1 ring-4 ring-brand-card"></div>
+                            <p class="text-sm font-bold text-brand-cyan mb-1">25 Sep 2026</p>
+                            <h4 class="text-lg font-bold text-white">Hackom Registration</h4>
+                            <p class="text-sm text-slate-400 mt-1">Participating-school team registration on Unstop.</p>
                         </div>
 
-                        <div class="relative pl-6">
-                            <div class="absolute w-3 h-3 bg-slate-400 rounded-full -left-[6px] top-1.5 ring-4 ring-comfest-navy"></div>
-                            <p class="text-xs font-bold text-comfest-cyan mb-1">29 Sep 2026</p>
-                            <h4 class="text-white font-bold">Journaltopia Problem Release</h4>
+                        <div class="relative pl-8 animate-slide-up" style="animation-delay: 0.3s;">
+                            <div class="absolute w-4 h-4 bg-brand-accent rounded-full -left-[9px] top-1 ring-4 ring-brand-card"></div>
+                            <p class="text-sm font-bold text-brand-accent mb-1">5 Oct 2026 (11:59 PM)</p>
+                            <h4 class="text-lg font-bold text-white">Métier Projet Submission</h4>
                         </div>
 
-                        <div class="relative pl-6">
-                            <div class="absolute w-3 h-3 bg-amber-500 rounded-full -left-[6px] top-1.5 ring-4 ring-comfest-navy"></div>
-                            <p class="text-xs font-bold text-amber-500 mb-1">5 Oct 2026 (11:59 PM)</p>
-                            <h4 class="text-white font-bold">Métier Projet Submission</h4>
+                        <div class="relative pl-8 animate-slide-up" style="animation-delay: 0.4s;">
+                            <div class="absolute w-4 h-4 bg-brand-accent rounded-full -left-[9px] top-1 ring-4 ring-brand-card"></div>
+                            <p class="text-sm font-bold text-brand-accent mb-1">6 Oct 2026 (11:59 PM)</p>
+                            <h4 class="text-lg font-bold text-white">Journaltopia & Strings Attached</h4>
                         </div>
 
-                        <div class="relative pl-6">
-                            <div class="absolute w-3 h-3 bg-amber-500 rounded-full -left-[6px] top-1.5 ring-4 ring-comfest-navy"></div>
-                            <p class="text-xs font-bold text-amber-500 mb-1">6 Oct 2026 (11:59 PM)</p>
-                            <h4 class="text-white font-bold">Journaltopia & Strings Attached Submissions</h4>
+                        <div class="relative pl-8 animate-slide-up" style="animation-delay: 0.5s;">
+                            <div class="absolute w-4 h-4 bg-brand-accent rounded-full -left-[9px] top-1 ring-4 ring-brand-card"></div>
+                            <p class="text-sm font-bold text-brand-accent mb-1">9 Oct 2026 (11:59 PM)</p>
+                            <h4 class="text-lg font-bold text-white">To Be Or Not To Be Script</h4>
                         </div>
 
-                        <div class="relative pl-6">
-                            <div class="absolute w-3 h-3 bg-amber-500 rounded-full -left-[6px] top-1.5 ring-4 ring-comfest-navy"></div>
-                            <p class="text-xs font-bold text-amber-500 mb-1">9 Oct 2026 (11:59 PM)</p>
-                            <h4 class="text-white font-bold">To Be Or Not To Be Script</h4>
+                        <div class="relative pl-8 animate-slide-up" style="animation-delay: 0.6s;">
+                            <div class="absolute w-4 h-4 bg-brand-accent rounded-full -left-[9px] top-1 ring-4 ring-brand-card"></div>
+                            <p class="text-sm font-bold text-brand-accent mb-1">10 Oct 2026 (11:59 PM)</p>
+                            <h4 class="text-lg font-bold text-white">Draft 1.0 (AI Apps List)</h4>
                         </div>
 
-                        <div class="relative pl-6">
-                            <div class="absolute w-3 h-3 bg-amber-500 rounded-full -left-[6px] top-1.5 ring-4 ring-comfest-navy"></div>
-                            <p class="text-xs font-bold text-amber-500 mb-1">10 Oct 2026 (11:59 PM)</p>
-                            <h4 class="text-white font-bold">Draft 1.0 (AI Apps List)</h4>
-                        </div>
-
-                        <div class="relative pl-6">
-                            <div class="absolute w-4 h-4 bg-comfest-cyan rounded-full -left-[8.5px] top-1 ring-4 ring-comfest-navy shadow-[0_0_10px_rgba(6,182,212,0.8)]"></div>
-                            <p class="text-sm font-bold text-comfest-cyan mb-1">15–17 Oct 2026</p>
-                            <h4 class="text-xl font-display font-black text-white">COMFEST'26 FESTIVAL</h4>
-                            <p class="text-xs text-slate-400 mt-1">Hackom begins 16 Oct 09:00 AM.</p>
+                        <div class="relative pl-8 animate-slide-up" style="animation-delay: 0.7s;">
+                            <div class="absolute w-5 h-5 bg-brand-cyan rounded-full -left-[11px] top-1 ring-4 ring-brand-card shadow-[0_0_15px_rgba(6,182,212,0.8)] animate-pulse"></div>
+                            <p class="text-base font-bold text-brand-cyan mb-1">15–17 Oct 2026</p>
+                            <h4 class="text-2xl font-display font-black text-white">COMFEST'26 FESTIVAL</h4>
+                            <p class="text-sm text-slate-400 mt-2">The main event dates. (Hackom begins 16 Oct 09:00 AM).</p>
                         </div>
                     </div>
                 </div>
 
                 <!-- Scoring System -->
                 <div>
-                    <h2 class="text-3xl font-display font-bold text-white mb-8">COMFEST POINT SYSTEM</h2>
-                    <p class="text-sm text-slate-400 mb-6">These points contribute to the overall team winner assessment.</p>
+                    <h2 class="text-3xl md:text-4xl font-display font-black text-white mb-6">TEAM SCORING</h2>
+                    <p class="text-base text-slate-400 mb-8">Event placements contribute points to the overall school team winner assessment.</p>
                     
                     <div class="grid grid-cols-2 gap-4">
-                        <div class="bg-slate-800/80 border border-slate-700 rounded-xl p-4 flex items-center justify-between">
-                            <span class="font-bold text-slate-300 text-sm">Winner</span>
-                            <span class="text-lg font-black text-amber-400">100 pts</span>
+                        <div class="bg-slate-900 rounded-2xl p-5 border border-white/5 flex flex-col justify-center items-center text-center hover:border-amber-400/50 transition-colors">
+                            <span class="font-bold text-slate-400 text-sm mb-1">Winner</span>
+                            <span class="text-3xl font-display font-black text-amber-400">100</span>
                         </div>
-                        <div class="bg-slate-800/80 border border-slate-700 rounded-xl p-4 flex items-center justify-between">
-                            <span class="font-bold text-slate-300 text-sm">1st Runner-Up</span>
-                            <span class="text-lg font-black text-slate-300">75 pts</span>
+                        <div class="bg-slate-900 rounded-2xl p-5 border border-white/5 flex flex-col justify-center items-center text-center hover:border-slate-300/50 transition-colors">
+                            <span class="font-bold text-slate-400 text-sm mb-1">1st Runner-Up</span>
+                            <span class="text-3xl font-display font-black text-slate-300">75</span>
                         </div>
-                        <div class="bg-slate-800/80 border border-slate-700 rounded-xl p-4 flex items-center justify-between">
-                            <span class="font-bold text-slate-300 text-sm">2nd Runner-Up</span>
-                            <span class="text-lg font-black text-amber-700">60 pts</span>
+                        <div class="bg-slate-900 rounded-2xl p-5 border border-white/5 flex flex-col justify-center items-center text-center hover:border-amber-700/50 transition-colors">
+                            <span class="font-bold text-slate-400 text-sm mb-1">2nd Runner-Up</span>
+                            <span class="text-3xl font-display font-black text-amber-700">60</span>
                         </div>
-                        <div class="bg-slate-800/80 border border-slate-700 rounded-xl p-4 flex items-center justify-between">
-                            <span class="font-bold text-slate-300 text-sm">4th Position</span>
-                            <span class="text-lg font-black text-comfest-cyan">40 pts</span>
+                        <div class="bg-slate-900 rounded-2xl p-5 border border-white/5 flex flex-col justify-center items-center text-center hover:border-brand-cyan/50 transition-colors">
+                            <span class="font-bold text-slate-400 text-sm mb-1">4th Position</span>
+                            <span class="text-3xl font-display font-black text-brand-cyan">40</span>
                         </div>
-                        <div class="bg-slate-800/80 border border-slate-700 rounded-xl p-4 flex items-center justify-between">
-                            <span class="font-bold text-slate-300 text-sm">5th Position</span>
-                            <span class="text-lg font-black text-comfest-cyan">30 pts</span>
+                        <div class="bg-slate-900 rounded-2xl p-5 border border-white/5 flex flex-col justify-center items-center text-center hover:border-brand-cyan/50 transition-colors">
+                            <span class="font-bold text-slate-400 text-sm mb-1">5th Position</span>
+                            <span class="text-3xl font-display font-black text-brand-cyan">30</span>
                         </div>
-                        <div class="bg-slate-800/80 border border-slate-700 rounded-xl p-4 flex items-center justify-between">
-                            <span class="font-bold text-slate-300 text-sm">Participant</span>
-                            <span class="text-lg font-black text-slate-500">10 pts</span>
+                        <div class="bg-slate-900 rounded-2xl p-5 border border-white/5 flex flex-col justify-center items-center text-center hover:border-slate-500/50 transition-colors">
+                            <span class="font-bold text-slate-400 text-sm mb-1">Participant</span>
+                            <span class="text-3xl font-display font-black text-slate-500">10</span>
                         </div>
-                    </div>
-
-                    <div class="mt-8 bg-comfest-blue/50 border border-slate-700 rounded-xl p-6">
-                        <h4 class="text-white font-bold mb-3"><i class="fas fa-gavel text-amber-500 mr-2"></i> Important Rules For All</h4>
-                        <ul class="text-xs text-slate-400 space-y-2 list-disc pl-4">
-                            <li>Participants must report to the venue at least 10 minutes in advance.</li>
-                            <li>Participants registered for simultaneous events must inform JCC in advance.</li>
-                            <li>Misbehaviour or unfair means may lead to immediate disqualification.</li>
-                            <li>Judges' and JCC decisions are final and binding.</li>
-                            <li>Participants may approach ushers with doubts before events.</li>
-                            <li>Basic first-aid facilities are available on campus.</li>
-                        </ul>
                     </div>
                 </div>
 
@@ -1580,63 +1478,75 @@
         </div>
     </section>
 
-    <section id="discipline" class="py-16 bg-slate-900 border-y border-slate-800">
+    <section id="logistics" class="py-24 bg-[#070b14] border-t border-white/5">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
                 
-                <!-- Discipline -->
-                <div class="border border-rose-500/20 bg-rose-500/5 rounded-2xl p-6 md:p-8 relative overflow-hidden">
-                    <div class="absolute -right-4 -top-4 opacity-10 text-9xl text-rose-500"><i class="fas fa-shield-alt"></i></div>
-                    <h3 class="text-2xl font-display font-bold text-white mb-6 relative z-10">DISCIPLINE & RESPONSIBILITY</h3>
+                <!-- Travel Info -->
+                <div class="bg-gradient-to-br from-slate-900 to-brand-dark rounded-3xl p-8 lg:p-10 border border-white/10 relative overflow-hidden group hover:border-brand-cyan/30 transition-colors">
+                    <div class="absolute -right-10 -top-10 text-9xl text-white/5 group-hover:text-brand-cyan/5 transition-colors"><i class="fas fa-route"></i></div>
                     
-                    <div class="space-y-4 relative z-10">
-                        <p class="text-sm text-slate-300">Serious misconduct or use of unfair means will lead to immediate disqualification.</p>
-                        
-                        <div class="bg-slate-800/80 rounded-lg p-4 border border-slate-700">
-                            <h4 class="text-xs font-bold text-emerald-400 uppercase tracking-wider mb-2">Must Do:</h4>
-                            <ul class="text-xs text-slate-300 space-y-1.5 list-disc pl-4">
-                                <li>Maintain discipline & report on time.</li>
-                                <li>Carry identity card at all times.</li>
-                                <li>Follow organizer & usher instructions immediately.</li>
-                                <li>Respect everyone (judges, staff, peers).</li>
-                                <li>Stay within permitted campus areas.</li>
-                            </ul>
-                        </div>
-
-                        <div class="bg-slate-800/80 rounded-lg p-4 border border-slate-700">
-                            <h4 class="text-xs font-bold text-rose-400 uppercase tracking-wider mb-2">Strictly Prohibited:</h4>
-                            <ul class="text-xs text-slate-300 space-y-1.5 list-disc pl-4">
-                                <li>Engaging in inappropriate or uncultural activities.</li>
-                                <li>Using unfair means or cheating.</li>
-                                <li>Disturbing ongoing events.</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Travel -->
-                <div class="border border-comfest-cyan/20 bg-comfest-cyan/5 rounded-2xl p-6 md:p-8 relative overflow-hidden">
-                    <div class="absolute -right-4 -top-4 opacity-10 text-9xl text-comfest-cyan"><i class="fas fa-map-marked-alt"></i></div>
-                    <h3 class="text-2xl font-display font-bold text-white mb-6 relative z-10">TRAVEL & RETURN INFORMATION</h3>
+                    <h3 class="text-2xl font-display font-black text-white mb-6 relative z-10 flex items-center gap-3">
+                        <i class="fas fa-bus text-brand-cyan"></i> TRAVEL INFO
+                    </h3>
                     
                     <div class="space-y-6 relative z-10">
-                        <div class="flex items-center text-sm font-medium text-slate-300">
-                            <div class="bg-slate-800 p-3 rounded-lg border border-slate-700 flex-1 text-center">School</div>
-                            <i class="fas fa-arrow-right mx-2 text-comfest-cyan"></i>
-                            <div class="bg-slate-800 p-3 rounded-lg border border-slate-700 flex-1 text-center">School Bus</div>
-                            <i class="fas fa-arrow-right mx-2 text-comfest-cyan"></i>
-                            <div class="bg-slate-800 p-3 rounded-lg border border-slate-700 flex-1 text-center">COMFEST</div>
+                        <div class="flex items-center justify-between text-xs sm:text-sm font-bold text-slate-300 bg-slate-800/50 p-2 rounded-xl border border-white/5">
+                            <div class="text-center px-3 py-2 bg-slate-800 rounded-lg flex-1">School</div>
+                            <i class="fas fa-arrow-right mx-2 text-brand-cyan"></i>
+                            <div class="text-center px-3 py-2 bg-slate-800 rounded-lg flex-1">COMFEST</div>
+                            <i class="fas fa-arrow-right mx-2 text-brand-cyan"></i>
+                            <div class="text-center px-3 py-2 bg-slate-800 rounded-lg flex-1">School</div>
                         </div>
 
-                        <div class="bg-slate-800/80 rounded-lg p-4 border border-slate-700">
-                            <h4 class="text-sm font-bold text-white mb-1"><i class="fas fa-clock text-comfest-cyan mr-2"></i> Expected Return: Around 8:00 PM</h4>
-                            <p class="text-xs text-slate-400 mt-2">The school bus will bring students back to the school campus after the event concludes.</p>
-                            <p class="text-xs text-rose-300 font-bold mt-2">IMPORTANT: After reaching school, students must arrange their own journey home.</p>
+                        <div class="space-y-4">
+                            <div class="flex gap-4 items-start">
+                                <div class="w-8 h-8 rounded-full bg-brand-cyan/20 text-brand-cyan flex items-center justify-center shrink-0 mt-1"><i class="fas fa-clock"></i></div>
+                                <div>
+                                    <h4 class="text-white font-bold">Return Time: Around 8:00 PM</h4>
+                                    <p class="text-sm text-slate-400 mt-1">The school bus will bring students back to the school campus after the event concludes.</p>
+                                    <p class="text-sm font-bold text-brand-accent mt-2">IMPORTANT: After reaching school, students must arrange their own journey home.</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-4 items-start pt-4 border-t border-white/5">
+                                <div class="w-8 h-8 rounded-full bg-brand-purple/20 text-brand-purple flex items-center justify-center shrink-0 mt-1"><i class="fas fa-car"></i></div>
+                                <div>
+                                    <h4 class="text-white font-bold">Parent Pickup Option</h4>
+                                    <p class="text-sm text-slate-400 mt-1">Parents/guardians may pick up their child directly from the COMFEST venue. The student may leave directly with them.</p>
+                                </div>
+                            </div>
                         </div>
+                    </div>
+                </div>
 
-                        <div class="bg-slate-800/80 rounded-lg p-4 border border-slate-700">
-                            <h4 class="text-sm font-bold text-white mb-1"><i class="fas fa-car text-comfest-cyan mr-2"></i> Parent Pickup Option</h4>
-                            <p class="text-xs text-slate-400 mt-2">Parents/guardians may pick up their child directly from the COMFEST venue. In this case, the student may leave directly with them.</p>
+                <!-- Discipline Info -->
+                <div class="bg-gradient-to-bl from-slate-900 to-brand-dark rounded-3xl p-8 lg:p-10 border border-white/10 relative overflow-hidden group hover:border-rose-500/30 transition-colors">
+                    <div class="absolute -right-10 -top-10 text-9xl text-white/5 group-hover:text-rose-500/5 transition-colors"><i class="fas fa-shield-alt"></i></div>
+                    
+                    <h3 class="text-2xl font-display font-black text-white mb-6 relative z-10 flex items-center gap-3">
+                        <i class="fas fa-exclamation-circle text-rose-500"></i> DISCIPLINE CODE
+                    </h3>
+                    
+                    <div class="space-y-6 relative z-10">
+                        <p class="text-sm text-slate-300 font-medium">Serious misconduct, uncultural activities, or use of unfair means will lead to immediate disqualification.</p>
+                        
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div class="bg-emerald-500/5 border border-emerald-500/20 rounded-xl p-4">
+                                <h4 class="text-xs font-bold text-emerald-400 uppercase tracking-wider mb-3">DO</h4>
+                                <ul class="text-xs text-emerald-100/70 space-y-2">
+                                    <li><i class="fas fa-check mr-1 text-emerald-500"></i> Be punctual & carry ID.</li>
+                                    <li><i class="fas fa-check mr-1 text-emerald-500"></i> Respect organizers & judges.</li>
+                                    <li><i class="fas fa-check mr-1 text-emerald-500"></i> Stay in permitted areas.</li>
+                                </ul>
+                            </div>
+                            <div class="bg-rose-500/5 border border-rose-500/20 rounded-xl p-4">
+                                <h4 class="text-xs font-bold text-rose-400 uppercase tracking-wider mb-3">DON'T</h4>
+                                <ul class="text-xs text-rose-100/70 space-y-2">
+                                    <li><i class="fas fa-times mr-1 text-rose-500"></i> Disturb ongoing events.</li>
+                                    <li><i class="fas fa-times mr-1 text-rose-500"></i> Use unfair means/cheat.</li>
+                                    <li><i class="fas fa-times mr-1 text-rose-500"></i> Leave without authorization.</li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1645,129 +1555,129 @@
         </div>
     </section>
 
-    <section id="registration-checklist" class="py-20 bg-gradient-to-b from-comfest-navy to-slate-900 text-center relative overflow-hidden transition-all duration-500">
-        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div class="w-16 h-16 bg-slate-800/80 rounded-2xl flex items-center justify-center mx-auto mb-6 border border-slate-700 text-comfest-cyan text-3xl shadow-[0_0_15px_rgba(6,182,212,0.2)]">
-                <i class="fas fa-clipboard-check"></i>
-            </div>
-            <h2 class="text-4xl font-display font-black text-white mb-3">READY TO REGISTER?</h2>
-            <p class="text-sm text-slate-400 mb-8 max-w-xl mx-auto">Please confirm you understand the participation requirements before accessing the registration form.</p>
-            
-            <div class="bg-slate-800/60 border border-slate-700 rounded-2xl p-6 md:p-8 text-left space-y-4 mb-10 shadow-lg">
-                
-                <label class="custom-checkbox flex items-start gap-4 cursor-pointer group">
-                    <input type="checkbox" class="disclaimer-check sr-only">
-                    <div class="w-6 h-6 rounded border-2 border-slate-600 flex-shrink-0 flex items-center justify-center transition-colors group-hover:border-comfest-cyan bg-slate-900 mt-0.5">
-                        <svg class="w-3.5 h-3.5 text-white hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
-                    </div>
-                    <span class="text-sm text-slate-300 group-hover:text-white transition-colors">I am genuinely interested in participating and am not submitting this form casually.</span>
-                </label>
+    <section id="registration-section" class="py-24 relative overflow-hidden bg-[#030712]">
+        <!-- Glow -->
+        <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-full max-w-5xl h-64 bg-brand-cyan/10 blur-[120px] rounded-full pointer-events-none"></div>
 
-                <label class="custom-checkbox flex items-start gap-4 cursor-pointer group">
-                    <input type="checkbox" class="disclaimer-check sr-only">
-                    <div class="w-6 h-6 rounded border-2 border-slate-600 flex-shrink-0 flex items-center justify-center transition-colors group-hover:border-comfest-cyan bg-slate-900 mt-0.5">
-                        <svg class="w-3.5 h-3.5 text-white hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
-                    </div>
-                    <span class="text-sm text-slate-300 group-hover:text-white transition-colors">I have carefully read the event rules, timings, participant limits, and device allowances for my chosen events.</span>
-                </label>
-
-                <label class="custom-checkbox flex items-start gap-4 cursor-pointer group">
-                    <input type="checkbox" class="disclaimer-check sr-only">
-                    <div class="w-6 h-6 rounded border-2 border-slate-600 flex-shrink-0 flex items-center justify-center transition-colors group-hover:border-comfest-cyan bg-slate-900 mt-0.5">
-                        <svg class="w-3.5 h-3.5 text-white hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
-                    </div>
-                    <span class="text-sm text-slate-300 group-hover:text-white transition-colors">I understand that any misbehaviour, uncultural activity, or use of unfair means will result in immediate disqualification.</span>
-                </label>
-
-                <label class="custom-checkbox flex items-start gap-4 cursor-pointer group">
-                    <input type="checkbox" class="disclaimer-check sr-only">
-                    <div class="w-6 h-6 rounded border-2 border-slate-600 flex-shrink-0 flex items-center justify-center transition-colors group-hover:border-comfest-cyan bg-slate-900 mt-0.5">
-                        <svg class="w-3.5 h-3.5 text-white hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
-                    </div>
-                    <span class="text-sm text-slate-300 group-hover:text-white transition-colors">I have read the transport guidelines (Return to school around 8:00 PM; self-travel arrangement from school to home).</span>
-                </label>
-
-                <label class="custom-checkbox flex items-start gap-4 cursor-pointer group">
-                    <input type="checkbox" class="disclaimer-check sr-only">
-                    <div class="w-6 h-6 rounded border-2 border-slate-600 flex-shrink-0 flex items-center justify-center transition-colors group-hover:border-comfest-cyan bg-slate-900 mt-0.5">
-                        <svg class="w-3.5 h-3.5 text-white hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
-                    </div>
-                    <span class="text-sm text-slate-300 group-hover:text-white transition-colors">I agree to maintain discipline, carry my ID card, and strictly follow all instructions from the JCC and Organizers.</span>
-                </label>
-
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl md:text-5xl font-display font-black text-white mb-4">READY TO REGISTER?</h2>
+                <p class="text-lg text-slate-400">Please confirm you understand the requirements before proceeding.</p>
             </div>
 
-            <div class="bg-amber-500/10 border border-amber-500/30 rounded-2xl p-6 md:p-8 text-left space-y-4 mb-10 shadow-lg relative overflow-hidden">
-                <div class="absolute -right-4 -top-4 opacity-10 text-9xl text-amber-500"><i class="fas fa-info-circle"></i></div>
-                <h3 class="text-xl font-display font-bold text-amber-400 mb-2 relative z-10">IMPORTANT — REGISTRATION DOES NOT CONFIRM SELECTION</h3>
-                <div class="space-y-3 text-sm text-slate-300 relative z-10 leading-relaxed">
-                    <p>Submitting the participation form does not mean that you are a confirmed candidate for COMFEST’26. The form is only an expression of your interest and will be used to understand students’ event preferences, skills, and participation interests.</p>
-                    <p>After reviewing all submissions, the best-suited students from <strong class="text-white">Sir Syed Public School, Unnao</strong> will be selected to represent the school. Selection will be based primarily on excellence and perfection in the chosen event, while also considering multi-talented students who demonstrate strong abilities across multiple events.</p>
-                    <p>The final selection and allocation of students will be managed by <strong class="text-white">Daksh, Shashank, and their team</strong>. Their decision regarding the final participants and event allocation will be considered final.</p>
-                    <p>Filling the form carefully and honestly is therefore important, but it should not be considered a confirmation of participation.</p>
+            <!-- Selection Notice (Replaced JCC note) -->
+            <div class="mb-10 p-1 rounded-2xl bg-gradient-to-r from-brand-accent/50 to-orange-600/50">
+                <div class="bg-slate-900 rounded-[15px] p-6 md:p-8 text-left relative overflow-hidden">
+                    <h3 class="text-xl font-display font-bold text-white mb-4 flex items-center gap-3">
+                        <i class="fas fa-info-circle text-brand-accent text-2xl"></i> 
+                        IMPORTANT — REGISTRATION DOES NOT CONFIRM SELECTION
+                    </h3>
+                    <div class="space-y-4 text-sm md:text-base text-slate-300 leading-relaxed">
+                        <p>Submitting the participation form does not mean that you are a confirmed candidate for COMFEST’26. The form is only an expression of your interest and will be used to understand students’ event preferences, skills, and participation interests.</p>
+                        <p>After reviewing all submissions, the best-suited students from <strong class="text-white">Sir Syed Public School, Unnao</strong> will be selected to represent the school. Selection will be based primarily on excellence and perfection in the chosen event, while also considering multi-talented students who demonstrate strong abilities across multiple events.</p>
+                        <p>The final selection and allocation of students will be managed by <strong class="text-brand-cyan">Daksh, Shashank, and their team</strong>. Their decision regarding the final participants and event allocation will be considered final.</p>
+                        <p>Filling the form carefully and honestly is therefore important, but it should not be considered a confirmation of participation.</p>
+                    </div>
                 </div>
             </div>
 
-            <!-- Lock/Unlock State handled via JS -->
-            <button id="final-submit-btn" disabled onclick="submitRegistration()" class="w-full sm:w-auto bg-slate-700 text-slate-400 cursor-not-allowed font-black text-lg py-4 px-12 rounded-full transition-all duration-300 flex items-center justify-center mx-auto gap-3">
-                <i id="btn-lock-icon" class="fas fa-lock"></i>
-                <span id="btn-text">ACCEPT TERMS TO UNLOCK</span>
-            </button>
-            
-            <p class="text-xs text-slate-500 mt-6">Do not submit the form if you are not sure about your participation.</p>
+            <!-- Interactive Checklist -->
+            <div class="bg-slate-900/50 border border-white/10 rounded-3xl p-6 md:p-10 shadow-2xl mb-12 backdrop-blur-sm">
+                <div class="space-y-6">
+                    <label class="check-wrapper flex items-start gap-4 cursor-pointer group">
+                        <input type="checkbox" class="disclaimer-check sr-only">
+                        <div class="w-6 h-6 rounded-md border-2 border-slate-600 flex-shrink-0 flex items-center justify-center bg-slate-900 mt-0.5 group-hover:border-slate-400 transition-colors">
+                            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                        </div>
+                        <span class="text-base text-slate-300 group-hover:text-white transition-colors">I am genuinely interested in participating and am not submitting this form casually.</span>
+                    </label>
+
+                    <label class="check-wrapper flex items-start gap-4 cursor-pointer group">
+                        <input type="checkbox" class="disclaimer-check sr-only">
+                        <div class="w-6 h-6 rounded-md border-2 border-slate-600 flex-shrink-0 flex items-center justify-center bg-slate-900 mt-0.5 group-hover:border-slate-400 transition-colors">
+                            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                        </div>
+                        <span class="text-base text-slate-300 group-hover:text-white transition-colors">I have carefully read the event rules, timings, participant limits, and device allowances for my chosen events.</span>
+                    </label>
+
+                    <label class="check-wrapper flex items-start gap-4 cursor-pointer group">
+                        <input type="checkbox" class="disclaimer-check sr-only">
+                        <div class="w-6 h-6 rounded-md border-2 border-slate-600 flex-shrink-0 flex items-center justify-center bg-slate-900 mt-0.5 group-hover:border-slate-400 transition-colors">
+                            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                        </div>
+                        <span class="text-base text-slate-300 group-hover:text-white transition-colors">I understand that any misbehaviour, uncultural activity, or use of unfair means will result in immediate disqualification.</span>
+                    </label>
+
+                    <label class="check-wrapper flex items-start gap-4 cursor-pointer group">
+                        <input type="checkbox" class="disclaimer-check sr-only">
+                        <div class="w-6 h-6 rounded-md border-2 border-slate-600 flex-shrink-0 flex items-center justify-center bg-slate-900 mt-0.5 group-hover:border-slate-400 transition-colors">
+                            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                        </div>
+                        <span class="text-base text-slate-300 group-hover:text-white transition-colors">I understand the transport guidelines (Return to school around 8:00 PM; self-travel arrangement from school to home).</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Registration CTA Button (JS controlled) -->
+            <div class="text-center">
+                <button id="final-cta-btn" disabled onclick="handleRegistrationClick()" class="w-full sm:w-auto bg-slate-800 text-slate-500 cursor-not-allowed border border-slate-700 font-black text-lg py-5 px-12 rounded-2xl transition-all duration-300 flex items-center justify-center mx-auto gap-3">
+                    <i id="cta-icon" class="fas fa-lock text-xl"></i>
+                    <span id="cta-text">ACCEPT TERMS TO UNLOCK</span>
+                </button>
+                <p class="text-xs text-slate-500 mt-4">Submit the form only if you are seriously interested.</p>
+            </div>
         </div>
     </section>
 
     <script>
-        const checkboxes = document.querySelectorAll('.disclaimer-check');
-        const submitBtn = document.getElementById('final-submit-btn');
-        const lockIcon = document.getElementById('btn-lock-icon');
-        const btnText = document.getElementById('btn-text');
+        const checks = document.querySelectorAll('.disclaimer-check');
+        const ctaBtn = document.getElementById('final-cta-btn');
+        const ctaIcon = document.getElementById('cta-icon');
+        const ctaText = document.getElementById('cta-text');
 
-        checkboxes.forEach(box => {
+        checks.forEach(box => {
             box.addEventListener('change', () => {
-                const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+                const allChecked = Array.from(checks).every(cb => cb.checked);
                 
                 if (allChecked) {
-                    submitBtn.disabled = false;
-                    submitBtn.classList.remove('bg-slate-700', 'text-slate-400', 'cursor-not-allowed');
-                    submitBtn.classList.add('bg-comfest-cyan', 'text-slate-900', 'hover:bg-cyan-400', 'hover:scale-105', 'shadow-[0_0_30px_rgba(6,182,212,0.4)]', 'animate-pulse-glow');
-                    lockIcon.className = "fas fa-lock-open";
-                    btnText.textContent = "REGISTER YOUR INTEREST";
+                    ctaBtn.disabled = false;
+                    ctaBtn.className = "w-full sm:w-auto bg-brand-cyan text-brand-dark hover:bg-white cursor-pointer font-black text-lg py-5 px-12 rounded-2xl transition-all duration-300 flex items-center justify-center mx-auto gap-3 shadow-[0_0_30px_rgba(6,182,212,0.4)] hover:shadow-[0_0_40px_rgba(255,255,255,0.6)] transform hover:-translate-y-1 animate-pulse-glow";
+                    ctaIcon.className = "fas fa-arrow-right text-xl";
+                    ctaText.textContent = "PROCEED TO REGISTRATION";
                 } else {
-                    submitBtn.disabled = true;
-                    submitBtn.classList.add('bg-slate-700', 'text-slate-400', 'cursor-not-allowed');
-                    submitBtn.classList.remove('bg-comfest-cyan', 'text-slate-900', 'hover:bg-cyan-400', 'hover:scale-105', 'shadow-[0_0_30px_rgba(6,182,212,0.4)]', 'animate-pulse-glow');
-                    lockIcon.className = "fas fa-lock";
-                    btnText.textContent = "ACCEPT TERMS TO UNLOCK";
+                    ctaBtn.disabled = true;
+                    ctaBtn.className = "w-full sm:w-auto bg-slate-800 text-slate-500 cursor-not-allowed border border-slate-700 font-black text-lg py-5 px-12 rounded-2xl transition-all duration-300 flex items-center justify-center mx-auto gap-3";
+                    ctaIcon.className = "fas fa-lock text-xl";
+                    ctaText.textContent = "ACCEPT TERMS TO UNLOCK";
                 }
             });
         });
     </script>
 
-    <footer class="bg-slate-950 border-t border-slate-800 py-12 text-center">
+    <footer class="bg-[#02040a] pt-16 pb-8 border-t border-white/5 text-center">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h3 class="font-display font-black text-2xl text-white mb-2">COMFEST<span class="text-comfest-cyan">'26</span></h3>
-            <p class="text-sm text-slate-400 mb-6">15–17 OCTOBER 2026 • Seth Anandram Jaipuria School, Kanpur</p>
+            <h3 class="font-display font-black text-3xl text-white mb-2 tracking-tight">COMFEST<span class="text-brand-cyan">.26</span></h3>
+            <p class="text-sm font-medium text-slate-400 mb-8 tracking-wide">15–17 OCTOBER 2026 • Seth Anandram Jaipuria School, Kanpur</p>
             
-            <div class="flex justify-center space-x-6 mb-8 text-slate-400">
-                <a href="mailto:info@comfest.in" class="hover:text-comfest-cyan transition"><i class="fas fa-envelope mr-2"></i>info@comfest.in</a>
-                <a href="http://www.comfest.in" target="_blank" class="hover:text-comfest-cyan transition"><i class="fas fa-globe mr-2"></i>www.comfest.in</a>
+            <div class="flex justify-center space-x-8 mb-12 text-slate-400">
+                <a href="mailto:info@comfest.in" class="hover:text-brand-cyan transition-colors flex items-center gap-2 text-sm"><i class="fas fa-envelope"></i> info@comfest.in</a>
+                <a href="http://www.comfest.in" target="_blank" class="hover:text-brand-cyan transition-colors flex items-center gap-2 text-sm"><i class="fas fa-globe"></i> www.comfest.in</a>
             </div>
 
-            <div class="border-t border-slate-800 pt-8 mt-8">
-                <p class="text-[10px] text-slate-600 max-w-3xl mx-auto leading-relaxed mb-8">
-                    Event information on this page has been simplified for student convenience and is strictly based on the COMFEST'26 invitation brochure. In case of conflict, official instructions issued by the Jaipuria Computer Club / COMFEST organizers will always prevail.
+            <div class="border-t border-white/5 pt-8">
+                <p class="text-[11px] text-slate-500 max-w-3xl mx-auto leading-relaxed mb-8">
+                    Event information on this page has been simplified for student convenience and is strictly based on the COMFEST'26 invitation brochure. In case of conflict, official instructions issued by the Jaipuria Computer Club / COMFEST organizers will prevail.
                 </p>
                 
-                <div class="flex flex-col items-center justify-center gap-4 pt-6 border-t border-slate-800/50 mt-4 bg-slate-900/50 rounded-2xl p-6 shadow-inner max-w-lg mx-auto border border-slate-800/80">
-                    <div class="w-12 h-12 bg-slate-800 rounded-full flex items-center justify-center text-slate-400 mb-1 border border-slate-700">
+                <!-- Specific Ownership / Credit Block -->
+                <div class="flex flex-col items-center justify-center gap-4 bg-slate-900/30 rounded-2xl p-6 md:p-8 max-w-xl mx-auto border border-white/5">
+                    <div class="w-12 h-12 bg-slate-800 rounded-full flex items-center justify-center text-slate-400 border border-white/5 shadow-inner">
                         <i class="fas fa-code"></i>
                     </div>
-                    <p class="text-xs text-slate-300 font-medium tracking-wide text-center">
+                    <p class="text-xs text-slate-300 font-medium leading-relaxed">
                         This digital experience and website is an <span class="text-white font-bold">integral property of Shashank Kushwaha</span>. Developed to enhance the student participation experience.
                     </p>
-                    <a href="https://www.linkedin.com/in/studytoolsindia" target="_blank" rel="noopener noreferrer" class="mt-2 inline-flex items-center gap-2 px-6 py-2.5 bg-[#0A66C2]/10 hover:bg-[#0A66C2]/20 text-[#0A66C2] hover:text-[#0A66C2] border border-[#0A66C2]/30 hover:border-[#0A66C2]/60 rounded-full text-sm font-bold transition-all duration-300 shadow-[0_0_10px_rgba(10,102,194,0.1)] hover:shadow-[0_0_15px_rgba(10,102,194,0.3)]">
+                    <a href="https://www.linkedin.com/in/studytoolsindia" target="_blank" rel="noopener noreferrer" class="mt-2 inline-flex items-center gap-2 px-6 py-3 bg-[#0A66C2]/10 hover:bg-[#0A66C2]/20 text-[#0A66C2] border border-[#0A66C2]/30 hover:border-[#0A66C2]/60 rounded-xl text-sm font-bold transition-all duration-300">
                         <i class="fab fa-linkedin text-lg"></i>
                         Connect with Shashank on LinkedIn
                     </a>
@@ -1777,17 +1687,17 @@
     </footer>
 
     <!-- Placeholder Modal for Google Form Link -->
-    <div id="placeholder-modal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/80 backdrop-blur-sm p-4">
-        <div class="bg-slate-900 border border-slate-700 rounded-2xl p-8 max-w-md w-full text-center shadow-2xl relative">
-            <button onclick="closePlaceholderModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white">
+    <div id="placeholder-modal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/80 backdrop-blur-sm p-4 transition-opacity">
+        <div class="bg-slate-900 border border-slate-700 rounded-3xl p-8 max-w-sm w-full text-center shadow-2xl relative animate-slide-up">
+            <button onclick="closePlaceholderModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-800 text-slate-400 hover:text-white flex items-center justify-center transition-colors">
                 <i class="fas fa-times"></i>
             </button>
-            <div class="w-16 h-16 bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-4 text-comfest-cyan text-2xl">
+            <div class="w-20 h-20 bg-brand-cyan/10 rounded-2xl flex items-center justify-center mx-auto mb-6 text-brand-cyan text-3xl border border-brand-cyan/20">
                 <i class="fab fa-wpforms"></i>
             </div>
             <h3 class="text-xl font-bold text-white mb-2">Registration Form</h3>
-            <p class="text-sm text-slate-400 mb-6">The official Google Form link will be added here by the school coordinator.</p>
-            <button onclick="closePlaceholderModal()" class="w-full bg-slate-800 hover:bg-slate-700 text-white font-medium py-2 rounded-lg transition">
+            <p class="text-sm text-slate-400 mb-8 leading-relaxed">The official Google Form link will be added here by the coordinator shortly.</p>
+            <button onclick="closePlaceholderModal()" class="w-full bg-slate-800 hover:bg-slate-700 text-white font-bold py-3 rounded-xl transition-colors border border-slate-700">
                 Close
             </button>
         </div>
