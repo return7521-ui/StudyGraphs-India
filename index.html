@@ -225,10 +225,18 @@
         }
 
         /* Modal Transitions */
-        .modal-enter { animation: modalFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .modal-enter { animation: modalFadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         @keyframes modalFadeIn {
-            from { opacity: 0; transform: scale(0.95) translateY(10px); }
+            from { opacity: 0; transform: scale(0.95) translateY(20px); }
             to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        
+        .stagger-item { opacity: 0; transform: translateY(10px); }
+        .modal-enter .stagger-item { animation: slideUpFade 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        
+        @keyframes slideUpFade {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         /* Desktop Global Cursor Glow */
@@ -262,7 +270,6 @@
     <!-- Desktop Cursor Glow -->
     <div id="cursor-glow" class="hidden lg:block"></div>
 
-    <!-- Animated Ambient Background Layers -->
     <div class="fixed inset-0 z-[-2] overflow-hidden pointer-events-none">
         <div class="absolute inset-0 transition-colors duration-500 bg-slate-50 dark:bg-brand-dark"></div>
         <div class="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] rounded-full bg-brand-cyan/20 dark:bg-brand-cyan/10 blur-[80px] sm:blur-[120px] mix-blend-multiply dark:mix-blend-screen animate-blob"></div>
@@ -1234,9 +1241,8 @@
 
             filteredEvents.forEach((event, index) => {
                 const card = document.createElement('div');
-                card.className = "glow-card rounded-2xl flex flex-col h-full animate-slide-up cursor-pointer group";
+                card.className = "glow-card rounded-2xl flex flex-col h-full animate-slide-up group";
                 card.style.animationDelay = `${(index % 10) * 0.05}s`;
-                card.onclick = () => openModal(event);
 
                 const topBar = `
                     <div class="p-5 flex justify-between items-start border-b border-slate-200 dark:border-white/5 relative z-10">
@@ -1246,7 +1252,7 @@
                             </div>
                             <div>
                                 <span class="text-[10px] font-bold text-slate-500 tracking-wider">EVENT ${event.id}</span>
-                                <h3 class="text-lg font-bold text-slate-900 dark:text-white leading-tight group-hover:text-brand-cyan transition-colors">${event.name}</h3>
+                                <h3 class="text-lg font-bold text-slate-900 dark:text-white leading-tight transition-colors">${event.name}</h3>
                             </div>
                         </div>
                     </div>
@@ -1269,6 +1275,13 @@
                                 <i class="fas ${event.device === 'YES' ? 'fa-laptop text-brand-purple' : 'fa-ban text-rose-500'} w-4 text-center"></i>
                                 <span class="font-medium">${event.device === 'YES' ? 'Device OK' : 'No Device'}</span>
                             </div>
+                        </div>
+                        
+                        <div class="mt-4 pt-4 border-t border-slate-200 dark:border-white/5">
+                            <button onclick='openModal(${JSON.stringify(event).replace(/'/g, "&#39;")})' class="w-full py-2.5 px-4 rounded-xl bg-slate-100 dark:bg-slate-800 text-brand-cyan font-bold text-sm flex items-center justify-between group/btn hover:bg-brand-cyan hover:text-white dark:hover:bg-brand-cyan transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-brand-cyan">
+                                <span>View Details</span>
+                                <i class="fas fa-arrow-right transform group-hover/btn:translate-x-1 transition-transform"></i>
+                            </button>
                         </div>
                     </div>
                 `;
@@ -1305,7 +1318,17 @@
             // Setup Interactive Lighting and Canvas
             setupCursorGlow();
             setupCanvasParticles();
+            
+            // Add global escape key listener for modal
+            document.addEventListener('keydown', handleEscapeKey);
         });
+        
+        function handleEscapeKey(e) {
+            if(e.key === 'Escape') {
+                closeModal();
+                closePlaceholderModal();
+            }
+        }
 
         function setupCursorGlow() {
             const cursorGlow = document.getElementById('cursor-glow');
@@ -1401,7 +1424,10 @@
             animate();
         }
 
+        let lastFocusedElement;
+
         function openModal(event) {
+            lastFocusedElement = document.activeElement;
             document.getElementById('modalNum').textContent = `EVENT ${event.id}`;
             document.getElementById('modalTitle').textContent = event.name;
             document.getElementById('modalSubtitle').textContent = event.subtitle;
@@ -1414,7 +1440,7 @@
             document.getElementById('modalTime').innerHTML = `<i class="far fa-clock text-slate-400 mb-1"></i><br/>${event.time}`;
 
             let contentHTML = `
-                <div class="mb-8">
+                <div class="mb-8 stagger-item" style="animation-delay: 0.1s">
                     <h4 class="text-sm font-bold uppercase tracking-wider text-slate-900 dark:text-white mb-3">Overview</h4>
                     <p class="text-base text-slate-700 dark:text-slate-300 leading-relaxed">${event.overview}</p>
                 </div>
@@ -1422,7 +1448,7 @@
 
             if(event.howItWorks && event.howItWorks.length > 0) {
                 contentHTML += `
-                <div class="mb-8">
+                <div class="mb-8 stagger-item" style="animation-delay: 0.2s">
                     <h4 class="text-sm font-bold uppercase tracking-wider text-brand-cyan mb-4 flex items-center gap-2">
                         <i class="fas fa-cogs"></i> How it works
                     </h4>
@@ -1439,7 +1465,7 @@
 
             if(event.rules && event.rules.length > 0) {
                 contentHTML += `
-                <div class="mb-8">
+                <div class="mb-8 stagger-item" style="animation-delay: 0.3s">
                     <h4 class="text-sm font-bold uppercase tracking-wider text-slate-900 dark:text-white mb-4 flex items-center gap-2">
                         <i class="fas fa-gavel text-slate-400"></i> Official Rules
                     </h4>
@@ -1456,13 +1482,13 @@
 
             if(event.restrictions && event.restrictions.length > 0) {
                 contentHTML += `
-                <div class="mb-8">
+                <div class="mb-8 stagger-item" style="animation-delay: 0.4s">
                     <h4 class="text-sm font-bold uppercase tracking-wider text-rose-500 mb-4 flex items-center gap-2">
                         <i class="fas fa-exclamation-triangle"></i> Important Restrictions
                     </h4>
                     <ul class="space-y-3 bg-rose-50 dark:bg-rose-500/10 rounded-xl p-5 border border-rose-200 dark:border-rose-500/20">
                         ${event.restrictions.map(req => `
-                            <li class="flex items-start gap-3 text-sm text-rose-700 dark:text-rose-200/90">
+                            <li class="flex items-start gap-3 text-sm text-rose-700 dark:text-rose-200/90 font-medium">
                                 <i class="fas fa-times-circle text-rose-500 mt-1 shrink-0"></i>
                                 <span class="leading-relaxed">${req}</span>
                             </li>
@@ -1472,7 +1498,7 @@
             }
             
             if(event.submission || event.judging) {
-                contentHTML += `<div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">`;
+                contentHTML += `<div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8 stagger-item" style="animation-delay: 0.5s">`;
                 if(event.submission) {
                     contentHTML += `
                     <div class="bg-brand-cyan/5 p-5 rounded-xl border border-brand-cyan/20">
@@ -1492,7 +1518,7 @@
 
             if(event.example) {
                 contentHTML += `
-                <div class="mb-8">
+                <div class="mb-8 stagger-item" style="animation-delay: 0.6s">
                     <p class="text-xs font-bold uppercase tracking-wider text-brand-accent mb-2 flex items-center gap-2">
                         <i class="fas fa-lightbulb"></i> Example — For Understanding Only
                     </p>
@@ -1502,7 +1528,7 @@
 
             if(event.prep) {
                 contentHTML += `
-                <div class="mt-8 pt-8 border-t border-slate-200 dark:border-white/10">
+                <div class="mt-8 pt-8 border-t border-slate-200 dark:border-white/10 stagger-item" style="animation-delay: 0.7s">
                     <p class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Preparation Tip</p>
                     <p class="text-sm text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-800/50 p-4 rounded-xl border border-slate-200 dark:border-white/5">${event.prep}</p>
                 </div>`;
@@ -1513,7 +1539,17 @@
             
             const modal = document.getElementById('eventModal');
             modal.classList.remove('hidden');
-            modal.querySelector('.modal-panel').classList.add('modal-enter');
+            
+            // Trigger animation classes
+            const panel = modal.querySelector('.modal-panel');
+            panel.classList.remove('modal-enter');
+            void panel.offsetWidth; // trigger reflow
+            panel.classList.add('modal-enter');
+            
+            // Focus on close button for accessibility
+            setTimeout(() => {
+                document.getElementById('modalCloseBtn').focus();
+            }, 100);
         }
 
         function closeModal() {
@@ -1521,6 +1557,11 @@
             const modal = document.getElementById('eventModal');
             modal.classList.add('hidden');
             modal.querySelector('.modal-panel').classList.remove('modal-enter');
+            
+            // Restore focus
+            if (lastFocusedElement) {
+                lastFocusedElement.focus();
+            }
         }
     </script>
 
@@ -1576,8 +1617,10 @@
     </section>
 
     <div id="eventModal" class="fixed inset-0 z-50 hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <!-- Backdrop -->
         <div class="fixed inset-0 bg-slate-900/40 dark:bg-brand-dark/80 backdrop-blur-sm transition-opacity" aria-hidden="true" onclick="closeModal()"></div>
         
+        <!-- Modal Panel -->
         <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
             <div class="flex min-h-full items-end justify-center p-0 text-left sm:items-center sm:p-4">
                 <div class="modal-panel relative transform overflow-hidden bg-white dark:bg-slate-900 shadow-2xl transition-all sm:rounded-3xl w-full sm:max-w-4xl border border-slate-200 dark:border-white/10 flex flex-col h-[90vh] sm:h-auto sm:max-h-[90vh] mt-10 sm:mt-0">
@@ -1595,7 +1638,7 @@
                                     <p id="modalSubtitle" class="text-sm text-slate-500 dark:text-slate-400 mt-1 font-medium">Subtitle</p>
                                 </div>
                             </div>
-                            <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-white transition-colors bg-white dark:bg-white/5 rounded-full w-10 h-10 flex items-center justify-center shrink-0 border border-slate-200 dark:border-transparent">
+                            <button id="modalCloseBtn" onclick="closeModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-white transition-colors bg-white dark:bg-white/5 rounded-full w-10 h-10 flex items-center justify-center shrink-0 border border-slate-200 dark:border-transparent focus:outline-none focus:ring-2 focus:ring-brand-cyan">
                                 <i class="fas fa-times text-lg"></i>
                             </button>
                         </div>
@@ -1603,7 +1646,7 @@
 
                     <!-- Body -->
                     <div class="px-6 py-6 overflow-y-auto custom-scrollbar flex-grow bg-white dark:bg-slate-900">
-                        <div class="grid grid-cols-3 gap-3 mb-8">
+                        <div class="grid grid-cols-3 gap-3 mb-8 stagger-item" style="animation-delay: 0.05s">
                             <div class="bg-slate-50 dark:bg-slate-800/50 rounded-xl p-3 border border-slate-200 dark:border-white/5 text-center">
                                 <p class="text-[10px] text-slate-500 uppercase font-bold tracking-wider mb-2">Participants</p>
                                 <p id="modalPax" class="text-xs sm:text-sm font-bold text-slate-900 dark:text-white">-</p>
@@ -1622,8 +1665,8 @@
 
                     <!-- Footer -->
                     <div class="px-6 py-5 bg-slate-50 dark:bg-slate-800/50 border-t border-slate-200 dark:border-white/5 shrink-0 flex flex-col sm:flex-row-reverse gap-3">
-                        <button type="button" onclick="smoothScroll('registration-section'); closeModal();" class="w-full sm:w-auto inline-flex justify-center items-center rounded-xl bg-brand-cyan px-6 py-3 text-sm font-bold text-white dark:text-brand-dark shadow-md hover:bg-brand-600 dark:hover:bg-white transition-all btn-sweep">
-                            Register Interest
+                        <button type="button" onclick="smoothScroll('registration-section'); closeModal();" class="w-full sm:w-auto inline-flex justify-center items-center rounded-xl bg-brand-cyan px-8 py-3 text-sm font-bold text-white dark:text-brand-dark shadow-md hover:bg-brand-600 dark:hover:bg-white transition-all btn-sweep focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-offset-slate-900 focus:ring-brand-cyan">
+                            Register for COMFEST'26 &rarr;
                         </button>
                     </div>
                 </div>
@@ -1782,7 +1825,7 @@
 
             <!-- Unlockable Button -->
             <div class="text-center">
-                <button id="final-cta-btn" disabled onclick="handleRegistrationClick()" class="w-full sm:w-auto bg-slate-200 dark:bg-slate-800 text-slate-400 dark:text-slate-500 cursor-not-allowed font-bold text-base sm:text-lg py-5 px-12 rounded-2xl transition-all duration-300 flex items-center justify-center mx-auto gap-3 border border-slate-300 dark:border-slate-700">
+                <button id="final-cta-btn" disabled onclick="handleRegistrationClick()" class="w-full sm:w-auto bg-slate-200 dark:bg-slate-800 text-slate-400 dark:text-slate-500 cursor-not-allowed font-bold text-base sm:text-lg py-5 px-12 rounded-2xl transition-all duration-300 flex items-center justify-center mx-auto gap-3 border border-slate-300 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-offset-slate-900 focus:ring-brand-cyan">
                     <i id="cta-icon" class="fas fa-lock text-xl"></i>
                     <span id="cta-text">ACCEPT TERMS TO UNLOCK</span>
                 </button>
@@ -1803,13 +1846,13 @@
                 if (allChecked) {
                     ctaBtn.disabled = false;
                     // Apply sweep animation and active styling
-                    ctaBtn.className = "w-full sm:w-auto bg-brand-cyan text-white dark:text-brand-dark hover:bg-brand-600 dark:hover:bg-white cursor-pointer font-bold text-base sm:text-lg py-5 px-12 rounded-2xl transition-all duration-300 flex items-center justify-center mx-auto gap-3 shadow-lg transform hover:-translate-y-1 btn-sweep";
+                    ctaBtn.className = "w-full sm:w-auto bg-brand-cyan text-white dark:text-brand-dark hover:bg-brand-600 dark:hover:bg-white cursor-pointer font-bold text-base sm:text-lg py-5 px-12 rounded-2xl transition-all duration-300 flex items-center justify-center mx-auto gap-3 shadow-lg transform hover:-translate-y-1 btn-sweep focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-offset-slate-900 focus:ring-brand-cyan";
                     ctaIcon.className = "fas fa-arrow-right text-xl";
                     ctaText.textContent = "REGISTER YOUR INTEREST";
                 } else {
                     ctaBtn.disabled = true;
                     // Revert to disabled styling
-                    ctaBtn.className = "w-full sm:w-auto bg-slate-200 dark:bg-slate-800 text-slate-400 dark:text-slate-500 cursor-not-allowed font-bold text-base sm:text-lg py-5 px-12 rounded-2xl transition-all duration-300 flex items-center justify-center mx-auto gap-3 border border-slate-300 dark:border-slate-700";
+                    ctaBtn.className = "w-full sm:w-auto bg-slate-200 dark:bg-slate-800 text-slate-400 dark:text-slate-500 cursor-not-allowed font-bold text-base sm:text-lg py-5 px-12 rounded-2xl transition-all duration-300 flex items-center justify-center mx-auto gap-3 border border-slate-300 dark:border-slate-700 focus:outline-none";
                     ctaIcon.className = "fas fa-lock text-xl";
                     ctaText.textContent = "ACCEPT TERMS TO UNLOCK";
                 }
@@ -1832,7 +1875,7 @@
                     Event information on this page has been simplified for student convenience and is strictly based on the COMFEST'26 invitation brochure. In case of conflict, official instructions issued by the COMFEST organizers will prevail.
                 </p>
                 
-                <!-- Explicit Attribution required by prompt -->
+                <!-- Explicit Attribution -->
                 <div class="flex flex-col items-center justify-center gap-4 bg-slate-800/50 dark:bg-slate-900/50 rounded-2xl p-6 max-w-xl mx-auto border border-slate-700 dark:border-white/5 shadow-inner">
                     <div class="w-10 h-10 bg-slate-700 dark:bg-slate-800 rounded-full flex items-center justify-center text-slate-400 border border-slate-600 dark:border-white/5">
                         <i class="fas fa-code"></i>
@@ -1840,7 +1883,7 @@
                     <p class="text-xs text-slate-300 font-medium leading-relaxed">
                         This website and digital experience is an integral property of <span class="text-white font-bold">Shashank Kushwaha</span>. Developed to enhance the student participation experience.
                     </p>
-                    <a href="https://www.linkedin.com/in/studytoolsindia" target="_blank" rel="noopener noreferrer" class="mt-2 inline-flex items-center gap-2 px-5 py-2.5 bg-[#0A66C2]/10 hover:bg-[#0A66C2]/20 text-[#0A66C2] dark:text-[#70b5f9] border border-[#0A66C2]/30 hover:border-[#0A66C2]/60 rounded-xl text-xs font-bold transition-all duration-300">
+                    <a href="https://www.linkedin.com/in/studytoolsindia" target="_blank" rel="noopener noreferrer" class="mt-2 inline-flex items-center gap-2 px-5 py-2.5 bg-[#0A66C2]/10 hover:bg-[#0A66C2]/20 text-[#0A66C2] dark:text-[#70b5f9] border border-[#0A66C2]/30 hover:border-[#0A66C2]/60 rounded-xl text-xs font-bold transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#0A66C2]">
                         <i class="fab fa-linkedin text-base"></i>
                         Connect with Shashank on LinkedIn
                     </a>
@@ -1849,10 +1892,10 @@
         </div>
     </footer>
 
-    <!-- Placeholder Modal -->
+    <!-- Placeholder Modal for Form -->
     <div id="placeholder-modal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-slate-900/80 dark:bg-brand-dark/90 backdrop-blur-sm p-4 transition-opacity">
         <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-3xl p-8 max-w-sm w-full text-center shadow-2xl relative animate-slide-up">
-            <button onclick="closePlaceholderModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-slate-900 dark:hover:text-white flex items-center justify-center transition-colors">
+            <button onclick="closePlaceholderModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-slate-900 dark:hover:text-white flex items-center justify-center transition-colors focus:outline-none focus:ring-2 focus:ring-brand-cyan">
                 <i class="fas fa-times"></i>
             </button>
             <div class="w-16 h-16 bg-brand-cyan/10 rounded-2xl flex items-center justify-center mx-auto mb-6 text-brand-cyan text-2xl">
@@ -1860,7 +1903,7 @@
             </div>
             <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">Registration Form</h3>
             <p class="text-sm text-slate-600 dark:text-slate-400 mb-8 leading-relaxed">The official Google Form link will be added here shortly.</p>
-            <button onclick="closePlaceholderModal()" class="w-full bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-900 dark:text-white font-bold py-3 rounded-xl transition-colors border border-slate-200 dark:border-slate-700">
+            <button onclick="closePlaceholderModal()" class="w-full bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-900 dark:text-white font-bold py-3 rounded-xl transition-colors border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-brand-cyan">
                 Close
             </button>
         </div>
